@@ -37,6 +37,8 @@ namespace WhiteExtension
                 new TestStack.White.Sessions.WindowSession(new TestStack.White.Sessions.ApplicationSession(), 
                     TestStack.White.Factory.InitializeOption.NoCache))
         {
+            this.DisplayState = DisplayState.Restored;
+            this.Focus();
         }
 
         public static Window FindWindow(string title)
@@ -66,8 +68,6 @@ namespace WhiteExtension
 
         public UIControl FindControl(Finder f)
         {
-            this.DisplayState = DisplayState.Maximized;
-            this.Focus();
             return new UIControl(f.Result.First(), this);
         }
 

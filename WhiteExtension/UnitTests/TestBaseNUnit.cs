@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Drawing;
 using NUnit.Framework;
 using TestStack.White;
 using TestStack.White.UIItems.WindowItems;
@@ -42,6 +43,13 @@ namespace WhiteExtension.UnitTests
         [TearDown]
         public void Stop()
         {
+            if (TestContext.CurrentContext.Result.Status == TestStatus.Failed)
+            {
+                string name = TestContext.CurrentContext.Test.Name.ToString();
+                Logging.Write(TestContext.CurrentContext.Test.Name);
+                new TestStack.White.ScreenCapture().CaptureScreenShot().Save("Results\\"+name.Substring(0,name.IndexOf("("))+".bmp");
+            }
+            Logging.Write(TestContext.CurrentContext.Result.Status.ToString().ToUpper()+"!");
         }
     }
 }
