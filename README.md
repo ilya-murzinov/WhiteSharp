@@ -31,4 +31,4 @@ Qiuck start
 Docs
 ----
 
-View docs [here](ttp://murz42.viewdocs.io/WhiteExtension)
+View docs [here](http://murz42.viewdocs.io/WhiteExtension)
