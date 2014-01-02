@@ -40,7 +40,7 @@ namespace WhiteExtension.UnitTests
         public void GetWindowNegativeTest(string title)
         {
             Logging.Start(title);
-            new UIWindow().GetWindow(title);
+            new UIWindow(title);
         }
 
         [TestCase("")]
@@ -51,7 +51,7 @@ namespace WhiteExtension.UnitTests
         public void GetWindowPositiveTest(string title)
         {
             Logging.Start(title);
-            new UIWindow().GetWindow(title);
+            new UIWindow(title);
         }
         
         [TestCase("", 44)]

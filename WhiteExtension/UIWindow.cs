@@ -7,26 +7,39 @@ using TestStack.White;
 using TestStack.White.InputDevices;
 using TestStack.White.UIItems.WindowItems;
 using TestStack.White.WindowsAPI;
+using TestStack.White.UIItems.Finders;
+using TestStack.White.Factory;
+using TestStack.White.UIItems.MenuItems;
 
 namespace WhiteExtension
 {
-    public class UIWindow
+    public class UIWindow : Window
     {
-        private readonly Window _window;
-
-        public UIWindow()
+        #region NotImplemented
+        public override Window ModalWindow(SearchCriteria searchCriteria, InitializeOption option)
         {
-            
+            throw new NotImplementedException();
+        }
+        public override Window ModalWindow(string title, InitializeOption option)
+        {
+            throw new NotImplementedException();
+        }
+        public override PopUpMenu Popup
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        } 
+        #endregion
+        
+        public UIWindow(string title) : base(FindWindow(title).AutomationElement, TestStack.White.Factory.InitializeOption.NoCache, 
+                new TestStack.White.Sessions.WindowSession(new TestStack.White.Sessions.ApplicationSession(), 
+                    TestStack.White.Factory.InitializeOption.NoCache))
+        {
         }
 
-        public UIWindow(string title)
-        {
-            _window = GetWindow(title);
-            _window.DisplayState = DisplayState.Maximized;
-            _window.Focus();
-        }
-
-        internal Window GetWindow(string title)
+        public static Window FindWindow(string title)
         {
             Window returnWindow = null;
             DateTime start = DateTime.Now;
@@ -46,12 +59,16 @@ namespace WhiteExtension
                 throw new WindowNotFoundException(Logging.WindowException(title));
             Logging.WindowFound(returnWindow, DateTime.Now - start);
             By.Window = returnWindow;
+            returnWindow.DisplayState = DisplayState.Maximized;
+            returnWindow.Focus();
             return returnWindow;
         }
 
         public UIControl FindControl(Finder f)
         {
-            return new UIControl(f.Result.First(), _window);
+            this.DisplayState = DisplayState.Maximized;
+            this.Focus();
+            return new UIControl(f.Result.First(), this);
         }
 
         public List<AutomationElement> FindAll(Finder f)
@@ -65,24 +82,24 @@ namespace WhiteExtension
             {
                 case "{F5}":
                 {
-                    Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.F5);
+                    Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.F5);
                     break;
                 }
                 case "{Tab}":
                 {
-                    Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.TAB);
+                    Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.TAB);
                     break;
                 }
                 case "{Esc}":
                 {
-                    Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.ESCAPE);
+                    Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.ESCAPE);
                     break;
                 }
                 case "{Alt}+{F4}":
                 {
-                    Keyboard.Instance.HoldKey(KeyboardInput.SpecialKeys.ALT);
-                    Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.F4);
-                    Keyboard.Instance.LeaveKey(KeyboardInput.SpecialKeys.ALT);
+                    Keyboard.HoldKey(KeyboardInput.SpecialKeys.ALT);
+                    Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.F4);
+                    Keyboard.LeaveKey(KeyboardInput.SpecialKeys.ALT);
                     break;
                 }
             }
