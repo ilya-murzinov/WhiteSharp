@@ -17,8 +17,8 @@ namespace WhiteExtension.UnitTests
         public void Init()
         {
             Process.Start(@"C:\Windows\System32\calc.exe");
-            Thread.Sleep(1000);
-            Window = Desktop.Instance.Windows().Find(x => x.Title.Contains("Калькулятор"));
+            Thread.Sleep(2000);
+            Window = Desktop.Instance.Windows().Find(x => x.Title.Contains("calc"));
             Config.Timeout = 100;
             Window.DisplayState = DisplayState.Restored;
             Window.Focus();
