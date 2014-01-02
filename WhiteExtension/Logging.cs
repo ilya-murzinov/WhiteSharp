@@ -9,7 +9,8 @@ namespace WhiteExtension
 {
     public class Logging
     {
-        private const string StartTag = "\r\n\r\n------------------------------------------------------------\r\n\r\n";
+        private const string StartOpenTag = "\r\n\r\n------------------------------------------------------------------------------------------\r\n";
+        private const string StartCloseTag = "\r\n------------------------------------------------------------------------------------------";
         private const string FoungTag = "Found";
         private const string ClickTag = "Click";
         private const string SentTag = "Sent";
@@ -52,9 +53,18 @@ namespace WhiteExtension
             }
         }
 
-        public static void Start()
+        public static void Start(params string[] arguments)
         {
-            Write(StartTag + string.Format(Strings.TestStarted, GetCurrentMethod()) + StartTag);
+            string result = "";
+            for (int i = 0; i < arguments.Length; i++)
+            {
+                result += arguments[i];
+                if (i<arguments.Length-1)
+                {
+                    result += ", ";
+                }
+            }
+            Write(StartOpenTag + string.Format(Strings.TestStarted, GetCurrentMethod(), result) + StartCloseTag);
         }
 
         public static void Decsription(string description)

@@ -24,12 +24,12 @@ namespace WhiteExtension
         {
             if (Config.Language == (int)Config.Languages.En)
             {
-                TestStarted = "Test started";
+                TestStarted = "Test started: {0}({1})";
                 ControlFound = "Control by \"{0}\" was found in {1} seconds";
                 ControlException = "Control by \"{0}\" was not found";
                 WindowFound = "Window \"{0}\" was found in {1} seconds";
                 WindowException = "Window \"{0}\" was not found";
-                Click = "Performed a click on control \"{0}\"";
+                Click = "Control \"{0}\" was clicked";
                 Sent = "Sent \"{0}\"";
                 AssertSucceeded = "Control \"{0}\" passed assertion";
                 AssertException = "Control \"{0}\" didn't pass assertion";
@@ -38,7 +38,7 @@ namespace WhiteExtension
             }
             else if (Config.Language == (int)Config.Languages.Ru)
             {
-                TestStarted = "Запущен тест";
+                TestStarted = "Запущен тест: {0}({1})";
                 ControlFound = "Контрол по условию \"{0}\" найден за {1} секунд";
                 ControlException = "Контрол по условию \"{0}\" не найден";
                 WindowFound = "Окно \"{0}\" найдено за {1} секунд";

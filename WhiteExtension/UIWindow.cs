@@ -49,7 +49,7 @@ namespace WhiteExtension
             return returnWindow;
         }
 
-        public UIControl Find(Finder f)
+        public UIControl FindControl(Finder f)
         {
             return new UIControl(f.Result.First(), _window);
         }

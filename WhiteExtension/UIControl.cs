@@ -71,6 +71,11 @@ namespace WhiteExtension
                     Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.ESCAPE);
                     break;
                 }
+                case "{Enter}":
+                {
+                    Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
+                    break;
+                }
                 default:
                 {
                     SendKeys.SendWait(value);

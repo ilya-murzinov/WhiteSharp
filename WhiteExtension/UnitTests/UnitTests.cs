@@ -39,6 +39,7 @@ namespace WhiteExtension.UnitTests
         [TestCase("^%$iofkjndsf9)&*")]
         public void GetWindowNegativeTest(string title)
         {
+            Logging.Start(title);
             new UIWindow().GetWindow(title);
         }
 
@@ -49,6 +50,7 @@ namespace WhiteExtension.UnitTests
         [TestCase("К")]
         public void GetWindowPositiveTest(string title)
         {
+            Logging.Start(title);
             new UIWindow().GetWindow(title);
         }
         
@@ -56,6 +58,7 @@ namespace WhiteExtension.UnitTests
         [TestCase("1", 27)]
         public void CountTest(string id, int count)
         {
+            Logging.Start(id, count.ToString());
             By.Window = Window;
             var finder = By.AutomationIdContains(id);
             Assert.IsTrue(finder.Result.Count == count);
@@ -66,6 +69,7 @@ namespace WhiteExtension.UnitTests
         [TestCase("Fjf")]
         public void AutomationIdNegativeTest(string id)
         {
+            Logging.Start(id);
             By.Window = Window;
             var finder = By.AutomationIdContains(id);
             Assert.IsTrue(finder.Result.TrueForAll(x=>x.Current.AutomationId.Contains(id)));
@@ -75,6 +79,7 @@ namespace WhiteExtension.UnitTests
         [TestCase("CalcFrame")]
         public void ClassNamePositiveTest(string id)
         {
+            Logging.Start(id);
             By.Window = Window;
             var finder = By.ClassName(id);
             Assert.IsTrue(finder.Result.TrueForAll(x => x.Current.ClassName.Equals(id)));
@@ -86,6 +91,7 @@ namespace WhiteExtension.UnitTests
         [TestCase("6")]
         public void AutomationIdContainsPositiveTest(string id)
         {
+            Logging.Start(id);
             By.Window = Window;
             var finder = By.AutomationIdContains(id);
             Assert.IsTrue(finder.Result.TrueForAll(x => x.Current.AutomationId.Contains(id)));
@@ -97,6 +103,7 @@ namespace WhiteExtension.UnitTests
         [TestCase("Очистка памяти")]
         public void ByName(string id)
         {
+            Logging.Start(id);
             By.Window = Window;
             var finder = By.Name(id);
             Assert.IsTrue(finder.Result.Count == 1);
@@ -109,6 +116,7 @@ namespace WhiteExtension.UnitTests
         [TestCase("121", "80")]
         public void Find(string id1, string id2)
         {
+            Logging.Start(id1, id2);
             By.Window = Window;
             var c = new UIControl(By.AutomationId(id1).Result.First(), Desktop.Instance);
             Assert.True(By.AutomationId(id2).Result.First().Current.AutomationId.Equals(id2));
@@ -120,6 +128,7 @@ namespace WhiteExtension.UnitTests
         [TestCase("CalcFrame", "123")]
         public void GetChild(string id1, string id2)
         {
+            Logging.Start(id1, id2);
             By.Window = Window;
             var c = new UIControl(By.ClassName(id1).Result.First(), Desktop.Instance);
             c.FindChild(By.AutomationId(id2));
