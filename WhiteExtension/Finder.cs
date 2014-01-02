@@ -43,7 +43,7 @@ namespace WhiteExtension
 
         public Finder AutomationIdContains(string automationId)
         {
-            Result = Find(x => x.Current.AutomationId.Contains(automationId), string.Format("AutomationId содержит {0}", automationId));
+            Result = Find(x => x.Current.AutomationId.Contains(automationId), string.Format("AutomationId {0} {1}", Strings.Contains, automationId));
             return this;
         }
 
@@ -55,7 +55,7 @@ namespace WhiteExtension
 
         public Finder NameContains(String name)
         {
-            Result = Find(x => x.Current.Name.Contains(name), string.Format("Name содержит {0}", name));
+            Result = Find(x => x.Current.Name.Contains(name), string.Format("Name {0} {1}", Strings.Contains, name));
             return this;
         }
 

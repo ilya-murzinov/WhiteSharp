@@ -2,6 +2,32 @@
 {
     public class Config
     {
+        public enum Languages
+        {
+            En = 0,
+            Ru = 1
+        }
+
+        private static int _language = (int)Languages.En;
+
+        public static int Language 
+        {
+            get 
+            {
+                return _language;
+            }
+            set
+            {
+                _language = value;
+            } 
+        }
+
+        public static void SetLanguage(int language)
+        {
+            Language = language;
+            new Strings();
+        }
+
         public enum OutputLevel
         {
             Trace = 1,

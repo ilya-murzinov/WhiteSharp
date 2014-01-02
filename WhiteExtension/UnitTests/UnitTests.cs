@@ -17,8 +17,8 @@ namespace WhiteExtension.UnitTests
         public void Init()
         {
             Process.Start(@"C:\Windows\System32\calc.exe");
-            Thread.Sleep(2000);
-            Window = Desktop.Instance.Windows().Find(x => x.Title.Contains("calc"));
+            Thread.Sleep(3000);
+            Window = Desktop.Instance.Windows().Find(x => x.Title.Contains("Calculator"));
             Config.Timeout = 100;
             Window.DisplayState = DisplayState.Restored;
             Window.Focus();
@@ -27,7 +27,7 @@ namespace WhiteExtension.UnitTests
         [TestFixtureTearDown]
         public void Cleanup()
         {
-            Process.GetProcessesByName("calc").First().Kill();
+            Process.GetProcessesByName("calc").ToList().ForEach(x => x.Kill());
         }
 
         public Window Window;
@@ -95,7 +95,7 @@ namespace WhiteExtension.UnitTests
         [TestCase("Вид")]
         [TestCase("Справка")]
         [TestCase("Очистка памяти")]
-        public void ПоискПоИмени(string id)
+        public void ByName(string id)
         {
             By.Window = Window;
             var finder = By.Name(id);
@@ -107,7 +107,7 @@ namespace WhiteExtension.UnitTests
         [TestCase("122", "80")]
         [TestCase("123", "81")]
         [TestCase("121", "80")]
-        public void ПоследовательныйПоиск(string id1, string id2)
+        public void Find(string id1, string id2)
         {
             By.Window = Window;
             var c = new UIControl(By.AutomationId(id1).Result.First(), Desktop.Instance);
@@ -118,7 +118,7 @@ namespace WhiteExtension.UnitTests
         [TestCase("CalcFrame", "121")]
         [TestCase("CalcFrame", "122")]
         [TestCase("CalcFrame", "123")]
-        public void ПоискПотомка(string id1, string id2)
+        public void GetChild(string id1, string id2)
         {
             By.Window = Window;
             var c = new UIControl(By.ClassName(id1).Result.First(), Desktop.Instance);

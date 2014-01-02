@@ -54,7 +54,7 @@ namespace WhiteExtension
 
         public static void Start()
         {
-            Write(StartTag + string.Format("Test started: {0}", GetCurrentMethod()) + StartTag);
+            Write(StartTag + string.Format(Strings.TestStarted, GetCurrentMethod()) + StartTag);
         }
 
         public static void Decsription(string description)
@@ -64,63 +64,63 @@ namespace WhiteExtension
 
         public static string ControlFound(string msg, TimeSpan duration)
         {
-            string s = string.Format("Контрол по условию \"{0}\" найден за {1} секунд", msg, duration.TotalSeconds);
+            string s = string.Format(Strings.ControlFound, msg, duration.TotalSeconds);
             Write(Tag(FoungTag) + s);
             return s;
         }
 
         public static string WindowFound(Window window, TimeSpan duration)
         {
-            string s = string.Format("Окно \"{0}\" найдено за {1} секунд", window.Title, duration.TotalSeconds);
+            string s = string.Format(Strings.WindowFound, window.Title, duration.TotalSeconds);
             Write(Tag(FoungTag) + s);
             return s;
         }
 
         public static string Click(UIControl control)
         {
-            string s = string.Format("Выполнен клик по контролу \"{0}\"", control.GetId());
+            string s = string.Format(Strings.Click, control.GetId());
             Write(Tag(ClickTag) + s);
             return s;
         }
 
         public static string Sent(string msg)
         {
-            string s = string.Format("Нажато \"{0}\"", msg);
+            string s = string.Format(Strings.Sent, msg);
             Write(Tag(SentTag) + s);
             return s;
         }
 
         public static string AssertSucceeded(UIControl control)
         {
-            string s = string.Format("Контрол \"{0}\" успешно прошел проверку", control.GetId());
+            string s = string.Format(Strings.AssertSucceeded, control.GetId());
             Write(Tag(AssertTag) + s);
             return s;
         }
 
         public static string MutlipleResultsWarning(List<AutomationElement> list)
         {
-            string s = string.Format("Найдено {0} контролa(-ов)", list.Count);
+            string s = string.Format(Strings.MultipleResultsWarning, list.Count);
             Write(Tag(WarningTag) + s);
             return s;
         }
 
         public static string ControlException(string msg)
         {
-            string s = string.Format("Контрол по условию \"{0}\" не найден", msg);
+            string s = string.Format(Strings.ControlException, msg);
             Write(Tag(ExceptionTag) + s);
             return s;
         }
 
         public static string WindowException(string msg)
         {
-            string s = string.Format("Окно \"{0}\" не найдено", msg);
+            string s = string.Format(Strings.WindowException, msg);
             Write(Tag(ExceptionTag) + s);
             return s;
         }
 
         public static string AssertException(string msg)
         {
-            string s = string.Format("Не выполнено условие для контрола \"{0}\"", msg);
+            string s = string.Format(Strings.AssertException, msg);
             Write(Tag(ExceptionTag) + s);
             return s;
         }
