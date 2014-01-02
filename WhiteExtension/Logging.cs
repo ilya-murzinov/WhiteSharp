@@ -23,16 +23,7 @@ namespace WhiteExtension
             return string.Format("[{0} - {1}] ", DateTime.Now.TimeOfDay.ToString(@"hh\:mm\:ss"), tag);
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public static string GetCurrentMethod()
-        {
-            StackTrace st = new StackTrace();
-            StackFrame sf = st.GetFrame(2);
-
-            return sf.GetMethod().Name;
-        }
-
-        private static void Write(string msg)
+        public static void Write(string msg)
         {
             switch (Config.Output)
             {
@@ -53,18 +44,9 @@ namespace WhiteExtension
             }
         }
 
-        public static void Start(params string[] arguments)
+        public static void Start(string msg)
         {
-            string result = "";
-            for (int i = 0; i < arguments.Length; i++)
-            {
-                result += arguments[i];
-                if (i<arguments.Length-1)
-                {
-                    result += ", ";
-                }
-            }
-            Write(StartOpenTag + string.Format(Strings.TestStarted, GetCurrentMethod(), result) + StartCloseTag);
+            Write(StartOpenTag + msg + StartCloseTag);
         }
 
         public static void Decsription(string description)

@@ -2,6 +2,14 @@
 
 namespace WhiteExtension
 {
+    internal class GeneralException : WhiteException
+    {
+        public GeneralException(string message)
+            : base(message)
+        {
+        }
+    }
+
     internal class WindowNotFoundException : WhiteException
     {
         public WindowNotFoundException(string message)

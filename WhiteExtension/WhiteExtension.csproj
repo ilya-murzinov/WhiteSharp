@@ -43,12 +43,9 @@
       <HintPath>..\..\Libs\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="NSubstitute">
-      <HintPath>..\..\Libs\NSubstitute.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\nunit.framework.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files\NUnit 2.6.3\bin\framework\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Windows.Forms" />
@@ -74,6 +71,7 @@
     <Compile Include="Finder.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="Strings.cs" />
+    <Compile Include="UnitTests\TestBaseMSTest.cs" />
     <Compile Include="UIControl.cs" />
     <Compile Include="UIWindow.cs" />
     <Compile Include="Asserts.cs" />
@@ -81,9 +79,11 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AssemblyInfo2.cs</LastGenOutput>
     </Compile>
-    <Compile Include="UnitTests\UnitTests.cs">
+    <Compile Include="UnitTests\TestBaseNUnit.cs" />
+    <Compile Include="UnitTests\UnitTestsMSTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UnitTests\UnitTestsNUnit.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
