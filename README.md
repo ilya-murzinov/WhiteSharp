@@ -1,5 +1,5 @@
-WhiteExtension
-==============
+WhiteSharp
+==========
 
 This is an extension for [TestStack.White UI automation framework] (https://github.com/TestStack/White) designed to simplify test writing and make tests more readable. It's .NET based, written in C# and ment to be used with C#.
 
@@ -21,9 +21,9 @@ Qiuck start
 -----------
 
 1. Download [UI Automation Verify](http://uiautomationverify.codeplex.com/) to watch control's properties (or you can use any other similar application for this if you want);
-2. Clone repository and build project into WhiteExtension.dll; 
+2. Clone repository and build project into WhiteSharp.dll; 
 3. Create new test project;
-4. Add references to WhiteExtension and TestStack.White (see Libs);
+4. Add references to WhiteSharp and TestStack.White (see Libs);
 5. Find desired window by title: <code>var window = new UIWindow("window_title");</code>
 6. Find control for example by it's automationId and name: <code>var control = window.FindControl(By.AutomationId("automation_id").Name("name"));</code>
 7. Do something with control you found (click, send keys etc.): <code>control.Click().Send("something").Send("{Enter}");</code>
