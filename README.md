@@ -1,7 +1,7 @@
 WhiteExtension
 ==============
 
-This is an extension for [TestStack.White UI automation library] (https://github.com/TestStack/White) designed to simplify test writing and make tests more readable.
+This is an extension for [TestStack.White UI automation framework] (https://github.com/TestStack/White) designed to simplify test writing and make tests more readable. It's .NET based, written in C# and ment to be used with C#.
 
 **This is not a framework**, you can use it this any framework you like, such as [**NUnit**](https://github.com/nunit/nunit-framework) or **MSTest**.
 
