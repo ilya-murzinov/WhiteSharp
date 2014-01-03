@@ -1,7 +1,7 @@
 WhiteSharp
 ==========
 
-This is an extension for [TestStack.White UI automation framework] (https://github.com/TestStack/White) designed to simplify test writing and make tests more readable. It's .NET based, written in C# and ment to be used with C#.
+This is a library based on [TestStack.White UI automation framework] (https://github.com/TestStack/White) and Microsoft UI Automation library. It's designed to simplify test writing and make tests more readable. WhiteSharp is .NET based, written in C# and ment to be used with C#.
 
 **This is not a framework**, you can use it this any framework you like, such as [**NUnit**](https://github.com/nunit/nunit-framework) or **MSTest**.
 
@@ -29,9 +29,9 @@ Qiuck start
 7. Do something with control you found (click, send keys etc.): <code>control.Click().Send("something").Send("{Enter}");</code>
 8. Well done, now you are ready to write your first automated test!
 
-For futher study read the documentation.
+For futher information read the documentation.
 
 Docs
 ----
 
-View docs [here](http://murz42.viewdocs.io/WhiteExtension)
+View docs [here](http://murz42.viewdocs.io/WhiteSharp)
