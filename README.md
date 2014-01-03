@@ -26,7 +26,7 @@ Qiuck start
 4. Add references to WhiteExtension and TestStack.White (see Libs);
 5. Find desired window by title: <code>var window = new UIWindow("window_title");</code>
 6. Find control for example by it's automationId and name: <code>var control = window.FindControl(By.AutomationId("automation_id").Name("name"));</code>
-7. Do something with found control (click, send keys etc.): <code>control.Click().Send("something").Send("{Enter}");</code>
+7. Do something with control you found (click, send keys etc.): <code>control.Click().Send("something").Send("{Enter}");</code>
 8. Well done, now you are ready to write your first automated test!
 
 For futher study read the documentation.
