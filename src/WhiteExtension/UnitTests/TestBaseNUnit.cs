@@ -7,7 +7,7 @@ using NUnit.Framework;
 using TestStack.White;
 using TestStack.White.UIItems.WindowItems;
 
-namespace WhiteExtension.UnitTests
+namespace WhiteSharp.UnitTests
 {
     [TestFixture]
     public class TestBaseNUnit

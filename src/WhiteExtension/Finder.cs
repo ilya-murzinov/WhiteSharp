@@ -5,7 +5,7 @@ using System.Threading;
 using System.Windows.Automation;
 using TestStack.White.UIItems.WindowItems;
 
-namespace WhiteExtension
+namespace WhiteSharp
 {
     public class Finder
     {

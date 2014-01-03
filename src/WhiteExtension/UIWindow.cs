@@ -11,7 +11,7 @@ using TestStack.White.UIItems.Finders;
 using TestStack.White.Factory;
 using TestStack.White.UIItems.MenuItems;
 
-namespace WhiteExtension
+namespace WhiteSharp
 {
     public class UIWindow : Window
     {

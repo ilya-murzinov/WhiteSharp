@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
-using WhiteExtension;
-using WhiteExtension.UnitTests;
+using WhiteSharp;
+using WhiteSharp.UnitTests;
 
 namespace SampleTests
 {

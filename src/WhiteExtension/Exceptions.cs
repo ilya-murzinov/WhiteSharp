@@ -1,6 +1,6 @@
 ﻿using TestStack.White;
 
-namespace WhiteExtension
+namespace WhiteSharp
 {
     internal class GeneralException : WhiteException
     {

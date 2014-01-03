@@ -1,4 +1,4 @@
-﻿namespace WhiteExtension
+﻿namespace WhiteSharp
 {
     public class Config
     {

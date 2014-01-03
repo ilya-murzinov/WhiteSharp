@@ -6,7 +6,7 @@ using TestStack.White;
 using TestStack.White.UIItems.WindowItems;
 using System.Linq;
 
-namespace WhiteExtension.UnitTests
+namespace WhiteSharp.UnitTests
 {
     [TestClass]
     public class TestBaseMSTest

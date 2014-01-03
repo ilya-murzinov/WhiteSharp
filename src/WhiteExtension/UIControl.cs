@@ -8,7 +8,7 @@ using TestStack.White.UIItems;
 using TestStack.White.UIItems.Actions;
 using TestStack.White.WindowsAPI;
 
-namespace WhiteExtension
+namespace WhiteSharp
 {
     public class UIControl : UIItem
     {

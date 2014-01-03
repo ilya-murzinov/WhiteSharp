@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestStack.White;
 using TestStack.White.UIItems.WindowItems;
 
-namespace WhiteExtension.UnitTests
+namespace WhiteSharp.UnitTests
 {
     /// <summary>
     /// Summary description for Tests
