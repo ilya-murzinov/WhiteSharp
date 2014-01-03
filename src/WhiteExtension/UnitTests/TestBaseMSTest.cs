@@ -40,10 +40,5 @@ namespace WhiteExtension.UnitTests
         }
 
         public static Window Window;
-
-        [TestMethod]
-        public void GetWindowNegativeTest()
-        {
-        }
     }
 }

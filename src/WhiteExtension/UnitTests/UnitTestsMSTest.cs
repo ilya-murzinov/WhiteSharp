@@ -22,13 +22,11 @@ namespace WhiteExtension.UnitTests
         
         public void GetWindowNegativeTest(string title)
         {
-            Logging.Start(title);
             new UIWindow(title);
         }
 
         public void GetWindowPositiveTest(string title)
         {
-            Logging.Start(title);
             new UIWindow(title);
         }
         
