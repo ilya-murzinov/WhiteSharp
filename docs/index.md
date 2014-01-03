@@ -1,4 +1,4 @@
-WhiteExtension
-==============
+WhiteSharp
+==========
 
-Welcome to WhiteExtension UI test automation library documentation.
+Welcome to WhiteSharp UI test automation library documentation.
