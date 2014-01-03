@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleTests", "SampleTests\SampleTests.csproj", "{0833CE41-DF1A-40E1-888D-7D5DB8A05F39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhiteSharp", "WhiteExtension\WhiteSharp.csproj", "{03C73AB5-FE37-4E3E-BDC3-3A5513F432FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhiteSharp", "WhiteSharp\WhiteSharp.csproj", "{03C73AB5-FE37-4E3E-BDC3-3A5513F432FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

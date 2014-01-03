@@ -7,9 +7,6 @@ using TestStack.White.UIItems.WindowItems;
 
 namespace WhiteSharp.UnitTests
 {
-    /// <summary>
-    /// Summary description for Tests
-    /// </summary>
     [TestClass]
     public class UnitTestsMSTest : TestBaseMSTest
     {

@@ -9,11 +9,10 @@ namespace WhiteSharp
 {
     public class Logging
     {
-        private const string StartOpenTag = "\r\n\r\n------------------------------------------------------------------------------------------\r\n";
-        private const string StartCloseTag = "\r\n------------------------------------------------------------------------------------------";
+        private const string StartOpenTag = "\r\n\r\n------------------------------------------------------------------------------------------";
+        private const string StartCloseTag = "------------------------------------------------------------------------------------------";
         private const string FoungTag = "Found";
-        private const string ClickTag = "Click";
-        private const string SentTag = "Sent";
+        private const string ActionTag = "Action";
         private const string AssertTag = "Assert";
         private const string WarningTag = "Warning";
         private const string ExceptionTag = "Exception";
@@ -46,7 +45,9 @@ namespace WhiteSharp
 
         public static void Start(string msg)
         {
-            Write(StartOpenTag + msg + StartCloseTag);
+            Write(StartOpenTag);
+            Write(msg);
+            Write(StartCloseTag);
         }
 
         public static void Decsription(string description)
@@ -54,9 +55,9 @@ namespace WhiteSharp
             Write("\r\n" + description.ToUpper() + "\r\n");
         }
 
-        public static string ControlFound(string msg, TimeSpan duration)
+        public static string ControlFound(string id, TimeSpan duration)
         {
-            string s = string.Format(Strings.ControlFound, msg, duration.TotalSeconds);
+            string s = string.Format(Strings.ControlFound, id, duration.TotalSeconds);
             Write(Tag(FoungTag) + s);
             return s;
         }
@@ -71,14 +72,14 @@ namespace WhiteSharp
         public static string Click(UIControl control)
         {
             string s = string.Format(Strings.Click, control.GetId());
-            Write(Tag(ClickTag) + s);
+            Write(Tag(ActionTag) + s);
             return s;
         }
 
         public static string Sent(string msg)
         {
             string s = string.Format(Strings.Sent, msg);
-            Write(Tag(SentTag) + s);
+            Write(Tag(ActionTag) + s);
             return s;
         }
 
@@ -96,23 +97,23 @@ namespace WhiteSharp
             return s;
         }
 
-        public static string ControlException(string msg)
+        public static string ControlException(string id)
         {
-            string s = string.Format(Strings.ControlException, msg);
+            string s = string.Format(Strings.ControlException, id);
             Write(Tag(ExceptionTag) + s);
             return s;
         }
 
-        public static string WindowException(string msg)
+        public static string WindowException(string id)
         {
-            string s = string.Format(Strings.WindowException, msg);
+            string s = string.Format(Strings.WindowException, id);
             Write(Tag(ExceptionTag) + s);
             return s;
         }
 
-        public static string AssertException(string msg)
+        public static string AssertException(string id)
         {
-            string s = string.Format(Strings.AssertException, msg);
+            string s = string.Format(Strings.AssertException, id);
             Write(Tag(ExceptionTag) + s);
             return s;
         }

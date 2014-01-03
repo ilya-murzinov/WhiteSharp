@@ -37,8 +37,6 @@ namespace WhiteSharp
                 new TestStack.White.Sessions.WindowSession(new TestStack.White.Sessions.ApplicationSession(), 
                     TestStack.White.Factory.InitializeOption.NoCache))
         {
-            this.DisplayState = DisplayState.Restored;
-            this.Focus();
         }
 
         public static Window FindWindow(string title)
@@ -61,7 +59,8 @@ namespace WhiteSharp
                 throw new WindowNotFoundException(Logging.WindowException(title));
             Logging.WindowFound(returnWindow, DateTime.Now - start);
             By.Window = returnWindow;
-            returnWindow.DisplayState = DisplayState.Maximized;
+            if (returnWindow.DisplayState == DisplayState.Minimized)
+                returnWindow.DisplayState = DisplayState.Restored;
             returnWindow.Focus();
             return returnWindow;
         }

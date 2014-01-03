@@ -51,6 +51,5 @@ namespace WhiteSharp
                 Contains = "содержит";
             }
         }
-
     }
 }

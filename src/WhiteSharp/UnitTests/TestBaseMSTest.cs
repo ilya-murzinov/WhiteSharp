@@ -24,8 +24,6 @@ namespace WhiteSharp.UnitTests
             Thread.Sleep(3000);
             Window = Desktop.Instance.Windows().Find(x => x.Title.Contains("Calculator"));
             Config.Timeout = 100;
-            Window.DisplayState = DisplayState.Restored;
-            Window.Focus();
         }
 
         [AssemblyCleanup]

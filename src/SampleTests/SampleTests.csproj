@@ -74,7 +74,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WhiteExtension\WhiteSharp.csproj">
+    <ProjectReference Include="..\WhiteSharp\WhiteSharp.csproj">
       <Project>{03c73ab5-fe37-4e3e-bdc3-3a5513f432fc}</Project>
       <Name>WhiteSharp</Name>
     </ProjectReference>
