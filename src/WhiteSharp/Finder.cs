@@ -71,6 +71,18 @@ namespace WhiteSharp
             return this;
         }
 
+        public Finder Text(String text)
+        {
+            Result = Find(x => x.Current.HelpText.Equals(text), string.Format("Text = {0}", text));
+            return this;
+        }
+
+        public Finder TextContains(String text)
+        {
+            Result = Find(x => x.Current.HelpText.Contains(text), string.Format("Text {0} {1}",  Strings.Contains, text));
+            return this;
+        }
+
         public Finder GridCell(int i, int j)
         {
             return AutomationId("CellElement_" + i + "_" + j);
@@ -126,6 +138,16 @@ namespace WhiteSharp
         public static Finder ControlType(ControlType type)
         {
             return new Finder().ControlType(type);
+        }
+
+        public Finder Text(String text)
+        {
+            return new Finder().Text(text);
+        }
+
+        public Finder TextContains(String text)
+        {
+            return new Finder().TextContains(text);
         }
 
         public static Finder GridCell(int i, int j)

@@ -35,7 +35,7 @@ namespace WhiteSharp
             return new UIControl(f.Result.First(), ActionListener);
         }
 
-        public new UIControl Click()
+        public UIControl ClickAnyway()
         {
             WaitForControlEnabled();
             if (AutomationElement.Current.ControlType.Equals(ControlType.Edit))
@@ -50,6 +50,12 @@ namespace WhiteSharp
                 Mouse.Instance.Click(ClickablePoint);
             Logging.Click(this);
             return this;
+        }
+
+        public new UIControl Click()
+        {
+            WaitForControlEnabled();
+            return this.ClickAnyway();
         }
 
         public UIControl Send(string value)
@@ -86,6 +92,12 @@ namespace WhiteSharp
             return this;
         }
 
+        public UIControl Send(int value)
+        {
+            SendKeys.SendWait(value.ToString());
+            return this;
+        }
+
         public void WaitForControlEnabled()
         {
             DateTime start = DateTime.Now;
@@ -95,7 +107,7 @@ namespace WhiteSharp
             } while (!AutomationElement.Current.IsEnabled && ((DateTime.Now - start).TotalMilliseconds < Config.Timeout));
 
             if (!AutomationElement.Current.IsEnabled)
-                throw new Exceptions(Logging.ControlException(GetId()));
+                throw new ControlNotEnabledException(Logging.ControlException(GetId()));
         }
 
         //public void SelectItem(string name)

@@ -26,9 +26,10 @@ namespace WhiteSharp
         }
     }
 
-    internal class Exceptions : WhiteException
+    internal class ControlNotEnabledException : WhiteException
     {
-        public Exceptions(string message) : base(message)
+        public ControlNotEnabledException(string message)
+            : base(message)
         {
         }
     }
