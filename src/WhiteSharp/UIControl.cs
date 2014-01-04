@@ -18,13 +18,24 @@ namespace WhiteSharp
 
         public string GetId()
         {
-            return new[]
+            string[] identifiers = new string[]
+            {
+                "AutomationId",
+                "Name",
+                "Control Type",
+                "Class Name"
+            };
+
+            var PropertyList = new string[]
             {
                 AutomationElement.Current.AutomationId,
                 AutomationElement.Current.Name,
                 AutomationElement.Current.ControlType.ToString(),
                 AutomationElement.Current.ClassName
-            }.First(x => !String.IsNullOrEmpty(x));
+            };
+
+            return identifiers[Array.FindIndex<string>(PropertyList, 0, x => !String.IsNullOrEmpty(x))] + " = " + 
+            PropertyList.First(x => !String.IsNullOrEmpty(x));
         }
 
         public UIControl FindChild(Finder f)
@@ -35,6 +46,10 @@ namespace WhiteSharp
             return new UIControl(f.Result.First(), ActionListener);
         }
 
+        /// <summary>
+        /// Clicks without waiting for control to get enabled
+        /// </summary>
+        /// <returns></returns>
         public UIControl ClickAnyway()
         {
             WaitForControlEnabled();
@@ -52,6 +67,10 @@ namespace WhiteSharp
             return this;
         }
 
+        /// <summary>
+        /// Waits for control to get enabled enabled, then clicks
+        /// </summary>
+        /// <returns></returns>
         public new UIControl Click()
         {
             WaitForControlEnabled();
@@ -110,25 +129,25 @@ namespace WhiteSharp
                 throw new ControlNotEnabledException(Logging.ControlException(GetId()));
         }
 
-        //public void SelectItem(string name)
-        //{
-        //    if (UIItem.AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
-        //    {
-        //        throw new WhiteException(string.Format("Элемент {0} не является комбобоксом"));
-        //    }
-        //    if (true)
-        //    {
-        //        WaitForControlEnabled();
-        //        UIItem.SetValue(name);
-        //    }
-        //    else
-        //    {
-        //        Click();
-        //        SendKeys.SendWait(name);
-        //        SendKeys.SendWait("{Down}");
-        //        Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
-        //        Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.TAB);
-        //    }
-        //}
+        public void SelectItem(string name)
+        {
+            if (AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
+            {
+                throw new GeneralException(string.Format(Strings.NotACombobox, this.GetId()));
+            }
+            if (true)
+            {
+                WaitForControlEnabled();
+                SetValue(name);
+            }
+            //else
+            //{
+            //    Click();
+            //    SendKeys.SendWait(name);
+            //    SendKeys.SendWait("{Down}");
+            //    Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
+            //    Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.TAB);
+            //}
+        }
     }
 }

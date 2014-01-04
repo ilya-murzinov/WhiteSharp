@@ -46,7 +46,7 @@ namespace WhiteSharp
         public static void Start(string msg)
         {
             Write(StartOpenTag);
-            Write(msg);
+            Write(String.Format(Strings.TestStarted, msg));
             Write(StartCloseTag);
         }
 
@@ -111,11 +111,10 @@ namespace WhiteSharp
             return s;
         }
 
-        public static string AssertException(string id)
+        public static string AssertException(string msg)
         {
-            string s = string.Format(Strings.AssertException, id);
-            Write(Tag(ExceptionTag) + s);
-            return s;
+            Write(Tag(ExceptionTag) + msg);
+            return msg;
         }
 
         public static string Exception(Exception e)

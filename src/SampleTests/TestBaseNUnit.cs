@@ -45,16 +45,17 @@ namespace SampleTests
         [TearDown]
         public void Stop()
         {
-            //Clear screen
-            MainWindow.FindControl(By.AutomationId("81")).Click();
-            Assert.True(Display.Name.Equals("0"));
-
             //Take screenshot if test failed
             if (TestContext.CurrentContext.Result.Status == TestStatus.Failed)
             {
                 string name = TestContext.CurrentContext.Test.Name.ToString();
                 new TestStack.White.ScreenCapture().CaptureScreenShot().Save("Results\\" + name.Substring(0, name.IndexOf("(")) + ".bmp");
             }
+
+            //Clear screen
+            MainWindow.FindControl(By.AutomationId("81")).Click();
+            Assert.True(Display.Name.Equals("0"));
+
             Logging.Write(TestContext.CurrentContext.Result.Status.ToString().ToUpper() + "!");
         }
     }

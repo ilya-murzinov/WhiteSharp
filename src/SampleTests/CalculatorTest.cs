@@ -21,7 +21,7 @@ namespace SampleTests
         public void NumberButtonsTest(string buttonId, string result)
         {
             UIControl button = MainWindow.FindControl(By.AutomationId(buttonId)).Click();
-            Assert.True(Display.Name.Equals(result));
+            AssertThat.AreEqual(Display, Display.Name, result);
         }
         
         [TestCase("1")]
@@ -45,7 +45,7 @@ namespace SampleTests
             plus.Click();
             Display.Click().Send(j.ToString());
             equals.Click();
-            Assert.AreEqual(Display.Name, (i + j).ToString());
+            AssertThat.AreEqual(Display, Display.Name, (i + j).ToString());
         }
 
         [TestCase("1")]
@@ -69,7 +69,7 @@ namespace SampleTests
             mult.Click();
             Display.Click().Send(j.ToString());
             equals.Click();
-            Assert.AreEqual(Display.Name, (i * j).ToString());
+            AssertThat.AreEqual(Display, Display.Name, (i * j).ToString());
         }
     }
 }
