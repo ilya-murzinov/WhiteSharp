@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using NUnit.Framework;
 using System.Windows.Automation;
 using TestStack.White;
 
@@ -16,8 +15,7 @@ namespace WhiteSharp
             if (!expected.Equals(actual))
             {
                 msg = string.Format(Strings.AssertFailed, control.GetId(), expected, actual);
-                Logging.AssertException(msg);
-                throw new AssertException(msg);
+                throw new AssertException(Logging.AssertException(msg));
             }
         }
 
@@ -27,8 +25,7 @@ namespace WhiteSharp
             if (!value.Contains(actual))
             {
                 msg = string.Format(Strings.AssertFailed, control.GetId(), value, actual);
-                Logging.AssertException(msg);
-                throw new AssertException(msg);
+                throw new AssertException(Logging.AssertException(msg));
             }
         }
 

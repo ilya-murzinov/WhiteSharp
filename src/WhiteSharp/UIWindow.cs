@@ -10,27 +10,31 @@ using TestStack.White.WindowsAPI;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.Factory;
 using TestStack.White.UIItems.MenuItems;
+using System.Diagnostics;
 
 namespace WhiteSharp
 {
     public class UIWindow : Window
     {
-        #region NotImplemented
-        public override Window ModalWindow(SearchCriteria searchCriteria, InitializeOption option)
-        {
-            throw new NotImplementedException();
-        }
-        public override Window ModalWindow(string title, InitializeOption option)
-        {
-            throw new NotImplementedException();
-        }
+        #region WindowMembers
+        private readonly WindowFactory windowFactory;
         public override PopUpMenu Popup
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        } 
+            get { return factory.WPFPopupMenu(this) ?? windowFactory.PopUp(this); }
+        }
+
+        public override Window ModalWindow(string title, InitializeOption option)
+        {
+            WindowFactory desktopWindowsFactory = WindowFactory.Desktop;
+            return desktopWindowsFactory.FindModalWindow(title, Process.GetProcessById(automationElement.Current.ProcessId), option, automationElement,
+                                                         WindowSession.ModalWindowSession(option));
+        }
+
+        public override Window ModalWindow(SearchCriteria searchCriteria, InitializeOption option)
+        {
+            WindowFactory desktopWindowsFactory = WindowFactory.Desktop;
+            return desktopWindowsFactory.FindModalWindow(searchCriteria, option, automationElement, WindowSession.ModalWindowSession(option));
+        }
         #endregion
         
         public UIWindow(string title) : base(FindWindow(title).AutomationElement, TestStack.White.Factory.InitializeOption.NoCache, 
@@ -39,7 +43,7 @@ namespace WhiteSharp
         {
         }
 
-        public static Window FindWindow(string title)
+        private static Window FindWindow(string title)
         {
             Window returnWindow = null;
             DateTime start = DateTime.Now;

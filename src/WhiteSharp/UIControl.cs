@@ -7,16 +7,17 @@ using TestStack.White.InputDevices;
 using TestStack.White.UIItems;
 using TestStack.White.UIItems.Actions;
 using TestStack.White.WindowsAPI;
+using TestStack.White.UIItems.ListBoxItems;
 
 namespace WhiteSharp
 {
     public class UIControl : UIItem
     {
-        public UIControl(AutomationElement element, ActionListener listener) : base(element, listener)
+        internal UIControl(AutomationElement element, ActionListener listener) : base(element, listener)
         {
         }
 
-        public string GetId()
+        internal string GetId()
         {
             string[] identifiers = new string[]
             {
@@ -52,7 +53,6 @@ namespace WhiteSharp
         /// <returns></returns>
         public UIControl ClickAnyway()
         {
-            WaitForControlEnabled();
             if (AutomationElement.Current.ControlType.Equals(ControlType.Edit))
             {
                 do
@@ -131,23 +131,24 @@ namespace WhiteSharp
 
         public void SelectItem(string name)
         {
+            WaitForControlEnabled();
             if (AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
             {
                 throw new GeneralException(string.Format(Strings.NotACombobox, this.GetId()));
             }
-            if (true)
+            TestStack.White.UIItems.ListBoxItems.ComboBox combobox = new TestStack.White.UIItems.ListBoxItems.ComboBox(AutomationElement, actionListener);
+            combobox.Select(name);
+        }
+
+        public void SelectItem(int index)
+        {
+            WaitForControlEnabled();
+            if (!AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
             {
-                WaitForControlEnabled();
-                SetValue(name);
+                throw new GeneralException(string.Format(Strings.NotACombobox, this.GetId()));
             }
-            //else
-            //{
-            //    Click();
-            //    SendKeys.SendWait(name);
-            //    SendKeys.SendWait("{Down}");
-            //    Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
-            //    Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.TAB);
-            //}
+            TestStack.White.UIItems.ListBoxItems.ComboBox combobox = new TestStack.White.UIItems.ListBoxItems.ComboBox(AutomationElement, actionListener);
+            combobox.Select(index);
         }
     }
 }

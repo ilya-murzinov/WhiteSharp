@@ -69,7 +69,7 @@ namespace SampleTests
             mult.Click();
             Display.Click().Send(j.ToString());
             equals.Click();
-            AssertThat.AreEqual(Display, Display.Name, (i * j).ToString());
+            AssertThat.AreEqual(Display, Display.Name, (i + j).ToString());
         }
     }
 }
