@@ -8,18 +8,18 @@ namespace WhiteSharp
 {
     internal class Strings
     {
-        public static string TestStarted;
-        public static string ControlFound;
-        public static string ControlException;
-        public static string WindowFound;
-        public static string WindowException;
-        public static string Click;
-        public static string Sent;
-        public static string AssertSucceeded;
-        public static string MultipleResultsWarning;
-        public static string Contains;
-        public static string AssertFailed;
-        public static string NotACombobox; 
+        internal static string TestStarted;
+        internal static string ControlFound;
+        internal static string ControlException;
+        internal static string WindowFound;
+        internal static string WindowException;
+        internal static string Click;
+        internal static string Sent;
+        internal static string AssertSucceeded;
+        internal static string MultipleResultsWarning;
+        internal static string Contains;
+        internal static string AssertFailed;
+        internal static string NotACombobox; 
 
         static Strings()
         {
