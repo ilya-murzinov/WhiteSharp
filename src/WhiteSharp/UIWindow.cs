@@ -17,7 +17,7 @@ namespace WhiteSharp
     public class UIWindow : Window
     {
         #region WindowMembers
-        private readonly WindowFactory windowFactory;
+        private readonly WindowFactory windowFactory = null;
         public override PopUpMenu Popup
         {
             get { return factory.WPFPopupMenu(this) ?? windowFactory.PopUp(this); }
@@ -37,35 +37,48 @@ namespace WhiteSharp
         }
         #endregion
         
-        public UIWindow(string title) : base(FindWindow(title).AutomationElement, TestStack.White.Factory.InitializeOption.NoCache, 
+        public UIWindow(params string[] titles) : base(FindWindow(titles).AutomationElement, TestStack.White.Factory.InitializeOption.NoCache, 
                 new TestStack.White.Sessions.WindowSession(new TestStack.White.Sessions.ApplicationSession(), 
                     TestStack.White.Factory.InitializeOption.NoCache))
         {
         }
 
-        private static Window FindWindow(string title)
+        private static Window FindWindow(params string[] titles)
         {
+            List<Window> windows = null;
             Window returnWindow = null;
+
             DateTime start = DateTime.Now;
             do
             {
                 try
                 {
-                    returnWindow = Desktop.Instance.Windows().Find(window => window.Title.Contains(title));
+                    windows = Desktop.Instance.Windows().FindAll(window => window.Title.Contains(titles[0]));
+                    foreach (var title in titles.Skip(1))
+                    {
+                        windows = windows.Where(window => window.Title.Contains(title)).ToList();
+                    }
                 }
                 catch (ElementNotAvailableException e)
                 {
                     Logging.Exception(e);
                 }
                 Thread.Sleep(Config.Delay);
-            } while (returnWindow == null && ((DateTime.Now - start).TotalMilliseconds < Config.Timeout));
-            if (returnWindow == null)
-                throw new WindowNotFoundException(Logging.WindowException(title));
+            } while (!windows.Any() && ((DateTime.Now - start).TotalMilliseconds < Config.Timeout));
+            if (!windows.Any())
+                throw new WindowNotFoundException(Logging.WindowException(titles.ToList().Aggregate((x,y)=>x+", "+y)));
+
+            if (windows.Count > 1)
+                Logging.MutlipleWindowsWarning(windows);
+
+            returnWindow = windows.First();
             Logging.WindowFound(returnWindow, DateTime.Now - start);
+
             By.Window = returnWindow;
             if (returnWindow.DisplayState == DisplayState.Minimized)
                 returnWindow.DisplayState = DisplayState.Restored;
             returnWindow.Focus();
+
             return returnWindow;
         }
 

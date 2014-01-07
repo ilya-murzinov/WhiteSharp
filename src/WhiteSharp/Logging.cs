@@ -90,9 +90,16 @@ namespace WhiteSharp
             return s;
         }
 
-        public static string MutlipleResultsWarning(List<AutomationElement> list)
+        public static string MutlipleControlsWarning(List<AutomationElement> list)
         {
-            string s = string.Format(Strings.MultipleResultsWarning, list.Count);
+            string s = string.Format(Strings.MultipleControlsWarning, list.Count);
+            Write(Tag(WarningTag) + s);
+            return s;
+        }
+
+        public static string MutlipleWindowsWarning(List<Window> list)
+        {
+            string s = string.Format(Strings.MultipleWindowsWarning, list.Count);
             Write(Tag(WarningTag) + s);
             return s;
         }

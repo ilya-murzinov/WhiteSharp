@@ -31,7 +31,7 @@ namespace WhiteSharp
                 throw new ControlNotFoundException(Logging.ControlException(identifier));
             Logging.ControlFound(identifier, DateTime.Now - start);
             if (list.Count() != 1)
-                Logging.MutlipleResultsWarning(list);
+                Logging.MutlipleControlsWarning(list);
             return list;
         }
 

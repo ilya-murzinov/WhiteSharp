@@ -16,7 +16,8 @@ namespace WhiteSharp
         internal static string Click;
         internal static string Sent;
         internal static string AssertSucceeded;
-        internal static string MultipleResultsWarning;
+        internal static string MultipleControlsWarning;
+        internal static string MultipleWindowsWarning;
         internal static string Contains;
         internal static string AssertFailed;
         internal static string NotACombobox; 
@@ -34,7 +35,8 @@ namespace WhiteSharp
                 Sent = "Sent \"{0}\"";
                 AssertSucceeded = "Control \"{0}\" passed assertion";
                 AssertFailed = "Assertion failed. Control: \"{0}\".\r\n                       Expected: \"{1}\", but was \"{2}\"";
-                MultipleResultsWarning = "{0} controls was found";
+                MultipleControlsWarning = "{0} controls was found";
+                MultipleWindowsWarning = "{0} windows was found";
                 Contains = "contains";
                 NotACombobox = "Control \"{0}\" is not a combobox";
             }
@@ -49,7 +51,8 @@ namespace WhiteSharp
                 Sent = "Нажато \"{0}\"";
                 AssertSucceeded = "Контрол \"{0}\" успешно прошел проверку";
                 AssertFailed = "Проверка провалилась. Контрол: \"{0}\".\r\n                       Ожидалось: \"{1}\", но было \"{2}\"";
-                MultipleResultsWarning = "Найдено {0} контролa(-ов)";
+                MultipleControlsWarning = "Найдено {0} контролa(-ов)";
+                MultipleWindowsWarning = "Найдено {0} окон(-на)";
                 Contains = "содержит";
                 NotACombobox = "Контрол \"{0}\" не является комбобоксом";
             }
