@@ -14,7 +14,7 @@ namespace WhiteSharp
         public Finder()
         {
             Result = By.Window.AutomationElement
-                .FindAll(TreeScope.Descendants, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
+                .FindAll(TreeScope.Subtree, Condition.TrueCondition)
                 .OfType<AutomationElement>().ToList();
         }
 
