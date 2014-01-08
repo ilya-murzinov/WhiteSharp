@@ -63,8 +63,8 @@ namespace WhiteSharp
                 {
                     Logging.Exception(e);
                 }
-                Thread.Sleep(Config.Delay);
-            } while (!windows.Any() && ((DateTime.Now - start).TotalMilliseconds < Config.Timeout));
+                Thread.Sleep(Settings.Default.Delay);
+            } while (!windows.Any() && ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout));
             if (!windows.Any())
                 throw new WindowNotFoundException(Logging.WindowException(titles.ToList().Aggregate((x,y)=>x+", "+y)));
 

@@ -9,6 +9,14 @@ namespace WhiteSharp
 {
     public class Logging
     {
+        public enum OutputLevel
+        {
+            Trace = 1,
+            Standart = 2,
+            File = 3
+        }
+        public static int Output = (int)OutputLevel.Standart;
+
         private const string StartOpenTag = "\r\n\r\n------------------------------------------------------------------------------------------";
         private const string StartCloseTag = "------------------------------------------------------------------------------------------";
         private const string FoungTag = "Found";
@@ -24,19 +32,19 @@ namespace WhiteSharp
 
         public static void Write(string msg)
         {
-            switch (Config.Output)
+            switch (Output)
             {
-                case (int)Config.OutputLevel.Trace:
+                case (int)OutputLevel.Trace:
                 {
                     Trace.WriteLine(msg);
                     break;
                 }
-                case (int)Config.OutputLevel.Standart:
+                case (int)OutputLevel.Standart:
                 {
                     Console.WriteLine(msg);
                     break;
                 }
-                case (int)Config.OutputLevel.File:
+                case (int)OutputLevel.File:
                 {
                     break;
                 }

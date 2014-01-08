@@ -14,7 +14,7 @@ namespace WhiteSharp
         public Finder()
         {
             Result = By.Window.AutomationElement
-                .FindAll(TreeScope.Descendants, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
+                .FindAll(TreeScope.Subtree, Condition.TrueCondition)
                 .OfType<AutomationElement>().ToList();
         }
 
@@ -24,9 +24,9 @@ namespace WhiteSharp
             List<AutomationElement> list;
             do
             {
-                Thread.Sleep(Config.Delay);
+                Thread.Sleep(Settings.Default.Delay);
                 list = Result.Where(p).ToList();
-            } while (!list.Any() && ((DateTime.Now - start).TotalMilliseconds < Config.Timeout));
+            } while (!list.Any() && ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout));
             if (!list.Any())
                 throw new ControlNotFoundException(Logging.ControlException(identifier));
             Logging.ControlFound(identifier, DateTime.Now - start);
