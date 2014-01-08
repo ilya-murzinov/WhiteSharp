@@ -161,5 +161,11 @@ namespace WhiteSharp
             combobox.Select(index);
             return this;
         }
+
+        public new UIControl DrawHighlight()
+        {
+            base.DrawHighlight();
+            return this;
+        }
     }
 }
