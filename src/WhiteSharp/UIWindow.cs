@@ -87,6 +87,11 @@ namespace WhiteSharp
             return new UIControl(f.Result.First(), this);
         }
 
+        public UIControl FindControl(string automationId)
+        {
+            return new UIControl(By.AutomationId(automationId).Result.First(), this);
+        }
+
         public List<AutomationElement> FindAll(Finder f)
         {
             return f.Result;

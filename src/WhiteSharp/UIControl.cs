@@ -47,6 +47,15 @@ namespace WhiteSharp
             return new UIControl(f.Result.First(), ActionListener);
         }
 
+        public UIControl FindChild(string automationId)
+        {
+            var f = new Finder();
+            f.Result = AutomationElement.FindAll(TreeScope.Descendants,
+                new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
+                .OfType<AutomationElement>().ToList();
+            return new UIControl(f.AutomationId(automationId).Result.First(), ActionListener);
+        }
+
         /// <summary>
         /// Clicks without waiting for control to get enabled
         /// </summary>
