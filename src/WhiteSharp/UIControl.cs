@@ -58,7 +58,7 @@ namespace WhiteSharp
                 do
                 {
                     Mouse.Instance.Click(ClickablePoint);
-                    Thread.Sleep(Config.Delay);
+                    Thread.Sleep(Settings.Default.Delay);
                 } while (!AutomationElement.Current.HasKeyboardFocus);
             }
             else
@@ -122,14 +122,14 @@ namespace WhiteSharp
             DateTime start = DateTime.Now;
             do
             {
-                Thread.Sleep(Config.Delay);
-            } while (!AutomationElement.Current.IsEnabled && ((DateTime.Now - start).TotalMilliseconds < Config.Timeout));
+                Thread.Sleep(Settings.Default.Delay);
+            } while (!AutomationElement.Current.IsEnabled && ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout));
 
             if (!AutomationElement.Current.IsEnabled)
                 throw new ControlNotEnabledException(Logging.ControlException(GetId()));
         }
 
-        public void SelectItem(string name)
+        public UIItem SelectItem(string name)
         {
             WaitForControlEnabled();
             if (AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
@@ -138,9 +138,10 @@ namespace WhiteSharp
             }
             TestStack.White.UIItems.ListBoxItems.ComboBox combobox = new TestStack.White.UIItems.ListBoxItems.ComboBox(AutomationElement, actionListener);
             combobox.Select(name);
+            return this;
         }
 
-        public void SelectItem(int index)
+        public UIItem SelectItem(int index)
         {
             WaitForControlEnabled();
             if (!AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
@@ -149,6 +150,7 @@ namespace WhiteSharp
             }
             TestStack.White.UIItems.ListBoxItems.ComboBox combobox = new TestStack.White.UIItems.ListBoxItems.ComboBox(AutomationElement, actionListener);
             combobox.Select(index);
+            return this;
         }
     }
 }

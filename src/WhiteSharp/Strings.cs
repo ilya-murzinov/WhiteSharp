@@ -24,7 +24,7 @@ namespace WhiteSharp
 
         static Strings()
         {
-            if (Config.Language == (int)Config.Languages.En)
+            if (Settings.Default.Language == "En")
             {
                 TestStarted = "Test started: {0}";
                 ControlFound = "Control by \"{0}\" was found in {1} seconds";
@@ -40,7 +40,7 @@ namespace WhiteSharp
                 Contains = "contains";
                 NotACombobox = "Control \"{0}\" is not a combobox";
             }
-            else if (Config.Language == (int)Config.Languages.Ru)
+            else if (Settings.Default.Language == "Ru")
             {
                 TestStarted = "Запущен тест: {0}";
                 ControlFound = "Контрол по условию \"{0}\" найден за {1} секунд";

@@ -26,7 +26,7 @@ namespace WhiteSharp.UnitTests
             Process.Start(@"C:\Windows\System32\calc.exe");
             Thread.Sleep(3000);
             Window = Desktop.Instance.Windows().Find(x => x.Title.Contains("Calculator"));
-            Config.Timeout = 100;
+            Settings.Default.Timeout = 100;
             Window.DisplayState = DisplayState.Restored;
             Window.Focus();
         }
