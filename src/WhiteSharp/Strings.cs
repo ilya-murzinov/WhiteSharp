@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WhiteSharp
+﻿namespace WhiteSharp
 {
     internal class Strings
     {
@@ -20,7 +14,7 @@ namespace WhiteSharp
         internal static string MultipleWindowsWarning;
         internal static string Contains;
         internal static string AssertFailed;
-        internal static string NotACombobox; 
+        internal static string NotACombobox;
 
         static Strings()
         {
@@ -34,7 +28,8 @@ namespace WhiteSharp
                 Click = "Control \"{0}\" was clicked";
                 Sent = "Sent \"{0}\"";
                 AssertSucceeded = "Control \"{0}\" passed assertion";
-                AssertFailed = "Assertion failed. Control: \"{0}\".\r\n                       Expected: \"{1}\", but was \"{2}\"";
+                AssertFailed =
+                    "Assertion failed. Control: \"{0}\".\r\n                       Expected: \"{1}\", but was \"{2}\"";
                 MultipleControlsWarning = "{0} controls was found";
                 MultipleWindowsWarning = "{0} windows was found";
                 Contains = "contains";
@@ -50,7 +45,8 @@ namespace WhiteSharp
                 Click = "Выполнен клик по контролу \"{0}\"";
                 Sent = "Нажато \"{0}\"";
                 AssertSucceeded = "Контрол \"{0}\" успешно прошел проверку";
-                AssertFailed = "Проверка провалилась. Контрол: \"{0}\".\r\n                       Ожидалось: \"{1}\", но было \"{2}\"";
+                AssertFailed =
+                    "Проверка провалилась. Контрол: \"{0}\".\r\n                       Ожидалось: \"{1}\", но было \"{2}\"";
                 MultipleControlsWarning = "Найдено {0} контролa(-ов)";
                 MultipleWindowsWarning = "Найдено {0} окон(-на)";
                 Contains = "содержит";

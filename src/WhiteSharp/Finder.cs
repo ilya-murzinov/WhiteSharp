@@ -37,19 +37,21 @@ namespace WhiteSharp
 
         public Finder AutomationId(string automationId)
         {
-            Result = Find(x => x.Current.AutomationId.Equals(automationId), string.Format("AutomationId = {0}", automationId));
+            Result = Find(x => x.Current.AutomationId.Equals(automationId),
+                string.Format("AutomationId = {0}", automationId));
             return this;
         }
 
         public Finder AutomationIdContains(string automationId)
         {
-            Result = Find(x => x.Current.AutomationId.Contains(automationId), string.Format("AutomationId {0} {1}", Strings.Contains, automationId));
+            Result = Find(x => x.Current.AutomationId.Contains(automationId),
+                string.Format("AutomationId {0} {1}", Strings.Contains, automationId));
             return this;
         }
 
         public Finder Name(String name)
         {
-            Result = Find(x => x.Current.Name.Equals(name), string.Format("Name = {0}",name));
+            Result = Find(x => x.Current.Name.Equals(name), string.Format("Name = {0}", name));
             return this;
         }
 
@@ -79,7 +81,7 @@ namespace WhiteSharp
 
         public Finder TextContains(String text)
         {
-            Result = Find(x => x.Current.HelpText.Contains(text), string.Format("Text {0} {1}",  Strings.Contains, text));
+            Result = Find(x => x.Current.HelpText.Contains(text), string.Format("Text {0} {1}", Strings.Contains, text));
             return this;
         }
 

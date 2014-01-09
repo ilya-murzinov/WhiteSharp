@@ -1,21 +1,17 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using System.Linq;
 using System.Threading;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestStack.White;
 using TestStack.White.UIItems.WindowItems;
-using System.Linq;
 
 namespace WhiteSharp.UnitTests
 {
     [TestClass]
     public class TestBaseMSTest
     {
-        public TestContext TestContext
-        {
-            get;
-            set;
-        }
+        public static Window Window;
+        public TestContext TestContext { get; set; }
 
         [AssemblyInitialize]
         public static void Init(TestContext t)
@@ -36,7 +32,5 @@ namespace WhiteSharp.UnitTests
         public void Screen()
         {
         }
-
-        public static Window Window;
     }
 }

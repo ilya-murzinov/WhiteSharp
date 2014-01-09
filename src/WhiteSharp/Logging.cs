@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Windows.Automation;
 using TestStack.White.UIItems.WindowItems;
 
@@ -15,15 +14,19 @@ namespace WhiteSharp
             Standart = 2,
             File = 3
         }
-        public static int Output = (int)OutputLevel.Standart;
 
-        private const string StartOpenTag = "\r\n\r\n------------------------------------------------------------------------------------------";
-        private const string StartCloseTag = "------------------------------------------------------------------------------------------";
+        private const string StartOpenTag =
+            "\r\n\r\n------------------------------------------------------------------------------------------";
+
+        private const string StartCloseTag =
+            "------------------------------------------------------------------------------------------";
+
         private const string FoungTag = "Found";
         private const string ActionTag = "Action";
         private const string AssertTag = "Assert";
         private const string WarningTag = "Warning";
         private const string ExceptionTag = "Exception";
+        public static int Output = (int) OutputLevel.Standart;
 
         private static String Tag(string tag)
         {
@@ -34,17 +37,17 @@ namespace WhiteSharp
         {
             switch (Output)
             {
-                case (int)OutputLevel.Trace:
+                case (int) OutputLevel.Trace:
                 {
                     Trace.WriteLine(msg);
                     break;
                 }
-                case (int)OutputLevel.Standart:
+                case (int) OutputLevel.Standart:
                 {
                     Console.WriteLine(msg);
                     break;
                 }
-                case (int)OutputLevel.File:
+                case (int) OutputLevel.File:
                 {
                     break;
                 }

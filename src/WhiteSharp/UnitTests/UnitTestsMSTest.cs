@@ -1,9 +1,6 @@
-﻿using System.Diagnostics;
-using System.Linq;
-using System.Threading;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestStack.White;
-using TestStack.White.UIItems.WindowItems;
 
 namespace WhiteSharp.UnitTests
 {
@@ -13,10 +10,10 @@ namespace WhiteSharp.UnitTests
         [TestMethod]
         public void Test()
         {
-            GetWindowPositiveTest("Calc");
+            GetWindowPositiveTest("MainWindow");
             Find("121", "122");
         }
-        
+
         public void GetWindowNegativeTest(string title)
         {
             new UIWindow(title);
@@ -26,39 +23,39 @@ namespace WhiteSharp.UnitTests
         {
             new UIWindow(title);
         }
-        
+
         public void CountTest(string id, int count)
         {
             By.Window = Window;
-            var finder = By.AutomationIdContains(id);
+            Finder finder = By.AutomationIdContains(id);
             Assert.IsTrue(finder.Result.Count == count);
         }
 
         public void AutomationIdNegativeTest(string id)
         {
             By.Window = Window;
-            var finder = By.AutomationIdContains(id);
-            Assert.IsTrue(finder.Result.TrueForAll(x=>x.Current.AutomationId.Contains(id)));
+            Finder finder = By.AutomationIdContains(id);
+            Assert.IsTrue(finder.Result.TrueForAll(x => x.Current.AutomationId.Contains(id)));
         }
 
         public void ClassNamePositiveTest(string id)
         {
             By.Window = Window;
-            var finder = By.ClassName(id);
+            Finder finder = By.ClassName(id);
             Assert.IsTrue(finder.Result.TrueForAll(x => x.Current.ClassName.Equals(id)));
         }
 
         public void AutomationIdContainsPositiveTest(string id)
         {
             By.Window = Window;
-            var finder = By.AutomationIdContains(id);
+            Finder finder = By.AutomationIdContains(id);
             Assert.IsTrue(finder.Result.TrueForAll(x => x.Current.AutomationId.Contains(id)));
         }
 
         public void ByName(string id)
         {
             By.Window = Window;
-            var finder = By.Name(id);
+            Finder finder = By.Name(id);
             Assert.IsTrue(finder.Result.Count == 1);
         }
 

@@ -42,7 +42,9 @@ namespace WhiteSharp
                     } while (!x.Current.IsEnabled && (DateTime.Now - now).TotalSeconds < Settings.Default.Timeout);
                 }
                 if (!x.Current.IsEnabled)
-                    throw new AssertException(Logging.AssertException(string.Format(Strings.AssertFailed, new UIControl(x, Desktop.Instance).GetId(), "Enabled", "Not enabled")));
+                    throw new AssertException(
+                        Logging.AssertException(string.Format(Strings.AssertFailed,
+                            new UIControl(x, Desktop.Instance).GetId(), "Enabled", "Not enabled")));
                 Logging.AssertSucceeded(new UIControl(x, Desktop.Instance));
             });
         }
@@ -50,7 +52,7 @@ namespace WhiteSharp
         public static void Enabled(params UIControl[] items)
         {
             var list = new List<UIControl>(items);
-            var result = list.Select(x => items[list.IndexOf(x)].AutomationElement).ToList();
+            List<AutomationElement> result = list.Select(x => items[list.IndexOf(x)].AutomationElement).ToList();
             Enabled(result);
         }
 
@@ -75,7 +77,7 @@ namespace WhiteSharp
         public static void NotEnabled(params UIControl[] items)
         {
             var list = new List<UIControl>(items);
-            var result = list.Select(x => items[list.IndexOf(x)].AutomationElement).ToList();
+            List<AutomationElement> result = list.Select(x => items[list.IndexOf(x)].AutomationElement).ToList();
             NotEnabled(result);
         }
     }

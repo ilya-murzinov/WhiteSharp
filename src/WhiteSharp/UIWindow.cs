@@ -1,23 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows.Automation;
 using TestStack.White;
-using TestStack.White.InputDevices;
+using TestStack.White.Factory;
+using TestStack.White.Sessions;
+using TestStack.White.UIItems.Finders;
+using TestStack.White.UIItems.MenuItems;
 using TestStack.White.UIItems.WindowItems;
 using TestStack.White.WindowsAPI;
-using TestStack.White.UIItems.Finders;
-using TestStack.White.Factory;
-using TestStack.White.UIItems.MenuItems;
-using System.Diagnostics;
 
 namespace WhiteSharp
 {
     public class UIWindow : Window
     {
         #region WindowMembers
+
         private readonly WindowFactory windowFactory = null;
+
         public override PopUpMenu Popup
         {
             get { return factory.WPFPopupMenu(this) ?? windowFactory.PopUp(this); }
@@ -26,27 +28,29 @@ namespace WhiteSharp
         public override Window ModalWindow(string title, InitializeOption option)
         {
             WindowFactory desktopWindowsFactory = WindowFactory.Desktop;
-            return desktopWindowsFactory.FindModalWindow(title, Process.GetProcessById(automationElement.Current.ProcessId), option, automationElement,
-                                                         WindowSession.ModalWindowSession(option));
+            return desktopWindowsFactory.FindModalWindow(title,
+                Process.GetProcessById(automationElement.Current.ProcessId), option, automationElement,
+                WindowSession.ModalWindowSession(option));
         }
 
         public override Window ModalWindow(SearchCriteria searchCriteria, InitializeOption option)
         {
             WindowFactory desktopWindowsFactory = WindowFactory.Desktop;
-            return desktopWindowsFactory.FindModalWindow(searchCriteria, option, automationElement, WindowSession.ModalWindowSession(option));
+            return desktopWindowsFactory.FindModalWindow(searchCriteria, option, automationElement,
+                WindowSession.ModalWindowSession(option));
         }
+
         #endregion
-        
-        public UIWindow(params string[] titles) : base(FindWindow(titles).AutomationElement, TestStack.White.Factory.InitializeOption.NoCache, 
-                new TestStack.White.Sessions.WindowSession(new TestStack.White.Sessions.ApplicationSession(), 
-                    TestStack.White.Factory.InitializeOption.NoCache))
+
+        public UIWindow(params string[] titles) : base(FindWindow(titles).AutomationElement, InitializeOption.NoCache,
+            new WindowSession(new ApplicationSession(),
+                InitializeOption.NoCache))
         {
         }
 
         private static Window FindWindow(params string[] titles)
         {
             List<Window> windows = null;
-            Window returnWindow = null;
 
             DateTime start = DateTime.Now;
             do
@@ -54,7 +58,7 @@ namespace WhiteSharp
                 try
                 {
                     windows = Desktop.Instance.Windows().FindAll(window => window.Title.Contains(titles[0]));
-                    foreach (var title in titles.Skip(1))
+                    foreach (string title in titles.Skip(1))
                     {
                         windows = windows.Where(window => window.Title.Contains(title)).ToList();
                     }
@@ -64,22 +68,27 @@ namespace WhiteSharp
                     Logging.Exception(e);
                 }
                 Thread.Sleep(Settings.Default.Delay);
-            } while (!windows.Any() && ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout));
-            if (!windows.Any())
-                throw new WindowNotFoundException(Logging.WindowException(titles.ToList().Aggregate((x,y)=>x+", "+y)));
+            } while (windows != null && (!windows.Any() && ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)));
+            if (windows != null && !windows.Any())
+                throw new WindowNotFoundException(
+                    Logging.WindowException(titles.ToList().Aggregate((x, y) => x + ", " + y)));
 
-            if (windows.Count > 1)
+            if (windows != null && windows.Count > 1)
                 Logging.MutlipleWindowsWarning(windows);
 
-            returnWindow = windows.First();
-            Logging.WindowFound(returnWindow, DateTime.Now - start);
+            if (windows != null)
+            {
+                Window returnWindow = windows.First();
+                Logging.WindowFound(returnWindow, DateTime.Now - start);
 
-            By.Window = returnWindow;
-            if (returnWindow.DisplayState == DisplayState.Minimized)
-                returnWindow.DisplayState = DisplayState.Restored;
-            returnWindow.Focus();
+                By.Window = returnWindow;
+                if (returnWindow.DisplayState == DisplayState.Minimized)
+                    returnWindow.DisplayState = DisplayState.Restored;
+                returnWindow.Focus();
 
-            return returnWindow;
+                return returnWindow;
+            }
+            return null;
         }
 
         public UIControl FindControl(Finder f)

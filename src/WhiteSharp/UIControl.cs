@@ -7,7 +7,7 @@ using TestStack.White.InputDevices;
 using TestStack.White.UIItems;
 using TestStack.White.UIItems.Actions;
 using TestStack.White.WindowsAPI;
-using TestStack.White.UIItems.ListBoxItems;
+using ComboBox = TestStack.White.UIItems.ListBoxItems.ComboBox;
 
 namespace WhiteSharp
 {
@@ -19,7 +19,7 @@ namespace WhiteSharp
 
         internal string GetId()
         {
-            string[] identifiers = new string[]
+            string[] identifiers =
             {
                 "AutomationId",
                 "Name",
@@ -27,7 +27,7 @@ namespace WhiteSharp
                 "Class Name"
             };
 
-            var PropertyList = new string[]
+            var propertyList = new[]
             {
                 AutomationElement.Current.AutomationId,
                 AutomationElement.Current.Name,
@@ -35,8 +35,8 @@ namespace WhiteSharp
                 AutomationElement.Current.ClassName
             };
 
-            return identifiers[Array.FindIndex<string>(PropertyList, 0, x => !String.IsNullOrEmpty(x))] + " = " + 
-            PropertyList.First(x => !String.IsNullOrEmpty(x));
+            return identifiers[Array.FindIndex(propertyList, 0, x => !String.IsNullOrEmpty(x))] + " = " +
+                   propertyList.First(x => !String.IsNullOrEmpty(x));
         }
 
         public UIControl FindChild(Finder f)
@@ -49,15 +49,17 @@ namespace WhiteSharp
 
         public UIControl FindChild(string automationId)
         {
-            var f = new Finder();
-            f.Result = AutomationElement.FindAll(TreeScope.Descendants,
-                new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
-                .OfType<AutomationElement>().ToList();
+            var f = new Finder
+            {
+                Result = AutomationElement.FindAll(TreeScope.Descendants,
+                    new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
+                    .OfType<AutomationElement>().ToList()
+            };
             return new UIControl(f.AutomationId(automationId).Result.First(), ActionListener);
         }
 
         /// <summary>
-        /// Clicks without waiting for control to get enabled
+        ///     Clicks without waiting for control to get enabled
         /// </summary>
         /// <returns></returns>
         public UIControl ClickAnyway()
@@ -77,13 +79,13 @@ namespace WhiteSharp
         }
 
         /// <summary>
-        /// Waits for control to get enabled enabled, then clicks
+        ///     Waits for control to get enabled enabled, then clicks
         /// </summary>
         /// <returns></returns>
         public new UIControl Click()
         {
             WaitForControlEnabled();
-            return this.ClickAnyway();
+            return ClickAnyway();
         }
 
         public UIControl Send(string value)
@@ -132,7 +134,8 @@ namespace WhiteSharp
             do
             {
                 Thread.Sleep(Settings.Default.Delay);
-            } while (!AutomationElement.Current.IsEnabled && ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout));
+            } while (!AutomationElement.Current.IsEnabled &&
+                     ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout));
 
             if (!AutomationElement.Current.IsEnabled)
                 throw new ControlNotEnabledException(Logging.ControlException(GetId()));
@@ -143,9 +146,9 @@ namespace WhiteSharp
             WaitForControlEnabled();
             if (AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
             {
-                throw new GeneralException(string.Format(Strings.NotACombobox, this.GetId()));
+                throw new GeneralException(string.Format(Strings.NotACombobox, GetId()));
             }
-            TestStack.White.UIItems.ListBoxItems.ComboBox combobox = new TestStack.White.UIItems.ListBoxItems.ComboBox(AutomationElement, actionListener);
+            var combobox = new ComboBox(AutomationElement, actionListener);
             combobox.Select(name);
             return this;
         }
@@ -155,9 +158,9 @@ namespace WhiteSharp
             WaitForControlEnabled();
             if (!AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
             {
-                throw new GeneralException(string.Format(Strings.NotACombobox, this.GetId()));
+                throw new GeneralException(string.Format(Strings.NotACombobox, GetId()));
             }
-            TestStack.White.UIItems.ListBoxItems.ComboBox combobox = new TestStack.White.UIItems.ListBoxItems.ComboBox(AutomationElement, actionListener);
+            var combobox = new ComboBox(AutomationElement, actionListener);
             combobox.Select(index);
             return this;
         }
