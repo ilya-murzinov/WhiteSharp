@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Threading;
 using System.Windows.Automation;
 using TestStack.White;
 using TestStack.White.Factory;
+using TestStack.White.InputDevices;
 using TestStack.White.Sessions;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.MenuItems;
@@ -93,6 +95,8 @@ namespace WhiteSharp
 
         public UIControl FindControl(Finder f)
         {
+            if (f.Result.Count > 1)
+                Logging.MutlipleControlsWarning(f.Result);
             return new UIControl(f.Result.First(), this);
         }
 
@@ -112,7 +116,7 @@ namespace WhiteSharp
             {
                 case "{F5}":
                 {
-                    Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.F5);
+                    TestStack.White.InputDevices.Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.F5, ActionListener);
                     break;
                 }
                 case "{Tab}":
@@ -133,6 +137,7 @@ namespace WhiteSharp
                     break;
                 }
             }
+            Logging.Sent(value);
             return this;
         }
     }

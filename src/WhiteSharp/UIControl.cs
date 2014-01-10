@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
+using Castle.Core.Internal;
+using NUnit.Framework;
 using TestStack.White.InputDevices;
 using TestStack.White.UIItems;
 using TestStack.White.UIItems.Actions;
@@ -41,10 +43,14 @@ namespace WhiteSharp
 
         public UIControl FindChild(Finder f)
         {
-            f.Result = AutomationElement.FindAll(TreeScope.Descendants,
+            var container = AutomationElement.FindAll(TreeScope.Descendants,
                 new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
                 .OfType<AutomationElement>().ToList();
-            return new UIControl(f.Result.First(), ActionListener);
+            var list = f.Result.Where(container.Contains).ToList();
+            if (list.Count() > 1)
+                Logging.MutlipleControlsWarning(f.Result.Where(container.Contains).ToList());
+
+            return new UIControl(list.First(), actionListener);
         }
 
         public UIControl FindChild(string automationId)
@@ -90,6 +96,11 @@ namespace WhiteSharp
 
         public UIControl Send(string value)
         {
+            WaitForControlEnabled();
+            DateTime start = DateTime.Now;
+            while (!AutomationElement.Current.HasKeyboardFocus && (DateTime.Now - start).TotalMilliseconds<Settings.Default.Timeout)
+                Focus();
+
             switch (value)
             {
                 case "{F5}":
@@ -128,7 +139,41 @@ namespace WhiteSharp
             return this;
         }
 
-        public void WaitForControlEnabled()
+        public string GetText()
+        {
+            SelectionPattern selectionPattern;
+            ValuePattern valuePattern;
+            object p;
+
+            if (AutomationElement.Current.ControlType.Equals(ControlType.Edit))
+            {
+                valuePattern = (ValuePattern) AutomationElement.GetCurrentPattern(ValuePattern.Pattern);
+                return valuePattern.Current.Value;
+            }
+
+            if (AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
+            {
+                if (AutomationElement.TryGetCurrentPattern(SelectionPattern.Pattern, out p))
+                {
+                    selectionPattern = (SelectionPattern) p;
+                    return selectionPattern.Current.GetSelection().ToString();
+                }
+                if (AutomationElement.TryGetCurrentPattern(ValuePattern.Pattern, out p))
+                {
+                    valuePattern = (ValuePattern) p;
+                    return valuePattern.Current.Value;
+                }
+
+            }
+
+            return new[]
+            {
+                AutomationElement.Current.Name,
+                AutomationElement.Current.HelpText
+            }.First(x => !x.IsNullOrEmpty());
+        }
+
+        public UIControl WaitForControlEnabled()
         {
             DateTime start = DateTime.Now;
             do
@@ -139,12 +184,13 @@ namespace WhiteSharp
 
             if (!AutomationElement.Current.IsEnabled)
                 throw new ControlNotEnabledException(Logging.ControlException(GetId()));
+            return this;
         }
 
         public UIItem SelectItem(string name)
         {
             WaitForControlEnabled();
-            if (AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
+            if (!AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
             {
                 throw new GeneralException(string.Format(Strings.NotACombobox, GetId()));
             }

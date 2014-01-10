@@ -14,7 +14,7 @@ namespace WhiteSharp
         public Finder()
         {
             Result = By.Window.AutomationElement
-                .FindAll(TreeScope.Subtree, Condition.TrueCondition)
+                .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
                 .OfType<AutomationElement>().ToList();
         }
 
@@ -30,8 +30,6 @@ namespace WhiteSharp
             if (!list.Any())
                 throw new ControlNotFoundException(Logging.ControlException(identifier));
             Logging.ControlFound(identifier, DateTime.Now - start);
-            if (list.Count() != 1)
-                Logging.MutlipleControlsWarning(list);
             return list;
         }
 
@@ -111,6 +109,7 @@ namespace WhiteSharp
     public class By
     {
         public static Window Window = null;
+        public static UIControl Control = null;
 
         public static Finder AutomationId(string automationId)
         {

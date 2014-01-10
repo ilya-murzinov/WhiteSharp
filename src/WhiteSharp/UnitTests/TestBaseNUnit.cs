@@ -9,7 +9,7 @@ namespace WhiteSharp.UnitTests
     {
         public UIWindow Window;
         public static string WindowTitle = "MainWindow";
-        public static string Path = @"..\..\..\..\..\Tools\TestApps\WpfTestApplication.exe";
+        public static string Path = @"D:\\Team2\UITests\\Tools\\TestApps\\WpfTestApplication.exe";
         public static string ResultsPath = "\\Results";
         Process proc = Process.Start(Path);
 
