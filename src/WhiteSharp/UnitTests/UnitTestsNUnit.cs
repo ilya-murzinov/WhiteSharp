@@ -65,7 +65,7 @@ namespace WhiteSharp.UnitTests
             Window.FindControl(By.ClassName(id).Index(index));
         }
 
-        [TestCase("TextBlock", 1), ExpectedException(typeof(ControlNotFoundException))]
+        [TestCase("TextBlock", 1), ExpectedException(typeof (ControlNotFoundException))]
         [TestCase("ComboBox", 2)]
         [TestCase("TabItem", 1)]
         [TestCase("TabItem", 1)]
@@ -75,7 +75,7 @@ namespace WhiteSharp.UnitTests
             Window.FindControl(By.AutomationId(id));
         }
 
-        [TestCase("AComboBox"), ExpectedException(typeof(ControlNotFoundException))]
+        [TestCase("AComboBox"), ExpectedException(typeof (ControlNotFoundException))]
         [TestCase("EditableComboBox")]
         [TestCase("OpenHorizontalSplitterButton")]
         [TestCase("ListBoxWithVScrollBar")]

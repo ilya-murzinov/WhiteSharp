@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Threading;
 using System.Windows.Automation;
 using TestStack.White;
 using TestStack.White.Factory;
-using TestStack.White.InputDevices;
 using TestStack.White.Sessions;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.MenuItems;
@@ -44,12 +42,22 @@ namespace WhiteSharp
 
         #endregion
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="titles">List of strings, which the desired window's title should contain</param>
+        /// <returns></returns>
         public UIWindow(params string[] titles) : base(FindWindow(titles).AutomationElement, InitializeOption.NoCache,
             new WindowSession(new ApplicationSession(),
                 InitializeOption.NoCache))
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="titles">List of strings, which the desired window's title should contain</param>
+        /// <returns></returns>
         private static Window FindWindow(params string[] titles)
         {
             List<Window> windows = null;
@@ -70,7 +78,8 @@ namespace WhiteSharp
                     Logging.Exception(e);
                 }
                 Thread.Sleep(Settings.Default.Delay);
-            } while (windows != null && (!windows.Any() && ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)));
+            } while (windows != null &&
+                     (!windows.Any() && ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)));
             if (windows != null && !windows.Any())
                 throw new WindowNotFoundException(
                     Logging.WindowException(titles.ToList().Aggregate((x, y) => x + ", " + y)));
@@ -93,6 +102,11 @@ namespace WhiteSharp
             return null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="f">Search criteria</param>
+        /// <returns></returns>
         public UIControl FindControl(Finder f)
         {
             if (f.Result.Count > 1)
@@ -105,18 +119,29 @@ namespace WhiteSharp
             return new UIControl(By.AutomationId(automationId).Result.First(), this);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="f">Search criteria</param>
+        /// <returns>List of controls found by given criteria</returns>
         public List<AutomationElement> FindAll(Finder f)
         {
             return f.Result;
         }
 
+        /// <summary>
+        /// Supported shortcuts: {F5}, {Tab}, {Esc}, {Alt}+{F4}.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public UIWindow Send(string value)
         {
             switch (value)
             {
                 case "{F5}":
                 {
-                    TestStack.White.InputDevices.Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.F5, ActionListener);
+                    TestStack.White.InputDevices.Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.F5,
+                        ActionListener);
                     break;
                 }
                 case "{Tab}":

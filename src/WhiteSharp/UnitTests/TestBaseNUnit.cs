@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using NUnit.Framework;
 using TestStack.White;
 
@@ -7,12 +8,6 @@ namespace WhiteSharp.UnitTests
     [TestFixture]
     public class TestBaseNUnit
     {
-        public UIWindow Window;
-        public static string WindowTitle = "MainWindow";
-        public static string Path = @"D:\\Team2\UITests\\Tools\\TestApps\\WpfTestApplication.exe";
-        public static string ResultsPath = "\\Results";
-        Process proc = Process.Start(Path);
-
         [SetUp]
         public void Start()
         {
@@ -26,10 +21,16 @@ namespace WhiteSharp.UnitTests
             {
                 string name = TestContext.CurrentContext.Test.Name;
                 new ScreenCapture().CaptureScreenShot()
-                    .Save(ResultsPath + name.Substring(0, name.IndexOf("(", System.StringComparison.Ordinal)) + ".bmp");
+                    .Save(ResultsPath + name.Substring(0, name.IndexOf("(", StringComparison.Ordinal)) + ".bmp");
             }
             Logging.Write(TestContext.CurrentContext.Result.Status.ToString().ToUpper() + "!");
         }
+
+        public UIWindow Window;
+        public static string WindowTitle = "MainWindow";
+        public static string Path = @"D:\\Team2\UITests\\Tools\\TestApps\\WpfTestApplication.exe";
+        public static string ResultsPath = "\\Results";
+        private readonly Process proc = Process.Start(Path);
 
         public TestContext TestContext { get; set; }
 

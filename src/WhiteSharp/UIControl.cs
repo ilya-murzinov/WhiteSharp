@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
 using Castle.Core.Internal;
-using NUnit.Framework;
 using TestStack.White.InputDevices;
 using TestStack.White.UIItems;
 using TestStack.White.UIItems.Actions;
@@ -43,10 +43,10 @@ namespace WhiteSharp
 
         public UIControl FindChild(Finder f)
         {
-            var container = AutomationElement.FindAll(TreeScope.Descendants,
+            List<AutomationElement> container = AutomationElement.FindAll(TreeScope.Descendants,
                 new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
                 .OfType<AutomationElement>().ToList();
-            var list = f.Result.Where(container.Contains).ToList();
+            List<AutomationElement> list = f.Result.Where(container.Contains).ToList();
             if (list.Count() > 1)
                 Logging.MutlipleControlsWarning(f.Result.Where(container.Contains).ToList());
 
@@ -94,11 +94,17 @@ namespace WhiteSharp
             return ClickAnyway();
         }
 
+        /// <summary>
+        /// Supported shortcuts: {F5}, {Tab}, {Esc}, {Enter}.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public UIControl Send(string value)
         {
             WaitForControlEnabled();
             DateTime start = DateTime.Now;
-            while (!AutomationElement.Current.HasKeyboardFocus && (DateTime.Now - start).TotalMilliseconds<Settings.Default.Timeout)
+            while (!AutomationElement.Current.HasKeyboardFocus &&
+                   (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
                 Focus();
 
             switch (value)
@@ -139,6 +145,10 @@ namespace WhiteSharp
             return this;
         }
 
+        /// <summary>
+        /// Returns text of UIControl
+        /// </summary>
+        /// <returns></returns>
         public string GetText()
         {
             SelectionPattern selectionPattern;
@@ -163,7 +173,6 @@ namespace WhiteSharp
                     valuePattern = (ValuePattern) p;
                     return valuePattern.Current.Value;
                 }
-
             }
 
             return new[]

@@ -9,26 +9,41 @@ namespace WhiteSharp
 {
     public class AssertThat
     {
+        /// <summary>
+        /// Throws AssertException if the condition not satisfied
+        /// </summary>
+        /// <param name="control">Target control</param>
+        /// <param name="expected"></param>
+        /// <param name="actual"></param>
         public static void AreEqual(UIControl control, string expected, string actual)
         {
-            string msg = null;
             if (!expected.Equals(actual))
             {
-                msg = string.Format(Strings.AssertFailed, control.GetId(), expected, actual);
+                string msg = string.Format(Strings.AssertFailed, control.GetId(), expected, actual);
                 throw new AssertException(Logging.AssertException(msg));
             }
         }
 
+        /// <summary>
+        /// Throws AssertException if the condition not satisfied
+        /// </summary>
+        /// <param name="control">Target control</param>
+        /// <param name="value"></param>
+        /// <param name="actual"></param>
         public static void StringContains(UIControl control, string value, string actual)
         {
-            string msg = null;
             if (!value.Contains(actual))
             {
-                msg = string.Format(Strings.AssertFailed, control.GetId(), value, actual);
+                string msg = string.Format(Strings.AssertFailed, control.GetId(), value, actual);
                 throw new AssertException(Logging.AssertException(msg));
             }
         }
 
+        /// <summary>
+        /// Checks if every AutomationElement in given list is enabled
+        /// Throws AssertException if the condition not satisfied
+        /// </summary>
+        /// <param name="list"></param>
         public static void Enabled(List<AutomationElement> list)
         {
             DateTime now = DateTime.Now;
@@ -49,6 +64,11 @@ namespace WhiteSharp
             });
         }
 
+        /// <summary>
+        /// Checks if every UIControl in given list is enabled
+        /// Throws AssertException if the condition not satisfied
+        /// </summary>
+        /// <param name="items"></param>
         public static void Enabled(params UIControl[] items)
         {
             var list = new List<UIControl>(items);
@@ -56,6 +76,11 @@ namespace WhiteSharp
             Enabled(result);
         }
 
+        /// <summary>
+        /// Checks if every AutomationElement in given list is not enabled
+        /// Throws AssertException if the condition not satisfied
+        /// </summary>
+        /// <param name="list"></param>
         public static void NotEnabled(List<AutomationElement> list)
         {
             DateTime now = DateTime.Now;
@@ -74,6 +99,11 @@ namespace WhiteSharp
             });
         }
 
+        /// <summary>
+        /// Checks if every UIControl in given list is not enabled
+        /// Throws AssertException if the condition not satisfied
+        /// </summary>
+        /// <param name="items"></param>
         public static void NotEnabled(params UIControl[] items)
         {
             var list = new List<UIControl>(items);
