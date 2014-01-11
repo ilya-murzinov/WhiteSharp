@@ -81,7 +81,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Strings.cs" />
-    <Compile Include="UnitTests\TestBaseMSTest.cs" />
     <Compile Include="UIControl.cs" />
     <Compile Include="UIWindow.cs" />
     <Compile Include="Asserts.cs" />
@@ -90,17 +89,13 @@
       <LastGenOutput>AssemblyInfo2.cs</LastGenOutput>
     </Compile>
     <Compile Include="UnitTests\TestBaseNUnit.cs" />
-    <Compile Include="UnitTests\UnitTestsMSTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UnitTests\UnitTestsNUnit.cs" />
+    <Compile Include="UnitTests\FinderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="TestRunner\RunTests.bat" />
     <None Include="Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

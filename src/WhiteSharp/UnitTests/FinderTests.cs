@@ -3,7 +3,7 @@
 namespace WhiteSharp.UnitTests
 {
     [TestFixture]
-    public class UnitTestsNUnit : TestBaseNUnit
+    public class FinderTests : TestBaseNUnit
     {
         [TestCase("лоукггкгаг"), ExpectedException(typeof (WindowNotFoundException))]
         [TestCase("MAIN")]
