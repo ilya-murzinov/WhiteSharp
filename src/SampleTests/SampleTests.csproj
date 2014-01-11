@@ -43,7 +43,7 @@
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="TestStack.White">
-      <HintPath>..\..\..\Libs\TestStack.White.dll</HintPath>
+      <HintPath>..\..\lib\TestStack.White.dll</HintPath>
     </Reference>
     <Reference Include="UIAutomationClient" />
     <Reference Include="UIAutomationTypes" />
@@ -64,7 +64,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CalculatorTest.cs" />
     <Compile Include="TestBaseNUnit.cs" />
-    <Compile Include="ТестовыйТест.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WhiteSharp\WhiteSharp.csproj">
