@@ -155,3 +155,6 @@ $RECYCLE.BIN/
 # Mac desktop service store files
 .DS_Store
 packages
+/src/Results
+/src/TestResult.xml
+/src/WhiteSharp.v12.suo
