@@ -11,8 +11,7 @@ namespace WhiteSharp
         public enum OutputLevel
         {
             Trace = 1,
-            Standart = 2,
-            File = 3
+            Standart = 2
         }
 
         private const string StartOpenTag =
@@ -35,7 +34,7 @@ namespace WhiteSharp
 
         public static void Write(string msg)
         {
-            switch (Output)
+            switch (Settings.Default.OutputLevel)
             {
                 case (int) OutputLevel.Trace:
                 {
@@ -47,7 +46,7 @@ namespace WhiteSharp
                     Console.WriteLine(msg);
                     break;
                 }
-                case (int) OutputLevel.File:
+                default:
                 {
                     break;
                 }
