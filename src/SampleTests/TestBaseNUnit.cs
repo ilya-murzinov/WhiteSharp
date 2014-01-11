@@ -5,7 +5,7 @@ using WhiteSharp;
 
 namespace SampleTests
 {
-    [TestFixture]
+    [TestFixture(Ignore=true)]
     public class TestBaseNUnit
     {
         [SetUp]

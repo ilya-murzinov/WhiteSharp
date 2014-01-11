@@ -2,10 +2,11 @@
 using System.Diagnostics;
 using NUnit.Framework;
 using TestStack.White;
+using System.IO;
 
 namespace WhiteSharp.UnitTests
 {
-    [TestFixture]
+    [TestFixture(Ignore=true)]
     public class TestBaseNUnit
     {
         [SetUp]
@@ -28,7 +29,7 @@ namespace WhiteSharp.UnitTests
 
         public UIWindow Window;
         public static string WindowTitle = "MainWindow";
-        public static string Path = @"D:\\Team2\UITests\\Tools\\TestApps\\WpfTestApplication.exe";
+        public static string Path = @"..\..\..\..\\TestApps\\WpfTestApplication.exe";
         public static string ResultsPath = "\\Results";
         private readonly Process proc = Process.Start(Path);
 
