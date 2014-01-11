@@ -3,6 +3,7 @@
     internal class Strings
     {
         internal static string TestStarted;
+        internal static string And;
         internal static string ControlFound;
         internal static string ControlException;
         internal static string WindowFound;
@@ -21,8 +22,9 @@
             if (Settings.Default.Language == "En")
             {
                 TestStarted = "Test started: {0}";
-                ControlFound = "Control by \"{0}\" was found in {1} seconds";
-                ControlException = "Control by \"{0}\" was not found";
+                And = "and";
+                ControlFound = "Control by {0} was found in {1} seconds";
+                ControlException = "Control by {0} was not found";
                 WindowFound = "Window \"{0}\" was found in {1} seconds";
                 WindowException = "Window \"{0}\" was not found";
                 Click = "Control \"{0}\" was clicked";
@@ -38,8 +40,9 @@
             else if (Settings.Default.Language == "Ru")
             {
                 TestStarted = "Запущен тест: {0}";
-                ControlFound = "Контрол по условию \"{0}\" найден за {1} секунд";
-                ControlException = "Контрол по условию \"{0}\" не найден";
+                And = "и";
+                ControlFound = "Контрол по условию {0} найден за {1} секунд";
+                ControlException = "Контрол по условию {0} не найден";
                 WindowFound = "Окно \"{0}\" найдено за {1} секунд";
                 WindowException = "Окно \"{0}\" не найдено";
                 Click = "Выполнен клик по контролу \"{0}\"";

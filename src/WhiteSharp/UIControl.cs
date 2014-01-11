@@ -47,6 +47,8 @@ namespace WhiteSharp
                 new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
                 .OfType<AutomationElement>().ToList();
             List<AutomationElement> list = f.Result.Where(container.Contains).ToList();
+
+            Logging.ControlFound(f);
             if (list.Count() > 1)
                 Logging.MutlipleControlsWarning(f.Result.Where(container.Contains).ToList());
 

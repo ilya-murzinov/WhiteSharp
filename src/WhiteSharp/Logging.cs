@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Automation;
@@ -65,9 +66,10 @@ namespace WhiteSharp
             Write("\r\n" + description.ToUpper() + "\r\n");
         }
 
-        public static string ControlFound(string id, TimeSpan duration)
+        public static string ControlFound(Finder f)
         {
-            string s = string.Format(Strings.ControlFound, id, duration.TotalSeconds);
+            string s = string.Format(Strings.ControlFound, f.Identifiers.Select(x => string.Format("\"{0}\"", x))
+                .Aggregate((x, y) => x + " " + Strings.And + " " + y), f.Duration);
             Write(Tag(FoungTag) + s);
             return s;
         }

@@ -9,7 +9,11 @@ namespace WhiteSharp
 {
     public class Finder
     {
+        private DateTime Start = DateTime.Now;
+
         public List<AutomationElement> Result;
+        public List<string> Identifiers = new List<string>();
+        public TimeSpan Duration;
 
         public Finder()
         {
@@ -22,14 +26,19 @@ namespace WhiteSharp
         {
             DateTime start = DateTime.Now;
             List<AutomationElement> list;
+
+            Identifiers.Add(identifier);
+
             do
             {
                 Thread.Sleep(Settings.Default.Delay);
                 list = Result.Where(p).ToList();
             } while (!list.Any() && ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout));
             if (!list.Any())
-                throw new ControlNotFoundException(Logging.ControlException(identifier));
-            Logging.ControlFound(identifier, DateTime.Now - start);
+                throw new ControlNotFoundException(Logging.ControlException(Identifiers.Select(x => string.Format("\"{0}\"", x))
+                    .Aggregate((x, y) => x + " " + Strings.And + " " + y)));
+
+            Duration = DateTime.Now - start;
             return list;
         }
 

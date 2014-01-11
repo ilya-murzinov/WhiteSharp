@@ -109,8 +109,10 @@ namespace WhiteSharp
         /// <returns></returns>
         public UIControl FindControl(Finder f)
         {
+            Logging.ControlFound(f);
             if (f.Result.Count > 1)
                 Logging.MutlipleControlsWarning(f.Result);
+            
             return new UIControl(f.Result.First(), this);
         }
 
