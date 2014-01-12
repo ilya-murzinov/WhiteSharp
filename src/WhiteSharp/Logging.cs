@@ -69,7 +69,7 @@ namespace WhiteSharp
         public static string ControlFound(Finder f)
         {
             string s = string.Format(Strings.ControlFound, f.Identifiers.Select(x => string.Format("\"{0}\"", x))
-                .Aggregate((x, y) => x + " " + Strings.And + " " + y), f.Duration.Seconds);
+                .Aggregate((x, y) => x + " " + Strings.And + " " + y), f.Duration.TotalSeconds);
             Write(Tag(FoungTag) + s);
             return s;
         }
