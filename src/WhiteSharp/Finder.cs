@@ -82,13 +82,13 @@ namespace WhiteSharp
 
         public Finder Text(String text)
         {
-            Result = Find(x => x.Current.HelpText.Equals(text), string.Format("Text = {0}", text));
+            Result = Find(x => new UIControl(x, null).GetText().Equals(text), string.Format("Text = {0}", text));
             return this;
         }
 
         public Finder TextContains(String text)
         {
-            Result = Find(x => x.Current.HelpText.Contains(text), string.Format("Text {0} {1}", Logging.Strings["Contains"], text));
+            Result = Find(x => new UIControl(x, null).GetText().Contains(text), string.Format("Text {0} {1}", Logging.Strings["Contains"], text));
             return this;
         }
 
