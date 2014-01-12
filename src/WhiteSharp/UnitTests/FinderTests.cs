@@ -84,5 +84,22 @@ namespace WhiteSharp.UnitTests
         {
             Window.FindControl(By.Name(id));
         }
+
+        [TestCase("ControlsTab", "ComboBox")]
+        [TestCase("ControlsTab", "TabItem")]
+        [TestCase("ListBoxWpf", "ListBoxItem")]
+        [TestCase("ScenariosPane", "Button")]
+        [TestCase("CheckedListBox", "CheckBox")]
+        public void FindChild(string parentId, string childId)
+        {
+            Window.FindControl(By.AutomationId(parentId)).FindChild(By.ClassName(childId));
+        }
+
+        [TestCase("ControlsTab", "ListControlsTab", "ListControls", "ListBoxWpf", "ListBoxItem")]
+        public void FindChildMultiple(string id1, string id2, string id3, string id4, string id5)
+        {
+            Window.FindControl(By.AutomationId(id1)).FindChild(By.AutomationId(id2)).FindChild(By.AutomationId(id3))
+                .FindChild(By.AutomationId(id4)).FindChild(By.ClassName(id5));
+        }
     }
 }
