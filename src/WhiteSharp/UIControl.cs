@@ -203,7 +203,7 @@ namespace WhiteSharp
             WaitForControlEnabled();
             if (!AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
             {
-                throw new GeneralException(string.Format(Strings.NotACombobox, GetId()));
+                throw new GeneralException(string.Format(Logging.Strings["NotACombobox"], GetId()));
             }
             var combobox = new ComboBox(AutomationElement, actionListener);
             combobox.Select(name);
@@ -215,7 +215,7 @@ namespace WhiteSharp
             WaitForControlEnabled();
             if (!AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
             {
-                throw new GeneralException(string.Format(Strings.NotACombobox, GetId()));
+                throw new GeneralException(string.Format(Logging.Strings["NotACombobox"], GetId()));
             }
             var combobox = new ComboBox(AutomationElement, actionListener);
             combobox.Select(index);

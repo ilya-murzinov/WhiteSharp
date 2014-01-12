@@ -17,7 +17,7 @@ namespace WhiteSharp
 
         private void PropertyChangingEventHandler(object sender, PropertyChangedEventArgs e)
         {
-            new Strings();
+            new Logging();
         }
 
         private void SettingsSavingEventHandler(object sender, CancelEventArgs e)

@@ -19,7 +19,7 @@ namespace WhiteSharp
         {
             if (!expected.Equals(actual))
             {
-                string msg = string.Format(Strings.AssertFailed, control.GetId(), expected, actual);
+                string msg = string.Format(Logging.Strings["AssertFailed"], control.GetId(), expected, actual);
                 throw new AssertException(Logging.AssertException(msg));
             }
         }
@@ -34,7 +34,7 @@ namespace WhiteSharp
         {
             if (!value.Contains(actual))
             {
-                string msg = string.Format(Strings.AssertFailed, control.GetId(), value, actual);
+                string msg = string.Format(Logging.Strings["AssertFailed"], control.GetId(), value, actual);
                 throw new AssertException(Logging.AssertException(msg));
             }
         }
@@ -58,7 +58,7 @@ namespace WhiteSharp
                 }
                 if (!x.Current.IsEnabled)
                     throw new AssertException(
-                        Logging.AssertException(string.Format(Strings.AssertFailed,
+                        Logging.AssertException(string.Format(Logging.Strings["AssertFailed"],
                             new UIControl(x, Desktop.Instance).GetId(), "Enabled", "Not enabled")));
                 Logging.AssertSucceeded(new UIControl(x, Desktop.Instance));
             });
@@ -94,7 +94,9 @@ namespace WhiteSharp
                     } while (x.Current.IsEnabled && (DateTime.Now - now).TotalSeconds < Settings.Default.Timeout);
                 }
                 if (x.Current.IsEnabled)
-                    throw new AssertException(Logging.AssertException(new UIControl(x, Desktop.Instance).GetId()));
+                    throw new AssertException(
+                        Logging.AssertException(string.Format(Logging.Strings["AssertFailed"],
+                            new UIControl(x, Desktop.Instance).GetId(), "Not enabled", "Enabled")));
                 Logging.AssertSucceeded(new UIControl(x, Desktop.Instance));
             });
         }

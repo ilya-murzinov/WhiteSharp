@@ -36,7 +36,7 @@ namespace WhiteSharp
             } while (!list.Any() && ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout));
             if (!list.Any())
                 throw new ControlNotFoundException(Logging.ControlException(Identifiers.Select(x => string.Format("\"{0}\"", x))
-                    .Aggregate((x, y) => x + " " + Strings.And + " " + y)));
+                    .Aggregate((x, y) => x + " " + Logging.Strings["And"] + " " + y)));
 
             Duration = DateTime.Now - start;
             return list;
@@ -52,7 +52,7 @@ namespace WhiteSharp
         public Finder AutomationIdContains(string automationId)
         {
             Result = Find(x => x.Current.AutomationId.Contains(automationId),
-                string.Format("AutomationId {0} {1}", Strings.Contains, automationId));
+                string.Format("AutomationId {0} {1}", Logging.Strings["Contains"], automationId));
             return this;
         }
 
@@ -64,7 +64,7 @@ namespace WhiteSharp
 
         public Finder NameContains(String name)
         {
-            Result = Find(x => x.Current.Name.Contains(name), string.Format("Name {0} {1}", Strings.Contains, name));
+            Result = Find(x => x.Current.Name.Contains(name), string.Format("Name {0} {1}", Logging.Strings["Contains"], name));
             return this;
         }
 
@@ -88,7 +88,7 @@ namespace WhiteSharp
 
         public Finder TextContains(String text)
         {
-            Result = Find(x => x.Current.HelpText.Contains(text), string.Format("Text {0} {1}", Strings.Contains, text));
+            Result = Find(x => x.Current.HelpText.Contains(text), string.Format("Text {0} {1}", Logging.Strings["Contains"], text));
             return this;
         }
 
