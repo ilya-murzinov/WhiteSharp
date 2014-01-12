@@ -84,13 +84,12 @@ namespace WhiteSharp
                 throw new WindowNotFoundException(
                     Logging.WindowException(titles.ToList().Aggregate((x, y) => x + ", " + y)));
 
-            if (windows != null && windows.Count > 1)
-                Logging.MutlipleWindowsWarning(windows);
-
             if (windows != null)
             {
                 Window returnWindow = windows.First();
                 Logging.WindowFound(returnWindow, DateTime.Now - start);
+                if (windows != null && windows.Count > 1)
+                    Logging.MutlipleWindowsWarning(windows);
 
                 By.Window = returnWindow;
                 if (returnWindow.DisplayState == DisplayState.Minimized)
