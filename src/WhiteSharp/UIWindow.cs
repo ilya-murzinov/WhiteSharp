@@ -184,7 +184,7 @@ namespace WhiteSharp
         /// </summary>
         /// <param name="f">Search criteria</param>
         /// <returns></returns>
-        public UIControl FindControl(Finder f)
+        public UIControl FindControl(By f)
         {
             Logging.ControlFound(f);
             if (f.Result.Count > 1)
@@ -203,7 +203,7 @@ namespace WhiteSharp
         /// </summary>
         /// <param name="f">Search criteria</param>
         /// <returns>List of controls found by given criteria</returns>
-        public List<AutomationElement> FindAll(Finder f)
+        public List<AutomationElement> FindAll(By f)
         {
             return f.Result;
         }

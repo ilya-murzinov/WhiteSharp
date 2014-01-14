@@ -112,7 +112,7 @@ namespace WhiteSharp
             Write("\r\n" + description.ToUpper() + "\r\n");
         }
 
-        public static string ControlFound(Finder f)
+        public static string ControlFound(By f)
         {
             string s = string.Format(Strings["ControlFound"], f.Identifiers.Select(x => string.Format("\"{0}\"", x))
                 .Aggregate((x, y) => x + " " + Strings["And"] + " " + y), f.Duration.TotalSeconds);

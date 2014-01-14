@@ -8,8 +8,8 @@ namespace WhiteSharp.Interfaces
 {
     internal interface IUIWindow
     {
-        UIControl FindControl(Finder finder);
-        List<AutomationElement> FindAll(Finder finder);
+        UIControl FindControl(By finder);
+        List<AutomationElement> FindAll(By finder);
         void Send(string message);
     }
 }

@@ -2,7 +2,7 @@
 {
     internal interface IUIControl
     {
-        UIControl FindChild(Finder finder);
+        UIControl FindChild(By finder);
         UIControl Click();
         UIControl ClickAnyway();
         UIControl Send(string message);

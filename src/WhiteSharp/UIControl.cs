@@ -31,7 +31,7 @@ namespace WhiteSharp
             return AutomationElement.GetId();
         }
 
-        public UIControl FindChild(Finder f)
+        public UIControl FindChild(By f)
         {
             List<AutomationElement> container = AutomationElement.FindAll(TreeScope.Descendants,
                 new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
@@ -47,13 +47,13 @@ namespace WhiteSharp
 
         public UIControl FindChild(string automationId)
         {
-            var f = new Finder
+            var f = new By
             {
                 Result = AutomationElement.FindAll(TreeScope.Descendants,
                     new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
                     .OfType<AutomationElement>().ToList()
             };
-            return new UIControl(f.AutomationId(automationId).Result.First(), ActionListener);
+            return new UIControl(f.AndAutomationId(automationId).Result.First(), ActionListener);
         }
 
         /// <summary>
