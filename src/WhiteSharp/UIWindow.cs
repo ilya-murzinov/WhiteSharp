@@ -11,10 +11,11 @@ using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.MenuItems;
 using TestStack.White.UIItems.WindowItems;
 using TestStack.White.WindowsAPI;
+using WhiteSharp.Interfaces;
 
 namespace WhiteSharp
 {
-    public class UIWindow : Window
+    public class UIWindow : Window, IUIWindow
     {
         #region WindowMembers
 
@@ -42,35 +43,63 @@ namespace WhiteSharp
 
         #endregion
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="titles">List of strings, which the desired window's title should contain</param>
-        /// <returns></returns>
-        public UIWindow(params string[] titles) : base(FindWindow(titles).AutomationElement, InitializeOption.NoCache,
-            new WindowSession(new ApplicationSession(),
-                InitializeOption.NoCache))
+        private static readonly InitializeOption InitializeOption = InitializeOption.NoCache;
+        private static readonly new WindowSession WindowSession = new WindowSession(new ApplicationSession(), InitializeOption);
+
+        private static int _processId;
+        public int ProcessId
+        {
+            get
+            {
+                return _processId;
+            }
+        }
+
+        private static List<string> _identifiers = new List<string>();
+        private static DateTime _start;
+
+        #region Constructors
+
+        public UIWindow(params string[] titles)
+            : base(SelectWindow(FindWindows(titles)).AutomationElement, InitializeOption, WindowSession)
         {
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="titles">List of strings, which the desired window's title should contain</param>
-        /// <returns></returns>
-        private static Window FindWindow(params string[] titles)
+        public UIWindow(Predicate<Window> p)
+            : base(SelectWindow(FindWindows(p)).AutomationElement, InitializeOption, WindowSession)
+        {
+        }
+
+        public UIWindow(int processId)
+            : base(FindWindows(processId).First().AutomationElement, InitializeOption, WindowSession)
+        {
+        }
+
+        public UIWindow(int processId, Predicate<Window> p)
+            : base(SelectWindow(FindWindows(processId, p)).AutomationElement, InitializeOption, WindowSession)
+        {
+        } 
+
+        #endregion
+
+        #region Finders
+
+        private static List<Window> FindWindows(params string[] titles)
         {
             List<Window> windows = null;
 
-            DateTime start = DateTime.Now;
+            _start = DateTime.Now;
+
             do
             {
                 try
                 {
                     windows = Desktop.Instance.Windows().FindAll(window => window.Title.Contains(titles[0]));
+                    _identifiers.Add(titles[0]);
                     foreach (string title in titles.Skip(1))
                     {
                         windows = windows.Where(window => window.Title.Contains(title)).ToList();
+                        _identifiers.Add(title);
                     }
                 }
                 catch (ElementNotAvailableException e)
@@ -79,27 +108,76 @@ namespace WhiteSharp
                 }
                 Thread.Sleep(Settings.Default.Delay);
             } while (windows != null &&
-                     (!windows.Any() && ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)));
-            if (windows != null && !windows.Any())
-                throw new WindowNotFoundException(
-                    Logging.WindowException(titles.ToList().Aggregate((x, y) => x + ", " + y)));
-
-            if (windows != null)
-            {
-                Window returnWindow = windows.First();
-                Logging.WindowFound(returnWindow, DateTime.Now - start);
-                if (windows != null && windows.Count > 1)
-                    Logging.MutlipleWindowsWarning(windows);
-
-                By.Window = returnWindow;
-                if (returnWindow.DisplayState == DisplayState.Minimized)
-                    returnWindow.DisplayState = DisplayState.Restored;
-                returnWindow.Focus();
-
-                return returnWindow;
-            }
-            return null;
+                (!windows.Any() && ((DateTime.Now - _start).TotalMilliseconds < Settings.Default.Timeout)));
+            return windows;
         }
+
+        private static List<Window> FindWindows(Predicate<Window> predicate)
+        {
+            List<Window> windows = null;
+
+            _start = DateTime.Now;
+
+            do
+            {
+                try
+                {
+                    windows = Desktop.Instance.Windows().FindAll(predicate);
+                }
+                catch (ElementNotAvailableException e)
+                {
+                    Logging.Exception(e);
+                }
+                Thread.Sleep(Settings.Default.Delay);
+            } while (windows != null &&
+                (!windows.Any() && ((DateTime.Now - _start).TotalMilliseconds < Settings.Default.Timeout)));
+            _identifiers.Add(predicate.ToString());
+            return windows;
+            
+        }
+
+        public static List<Window> FindWindows(int processId)
+        {
+            _start = DateTime.Now;
+            try
+            {
+                Process.GetProcessById(processId);
+            }
+            catch (ArgumentException)
+            {
+                throw new GeneralException(Logging.Strings["ProcessNotFound"]);
+            }
+            _identifiers.Add(processId.ToString());
+            return Desktop.Instance.Windows()
+                    .FindAll(window => window.AutomationElement.Current.ProcessId.Equals(processId));
+        }
+
+        private static List<Window> FindWindows(int processId, Predicate<Window> p)
+        {
+            _identifiers.Add(processId + " " + p);
+            return FindWindows(p).Where(x=>x.AutomationElement.Current.ProcessId.Equals(processId)).ToList();
+        }
+
+        private static Window SelectWindow(List<Window> windows)
+        {
+            if (windows == null || !windows.Any())
+                throw new WindowNotFoundException(
+                    Logging.WindowException(_identifiers.Select(x => x.ToString()).Aggregate((x, y) => x + ", " + y)));
+            _identifiers = new List<string>();
+
+            Window returnWindow = windows.First();
+            Logging.WindowFound(returnWindow, DateTime.Now - _start);
+            if (windows != null && windows.Count > 1)
+                Logging.MutlipleWindowsWarning(windows);
+
+            By.Window = returnWindow;
+            if (returnWindow.DisplayState == DisplayState.Minimized)
+                returnWindow.DisplayState = DisplayState.Restored;
+            returnWindow.Focus();
+            _processId = returnWindow.AutomationElement.Current.ProcessId;
+            return returnWindow;
+        } 
+        #endregion
 
         /// <summary>
         /// 
@@ -135,8 +213,9 @@ namespace WhiteSharp
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public UIWindow Send(string value)
+        public void Send(string value)
         {
+            Focus();
             switch (value)
             {
                 case "{F5}":
@@ -162,9 +241,16 @@ namespace WhiteSharp
                     Keyboard.LeaveKey(KeyboardInput.SpecialKeys.ALT);
                     break;
                 }
+                case "^{ENTER}":
+                {
+                    Keyboard.HoldKey(KeyboardInput.SpecialKeys.CONTROL);
+                    Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
+                    Keyboard.LeaveKey(KeyboardInput.SpecialKeys.CONTROL);
+                    break;
+            }
+                    
             }
             Logging.Sent(value);
-            return this;
         }
     }
 }

@@ -4,41 +4,31 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
-using Castle.Core.Internal;
+using System.Windows.Forms.VisualStyles;
 using TestStack.White.InputDevices;
 using TestStack.White.UIItems;
+using TestStack.White.UIItems.Finders;
+using TestStack.White.UIItems.WindowItems;
 using TestStack.White.UIItems.Actions;
+using TestStack.White.UIItems.TreeItems;
 using TestStack.White.WindowsAPI;
+using WhiteSharp.Extensions;
+using WhiteSharp.Interfaces;
 using ComboBox = TestStack.White.UIItems.ListBoxItems.ComboBox;
 
 namespace WhiteSharp
 {
-    public class UIControl : UIItem
+    public class UIControl : UIItem, IUIControl
     {
+        public UIWindow Window { get; internal set; }
+
         internal UIControl(AutomationElement element, ActionListener listener) : base(element, listener)
         {
         }
 
-        internal string GetId()
+        public string GetId()
         {
-            string[] identifiers =
-            {
-                "AutomationId",
-                "Name",
-                "Control Type",
-                "Class Name"
-            };
-
-            var propertyList = new[]
-            {
-                AutomationElement.Current.AutomationId,
-                AutomationElement.Current.Name,
-                AutomationElement.Current.ControlType.ToString(),
-                AutomationElement.Current.ClassName
-            };
-
-            return identifiers[Array.FindIndex(propertyList, 0, x => !String.IsNullOrEmpty(x))] + " = " +
-                   propertyList.First(x => !String.IsNullOrEmpty(x));
+            return AutomationElement.GetId();
         }
 
         public UIControl FindChild(Finder f)
@@ -72,13 +62,15 @@ namespace WhiteSharp
         /// <returns></returns>
         public UIControl ClickAnyway()
         {
+            DateTime start = DateTime.Now;
             if (AutomationElement.Current.ControlType.Equals(ControlType.Edit))
             {
                 do
                 {
                     Mouse.Instance.Click(ClickablePoint);
                     Thread.Sleep(Settings.Default.Delay);
-                } while (!AutomationElement.Current.HasKeyboardFocus);
+                } while (!AutomationElement.Current.HasKeyboardFocus 
+                    && (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout);
             }
             else
                 Mouse.Instance.Click(ClickablePoint);
@@ -153,35 +145,7 @@ namespace WhiteSharp
         /// <returns></returns>
         public string GetText()
         {
-            SelectionPattern selectionPattern;
-            ValuePattern valuePattern;
-            object p;
-
-            if (AutomationElement.Current.ControlType.Equals(ControlType.Edit))
-            {
-                valuePattern = (ValuePattern) AutomationElement.GetCurrentPattern(ValuePattern.Pattern);
-                return valuePattern.Current.Value;
-            }
-
-            if (AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
-            {
-                if (AutomationElement.TryGetCurrentPattern(SelectionPattern.Pattern, out p))
-                {
-                    selectionPattern = (SelectionPattern) p;
-                    return selectionPattern.Current.GetSelection().ToString();
-                }
-                if (AutomationElement.TryGetCurrentPattern(ValuePattern.Pattern, out p))
-                {
-                    valuePattern = (ValuePattern) p;
-                    return valuePattern.Current.Value;
-                }
-            }
-
-            return new[]
-            {
-                AutomationElement.Current.Name,
-                AutomationElement.Current.HelpText
-            }.First(x => !x.IsNullOrEmpty());
+            return AutomationElement.GetText();
         }
 
         public UIControl WaitForControlEnabled()
@@ -198,7 +162,7 @@ namespace WhiteSharp
             return this;
         }
 
-        public UIItem SelectItem(string name)
+        public void SelectItem(string name)
         {
             WaitForControlEnabled();
             if (!AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
@@ -207,10 +171,9 @@ namespace WhiteSharp
             }
             var combobox = new ComboBox(AutomationElement, actionListener);
             combobox.Select(name);
-            return this;
         }
 
-        public UIItem SelectItem(int index)
+        public void SelectItem(int index)
         {
             WaitForControlEnabled();
             if (!AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
@@ -219,6 +182,18 @@ namespace WhiteSharp
             }
             var combobox = new ComboBox(AutomationElement, actionListener);
             combobox.Select(index);
+        }
+
+        public UIItem SelectItemTree(string name)
+        {
+            WaitForControlEnabled();
+            if (!AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
+            {
+                throw new GeneralException(string.Format(Logging.Strings["NotACombobox"], GetId()));
+            }
+            var combobox = new ComboBox(AutomationElement, actionListener);
+            var p = (ValuePattern)combobox.AutomationElement.GetCurrentPattern(ValuePattern.Pattern);
+            p.SetValue(name);
             return this;
         }
 

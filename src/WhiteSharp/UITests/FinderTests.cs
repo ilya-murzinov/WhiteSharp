@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using WhiteSharp.UITests;
 
 namespace WhiteSharp.UnitTests
 {

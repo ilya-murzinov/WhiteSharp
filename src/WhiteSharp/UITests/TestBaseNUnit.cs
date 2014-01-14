@@ -2,9 +2,8 @@
 using System.Diagnostics;
 using NUnit.Framework;
 using TestStack.White;
-using System.IO;
 
-namespace WhiteSharp.UnitTests
+namespace WhiteSharp.UITests
 {
     [TestFixture(Ignore=true)]
     public class TestBaseNUnit

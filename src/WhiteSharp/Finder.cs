@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Automation;
 using TestStack.White.UIItems.WindowItems;
+using WhiteSharp.Extensions;
 
 namespace WhiteSharp
 {
@@ -24,21 +25,19 @@ namespace WhiteSharp
 
         private List<AutomationElement> Find(Func<AutomationElement, bool> p, string identifier)
         {
-            DateTime start = DateTime.Now;
             List<AutomationElement> list;
-
             Identifiers.Add(identifier);
 
             do
             {
                 Thread.Sleep(Settings.Default.Delay);
                 list = Result.Where(p).ToList();
-            } while (!list.Any() && ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout));
-            if (!list.Any())
+            } while (!list.Any() && ((DateTime.Now - Start).TotalMilliseconds < Settings.Default.Timeout));
+            if (list == null || !list.Any())
                 throw new ControlNotFoundException(Logging.ControlException(Identifiers.Select(x => string.Format("\"{0}\"", x))
                     .Aggregate((x, y) => x + " " + Logging.Strings["And"] + " " + y)));
 
-            Duration = DateTime.Now - start;
+            Duration = DateTime.Now - Start;
             return list;
         }
 
@@ -82,13 +81,13 @@ namespace WhiteSharp
 
         public Finder Text(String text)
         {
-            Result = Find(x => new UIControl(x, null).GetText().Equals(text), string.Format("Text = {0}", text));
+            Result = Find(x => x.GetText().Equals(text), string.Format("Text = {0}", text));
             return this;
         }
 
         public Finder TextContains(String text)
         {
-            Result = Find(x => new UIControl(x, null).GetText().Contains(text), string.Format("Text {0} {1}", Logging.Strings["Contains"], text));
+            Result = Find(x => x.GetText().Contains(text), string.Format("Text {0} {1}", Logging.Strings["Contains"], text));
             return this;
         }
 
@@ -117,8 +116,7 @@ namespace WhiteSharp
 
     public class By
     {
-        public static Window Window = null;
-        public static UIControl Control = null;
+        public static Window Window;
 
         public static Finder AutomationId(string automationId)
         {
@@ -150,12 +148,12 @@ namespace WhiteSharp
             return new Finder().ControlType(type);
         }
 
-        public Finder Text(String text)
+        public static Finder Text(String text)
         {
             return new Finder().Text(text);
         }
 
-        public Finder TextContains(String text)
+        public static Finder TextContains(String text)
         {
             return new Finder().TextContains(text);
         }

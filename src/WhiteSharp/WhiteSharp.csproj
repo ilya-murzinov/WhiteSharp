@@ -40,7 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core">
-      <HintPath>..\..\lib\Castle.Core.dll</HintPath>
+      <HintPath>..\..\Libs\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -51,7 +51,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="TestStack.White">
-      <HintPath>..\..\lib\TestStack.White.dll</HintPath>
+      <HintPath>..\..\Libs\TestStack.White.dll</HintPath>
     </Reference>
     <Reference Include="UIAutomationClient" />
     <Reference Include="UIAutomationTypes" />
@@ -67,7 +67,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Exceptions.cs" />
+    <Compile Include="Extensions\AutomationElementExtension.cs" />
     <Compile Include="Finder.cs" />
+    <Compile Include="Interfaces\IUIControl.cs" />
+    <Compile Include="Interfaces\IUIWindow.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Settings.Designer.cs">
@@ -79,22 +82,23 @@
     <Compile Include="UIWindow.cs" />
     <Compile Include="Asserts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
-      <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AssemblyInfo2.cs</LastGenOutput>
     </Compile>
-    <Compile Include="UnitTests\TestBaseNUnit.cs" />
-    <Compile Include="UnitTests\FinderTests.cs" />
+    <Compile Include="UITests\TestBaseNUnit.cs" />
+    <Compile Include="UITests\FinderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="UITests\RunTests.bat" />
     <None Include="Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
@@ -116,8 +120,8 @@
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>cd "$(SolutionDir)"
-RunTests.bat</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

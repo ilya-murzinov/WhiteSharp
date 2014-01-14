@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Automation;
 using TestStack.White;
+using WhiteSharp.Extensions;
 
 namespace WhiteSharp
 {
@@ -59,7 +60,7 @@ namespace WhiteSharp
                 if (!x.Current.IsEnabled)
                     throw new AssertException(
                         Logging.AssertException(string.Format(Logging.Strings["AssertFailed"],
-                            new UIControl(x, Desktop.Instance).GetId(), "Enabled", "Not enabled")));
+                            x.GetId(), "Enabled", "Not enabled")));
                 Logging.AssertSucceeded(new UIControl(x, Desktop.Instance));
             });
         }
@@ -96,7 +97,7 @@ namespace WhiteSharp
                 if (x.Current.IsEnabled)
                     throw new AssertException(
                         Logging.AssertException(string.Format(Logging.Strings["AssertFailed"],
-                            new UIControl(x, Desktop.Instance).GetId(), "Not enabled", "Enabled")));
+                            x.GetId(), "Not enabled", "Enabled")));
                 Logging.AssertSucceeded(new UIControl(x, Desktop.Instance));
             });
         }

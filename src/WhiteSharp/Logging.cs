@@ -16,8 +16,9 @@ namespace WhiteSharp
         }
 
         internal static Dictionary<string, string> Strings = new Dictionary<string, string>();
-        internal static Dictionary<string, string> StringsRu = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> StringsRu = new Dictionary<string, string>
         {
+            {"ProcessNotFound", "Process with given Id was not found"},
             {"TestStarted", "Запущен тест: {0}"},
             {"And", "и"},
             {"ControlFound", "Контрол по условию {0} найден за {1} секунд"},
@@ -34,8 +35,9 @@ namespace WhiteSharp
             {"Contains", "сожержит"},
             {"NotACombobox", "Контрол \"{0}\" не является комбобоксом"}
         };
-        internal static Dictionary<string, string> StringsEn = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> StringsEn = new Dictionary<string, string>
         {
+            {"ProcessNotFound", "Не найден процесс с заданным Id"},
             {"TestStarted", "Test started: {0}"},
             {"And", "and"},
             {"ControlFound", "Control by {0} was found in {1} seconds"},
