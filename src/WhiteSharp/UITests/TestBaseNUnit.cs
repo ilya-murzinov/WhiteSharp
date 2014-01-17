@@ -5,7 +5,7 @@ using TestStack.White;
 
 namespace WhiteSharp.UITests
 {
-    [TestFixture(Ignore=true)]
+    [TestFixture(Ignore = true)]
     public class TestBaseNUnit
     {
         [SetUp]
@@ -28,7 +28,7 @@ namespace WhiteSharp.UITests
 
         public UIWindow Window;
         public static string WindowTitle = "MainWindow";
-        public static string Path = @"..\..\..\..\\TestApps\\WpfTestApplication.exe";
+        public static string Path = @"..\..\..\..\\Tools\\TestApps\\WpfTestApplication.exe";
         public static string ResultsPath = "\\Results";
         private readonly Process proc = Process.Start(Path);
 

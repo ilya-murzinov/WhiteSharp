@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Automation;
 using TestStack.White;
@@ -17,7 +18,16 @@ namespace WhiteSharp
 {
     public class UIWindow : Window, IUIWindow
     {
-        #region WindowMembers
+        [DllImport("user32.dll")]
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy,
+            uint uFlags);
+
+        private static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        private const UInt32 SWP_NOSIZE = 0x0001;
+        private const UInt32 SWP_NOMOVE = 0x0002;
+        private const UInt32 SWP_SHOWWINDOW = 0x0040;
+
+        #region Window Members
 
         private readonly WindowFactory windowFactory = null;
 
@@ -44,15 +54,15 @@ namespace WhiteSharp
         #endregion
 
         private static readonly InitializeOption InitializeOption = InitializeOption.NoCache;
-        private static readonly new WindowSession WindowSession = new WindowSession(new ApplicationSession(), InitializeOption);
+
+        private new static readonly WindowSession WindowSession = new WindowSession(new ApplicationSession(),
+            InitializeOption);
 
         private static int _processId;
+
         public int ProcessId
         {
-            get
-            {
-                return _processId;
-            }
+            get { return _processId; }
         }
 
         private static List<string> _identifiers = new List<string>();
@@ -78,28 +88,28 @@ namespace WhiteSharp
         public UIWindow(int processId, Predicate<Window> p)
             : base(SelectWindow(FindWindows(processId, p)).AutomationElement, InitializeOption, WindowSession)
         {
-        } 
+        }
 
         #endregion
 
-        #region Finders
+        #region Window finders
 
         private static List<Window> FindWindows(params string[] titles)
         {
-            List<Window> windows = null;
-
+            _identifiers = new List<string>();
+            List<Window> windows = new List<Window>();
             _start = DateTime.Now;
 
-            do
+            _identifiers.Add(titles[0]);
+            while (!windows.Any() && (DateTime.Now - _start).TotalMilliseconds < Settings.Default.Timeout)
             {
                 try
                 {
                     windows = Desktop.Instance.Windows().FindAll(window => window.Title.Contains(titles[0]));
-                    _identifiers.Add(titles[0]);
                     foreach (string title in titles.Skip(1))
                     {
-                        windows = windows.Where(window => window.Title.Contains(title)).ToList();
                         _identifiers.Add(title);
+                        windows = windows.Where(window => window.Title.Contains(title)).ToList();
                     }
                 }
                 catch (ElementNotAvailableException e)
@@ -107,13 +117,13 @@ namespace WhiteSharp
                     Logging.Exception(e);
                 }
                 Thread.Sleep(Settings.Default.Delay);
-            } while (windows != null &&
-                (!windows.Any() && ((DateTime.Now - _start).TotalMilliseconds < Settings.Default.Timeout)));
+            }
             return windows;
         }
 
         private static List<Window> FindWindows(Predicate<Window> predicate)
         {
+            _identifiers = new List<string>();
             List<Window> windows = null;
 
             _start = DateTime.Now;
@@ -130,14 +140,14 @@ namespace WhiteSharp
                 }
                 Thread.Sleep(Settings.Default.Delay);
             } while (windows != null &&
-                (!windows.Any() && ((DateTime.Now - _start).TotalMilliseconds < Settings.Default.Timeout)));
+                     (!windows.Any() && ((DateTime.Now - _start).TotalMilliseconds < Settings.Default.Timeout)));
             _identifiers.Add(predicate.ToString());
             return windows;
-            
         }
 
-        public static List<Window> FindWindows(int processId)
+        private static List<Window> FindWindows(int processId)
         {
+            _identifiers = new List<string>();
             _start = DateTime.Now;
             try
             {
@@ -149,70 +159,69 @@ namespace WhiteSharp
             }
             _identifiers.Add(processId.ToString());
             return Desktop.Instance.Windows()
-                    .FindAll(window => window.AutomationElement.Current.ProcessId.Equals(processId));
+                .FindAll(window => window.AutomationElement.Current.ProcessId.Equals(processId));
         }
 
         private static List<Window> FindWindows(int processId, Predicate<Window> p)
         {
+            _identifiers = new List<string>();
             _identifiers.Add(processId + " " + p);
-            return FindWindows(p).Where(x=>x.AutomationElement.Current.ProcessId.Equals(processId)).ToList();
+            return FindWindows(p).Where(x => x.AutomationElement.Current.ProcessId.Equals(processId)).ToList();
         }
 
         private static Window SelectWindow(List<Window> windows)
         {
             if (windows == null || !windows.Any())
                 throw new WindowNotFoundException(
-                    Logging.WindowException(_identifiers.Select(x => x.ToString()).Aggregate((x, y) => x + ", " + y)));
-            _identifiers = new List<string>();
+                    Logging.WindowException(_identifiers.Aggregate((x, y) => x + ", " + y)));
+
 
             Window returnWindow = windows.First();
             Logging.WindowFound(returnWindow, DateTime.Now - _start);
-            if (windows != null && windows.Count > 1)
+            if (windows.Count > 1)
                 Logging.MutlipleWindowsWarning(windows);
 
-            By.Window = returnWindow;
             if (returnWindow.DisplayState == DisplayState.Minimized)
                 returnWindow.DisplayState = DisplayState.Restored;
-            returnWindow.Focus();
+            SetWindowPos(new IntPtr(returnWindow.AutomationElement.Current.NativeWindowHandle), HWND_TOPMOST, 0, 0, 0, 0,
+                SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+
             _processId = returnWindow.AutomationElement.Current.ProcessId;
+
             return returnWindow;
-        } 
+        }
+
         #endregion
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="f">Search criteria</param>
-        /// <returns></returns>
-        public UIControl FindControl(By f)
+        public UIControl FindControl(By searchCriteria, int index = 0)
         {
-            Logging.ControlFound(f);
-            if (f.Result.Count > 1)
-                Logging.MutlipleControlsWarning(f.Result);
-            
-            return new UIControl(f.Result.First(), this);
+            UIControl returnControl = new UIControl(Finder.Find(AutomationElement, searchCriteria).ElementAt(index),
+                actionListener)
+            {
+                Identifiers = searchCriteria.Identifiers,
+                Window = this
+            };
+
+            Logging.ControlFound(searchCriteria);
+
+            return returnControl;
         }
 
         public UIControl FindControl(string automationId)
         {
-            return new UIControl(By.AutomationId(automationId).Result.First(), this);
+            return FindControl(By.AutomationId(automationId));
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="f">Search criteria</param>
-        /// <returns>List of controls found by given criteria</returns>
-        public List<AutomationElement> FindAll(By f)
+        public UIControl FindControl(ControlType type)
         {
-            return f.Result;
+            return FindControl(By.ControlType(type));
         }
 
-        /// <summary>
-        /// Supported shortcuts: {F5}, {Tab}, {Esc}, {Alt}+{F4}.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        public List<AutomationElement> FindAll(By searchCriteria)
+        {
+            return Finder.Find(AutomationElement, searchCriteria);
+        }
+
         public void Send(string value)
         {
             Focus();
@@ -247,8 +256,7 @@ namespace WhiteSharp
                     Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
                     Keyboard.LeaveKey(KeyboardInput.SpecialKeys.CONTROL);
                     break;
-            }
-                    
+                }
             }
             Logging.Sent(value);
         }

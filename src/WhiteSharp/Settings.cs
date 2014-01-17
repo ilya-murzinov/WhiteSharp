@@ -7,7 +7,6 @@ namespace WhiteSharp
     {
         private void SettingChangingEventHandler(object sender, SettingChangingEventArgs e)
         {
-            
         }
 
         private void PropertyChangingEventHandler(object sender, PropertyChangedEventArgs e)
@@ -17,7 +16,6 @@ namespace WhiteSharp
 
         private void SettingsSavingEventHandler(object sender, CancelEventArgs e)
         {
-            
         }
     }
 }

@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Automation;
-using TestStack.White.Factory;
-using TestStack.White.UIItems.WindowItems;
 
 namespace WhiteSharp.Interfaces
 {
-    internal interface IUIWindow
+    public interface IUIWindow
     {
-        UIControl FindControl(By finder);
-        List<AutomationElement> FindAll(By finder);
+        int ProcessId { get; }
+
+        UIControl FindControl(By searchCriteria, int index);
+        UIControl FindControl(string automationId);
+        UIControl FindControl(ControlType type);
+        List<AutomationElement> FindAll(By searchCriteria);
         void Send(string message);
     }
 }

@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Automation;
-using System.Windows.Forms.VisualStyles;
 using Castle.Core.Internal;
-using TestStack.White;
 
 namespace WhiteSharp.Extensions
 {
@@ -46,7 +41,7 @@ namespace WhiteSharp.Extensions
 
             if (automationElement.Current.ControlType.Equals(ControlType.Edit))
             {
-                valuePattern = (ValuePattern)automationElement.GetCurrentPattern(ValuePattern.Pattern);
+                valuePattern = (ValuePattern) automationElement.GetCurrentPattern(ValuePattern.Pattern);
                 value = valuePattern.Current.Value;
             }
 
@@ -55,12 +50,12 @@ namespace WhiteSharp.Extensions
                 object p;
                 if (automationElement.TryGetCurrentPattern(SelectionPattern.Pattern, out p))
                 {
-                    selectionPattern = (SelectionPattern)p;
+                    selectionPattern = (SelectionPattern) p;
                     selectedItemName = selectionPattern.Current.GetSelection().First().Current.Name;
                 }
                 if (automationElement.TryGetCurrentPattern(ValuePattern.Pattern, out p))
                 {
-                    valuePattern = (ValuePattern)p;
+                    valuePattern = (ValuePattern) p;
                     value = valuePattern.Current.Value;
                 }
             }

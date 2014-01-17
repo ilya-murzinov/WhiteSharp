@@ -68,7 +68,7 @@
   <ItemGroup>
     <Compile Include="Exceptions.cs" />
     <Compile Include="Extensions\AutomationElementExtension.cs" />
-    <Compile Include="By.cs" />
+    <Compile Include="Finder.cs" />
     <Compile Include="Interfaces\IUIControl.cs" />
     <Compile Include="Interfaces\IUIWindow.cs" />
     <Compile Include="Logging.cs" />
@@ -79,6 +79,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="UIControl.cs" />
+    <Compile Include="UITests\ActionTests.cs" />
     <Compile Include="UIWindow.cs" />
     <Compile Include="Asserts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -92,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="UITests\RunTests.bat" />
     <None Include="Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using TestStack.White.InputDevices;
 using TestStack.White.UIItems;
-using TestStack.White.UIItems.Finders;
-using TestStack.White.UIItems.WindowItems;
 using TestStack.White.UIItems.Actions;
-using TestStack.White.UIItems.TreeItems;
 using TestStack.White.WindowsAPI;
 using WhiteSharp.Extensions;
 using WhiteSharp.Interfaces;
@@ -21,6 +17,7 @@ namespace WhiteSharp
     public class UIControl : UIItem, IUIControl
     {
         public UIWindow Window { get; internal set; }
+        internal string Identifiers { get; set; }
 
         internal UIControl(AutomationElement element, ActionListener listener) : base(element, listener)
         {
@@ -31,35 +28,30 @@ namespace WhiteSharp
             return AutomationElement.GetId();
         }
 
-        public UIControl FindChild(By f)
+        public UIControl FindChild(By searchCriteria, int index = 0)
         {
-            List<AutomationElement> container = AutomationElement.FindAll(TreeScope.Descendants,
-                new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
-                .OfType<AutomationElement>().ToList();
-            List<AutomationElement> list = f.Result.Where(container.Contains).ToList();
+            UIControl returnControl = new UIControl(Finder.Find(AutomationElement, searchCriteria).ElementAt(index),
+                actionListener)
+            {
+                Identifiers = searchCriteria.Identifiers,
+                Window = Window
+            };
 
-            Logging.ControlFound(f);
-            if (list.Count() > 1)
-                Logging.MutlipleControlsWarning(f.Result.Where(container.Contains).ToList());
+            Logging.ControlFound(searchCriteria);
 
-            return new UIControl(list.First(), actionListener);
+            return returnControl;
         }
 
         public UIControl FindChild(string automationId)
         {
-            var f = new By
-            {
-                Result = AutomationElement.FindAll(TreeScope.Descendants,
-                    new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
-                    .OfType<AutomationElement>().ToList()
-            };
-            return new UIControl(f.AndAutomationId(automationId).Result.First(), ActionListener);
+            return FindChild(By.AutomationId(automationId));
         }
 
-        /// <summary>
-        ///     Clicks without waiting for control to get enabled
-        /// </summary>
-        /// <returns></returns>
+        public UIControl FindChild(ControlType type)
+        {
+            return FindChild(By.ControlType(type));
+        }
+
         public UIControl ClickAnyway()
         {
             DateTime start = DateTime.Now;
@@ -69,30 +61,21 @@ namespace WhiteSharp
                 {
                     Mouse.Instance.Click(ClickablePoint);
                     Thread.Sleep(Settings.Default.Delay);
-                } while (!AutomationElement.Current.HasKeyboardFocus 
-                    && (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout);
+                } while (!AutomationElement.Current.HasKeyboardFocus
+                         && (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout);
             }
             else
                 Mouse.Instance.Click(ClickablePoint);
-            Logging.Click(this);
+            Logging.Click(Identifiers);
             return this;
         }
 
-        /// <summary>
-        ///     Waits for control to get enabled enabled, then clicks
-        /// </summary>
-        /// <returns></returns>
         public new UIControl Click()
         {
             WaitForControlEnabled();
             return ClickAnyway();
         }
 
-        /// <summary>
-        /// Supported shortcuts: {F5}, {Tab}, {Esc}, {Enter}.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public UIControl Send(string value)
         {
             WaitForControlEnabled();
@@ -123,6 +106,11 @@ namespace WhiteSharp
                     Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
                     break;
                 }
+                case "{Down}":
+                {
+                    Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.DOWN);
+                    break;
+                }
                 default:
                 {
                     SendKeys.SendWait(value);
@@ -139,10 +127,6 @@ namespace WhiteSharp
             return this;
         }
 
-        /// <summary>
-        /// Returns text of UIControl
-        /// </summary>
-        /// <returns></returns>
         public string GetText()
         {
             return AutomationElement.GetText();
@@ -151,14 +135,20 @@ namespace WhiteSharp
         public UIControl WaitForControlEnabled()
         {
             DateTime start = DateTime.Now;
-            do
-            {
-                Thread.Sleep(Settings.Default.Delay);
-            } while (!AutomationElement.Current.IsEnabled &&
-                     ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout));
+            object o;
+            if (Window.FindControl("busyIndicator").AutomationElement.TryGetCurrentPattern(TogglePattern.Pattern, out o))
+                ;
+            TogglePattern p = (TogglePattern) o;
 
-            if (!AutomationElement.Current.IsEnabled)
-                throw new ControlNotEnabledException(Logging.ControlException(GetId()));
+            while ((!Enabled || p.Current.ToggleState == ToggleState.On) &&
+                   (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
+            {
+                Trace.WriteLine(AutomationElement.Current.AutomationId + " - " + Enabled);
+                Thread.Sleep(Settings.Default.Delay);
+            }
+
+            if (!Enabled)
+                throw new ControlNotEnabledException(Logging.ControlNotEnabledException(Identifiers));
             return this;
         }
 
@@ -169,8 +159,9 @@ namespace WhiteSharp
             {
                 throw new GeneralException(string.Format(Logging.Strings["NotACombobox"], GetId()));
             }
-            var combobox = new ComboBox(AutomationElement, actionListener);
-            combobox.Select(name);
+            var p = (ValuePattern) AutomationElement.GetCurrentPattern(ValuePattern.Pattern);
+            p.SetValue(name);
+            Logging.ItemSelected(name, Identifiers);
         }
 
         public void SelectItem(int index)
@@ -181,20 +172,15 @@ namespace WhiteSharp
                 throw new GeneralException(string.Format(Logging.Strings["NotACombobox"], GetId()));
             }
             var combobox = new ComboBox(AutomationElement, actionListener);
-            combobox.Select(index);
-        }
-
-        public UIItem SelectItemTree(string name)
-        {
-            WaitForControlEnabled();
-            if (!AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
+            try
             {
-                throw new GeneralException(string.Format(Logging.Strings["NotACombobox"], GetId()));
+                combobox.Select(index);
             }
-            var combobox = new ComboBox(AutomationElement, actionListener);
-            var p = (ValuePattern)combobox.AutomationElement.GetCurrentPattern(ValuePattern.Pattern);
-            p.SetValue(name);
-            return this;
+            catch (Exception e)
+            {
+                Logging.Exception(e);
+            }
+            Logging.ItemSelected(index.ToString(), Identifiers);
         }
 
         public new UIControl DrawHighlight()

@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-using WhiteSharp.UITests;
+﻿using System.Windows.Automation;
+using NUnit.Framework;
 
-namespace WhiteSharp.UnitTests
+namespace WhiteSharp.UITests
 {
     [TestFixture]
     public class FinderTests : TestBaseNUnit
@@ -36,6 +36,22 @@ namespace WhiteSharp.UnitTests
             Window.FindControl(By.AutomationId(id));
         }
 
+        [TestCase("AComboBox")]
+        [TestCase("EditableComboBox")]
+        [TestCase("OpenHorizontalSplitterButton")]
+        [TestCase("ListBoxWithVScrollBar")]
+        [TestCase("CheckedListBox")]
+        public void FindControlByAutomaionIdString(string id)
+        {
+            Window.FindControl(id);
+        }
+
+        [Test]
+        public void FindControlByControlTypeType()
+        {
+            Window.FindControl(ControlType.Edit);
+        }
+
         [TestCase("Input Controls")]
         [TestCase("Get Multiple")]
         [TestCase("Button in toolbar")]
@@ -63,7 +79,7 @@ namespace WhiteSharp.UnitTests
         [TestCase("Button", 1)]
         public void FindControlByClassNameAndIndex(string id, int index)
         {
-            Window.FindControl(By.ClassName(id).Index(index));
+            Window.FindControl(By.ClassName(id), index);
         }
 
         [TestCase("TextBlock", 1), ExpectedException(typeof (ControlNotFoundException))]
@@ -94,6 +110,26 @@ namespace WhiteSharp.UnitTests
         public void FindChild(string parentId, string childId)
         {
             Window.FindControl(By.AutomationId(parentId)).FindChild(By.ClassName(childId));
+        }
+
+        [TestCase("AComboBox", "", "ComboBox")]
+        [TestCase("OpenVerticalSplitterButton", "Launch Vertical GridSplitter Window", "Button")]
+        [TestCase("", "Item1", "ListBoxItem")]
+        [TestCase("ListControlsTab", "List Controls", "TabItem")]
+        [TestCase("ToolStrip1", "", "ToolBar")]
+        public void FindControlByMultipleConditions(string id1, string id2, string id3)
+        {
+            Window.FindControl(By.AutomationId(id1).AndName(id2).AndClassName(id3));
+        }
+
+        [TestCase(1, 0, "Item1")]
+        [TestCase(1, 1, "Item2")]
+        [TestCase(2, 0, "Simple item 1")]
+        public void FindGeriCell(int i, int j, string result)
+        {
+            Window.FindControl(By.ClassName("TabItem").AndName("Data Grid")).Click();
+            var c = Window.FindControl(By.GridCell(i, j));
+            AssertThat.AreEqual(c, c.GetText(), result);
         }
 
         [TestCase("ControlsTab", "ListControlsTab", "ListControls", "ListBoxWpf", "ListBoxItem")]
