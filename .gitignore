@@ -159,3 +159,4 @@ packages
 /src/TestResult.xml
 /src/WhiteSharp.v12.suo
 /Libs
+/src/WhiteSharp/Strings.cs
