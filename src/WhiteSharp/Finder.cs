@@ -12,7 +12,6 @@ namespace WhiteSharp
 
         internal static List<AutomationElement> Find(List<AutomationElement> baseList, By searchCriteria)
         {
-            Start = DateTime.Now;
             List<AutomationElement> result = null;
             while ((result == null || !result.Any()) &&
                      ((DateTime.Now - Start).TotalMilliseconds < Settings.Default.Timeout))
@@ -31,12 +30,6 @@ namespace WhiteSharp
                 throw new ControlNotFoundException(
                     Logging.ControlNotFoundException(searchCriteria.Identifiers));
 
-            Logging.ControlFound(searchCriteria);
-
-            if (result.Count() > 1)
-                Logging.MutlipleControlsWarning(result);
-
-            searchCriteria.Duration = (DateTime.Now - Start);
             return result;
         }
     }

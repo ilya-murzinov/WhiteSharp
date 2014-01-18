@@ -201,13 +201,20 @@ namespace WhiteSharp
         #endregion
 
         public UIControl FindControl(By searchCriteria, int index = 0)
-        {            
-            UIControl returnControl = new UIControl(Finder.Find(BaseList, searchCriteria).ElementAt(index),
-                actionListener)
+        {
+            DateTime start = DateTime.Now;
+            List<AutomationElement> result = Finder.Find(BaseList, searchCriteria);
+            UIControl returnControl = new UIControl(result.ElementAt(index), actionListener)
             {
                 Identifiers = searchCriteria.Identifiers,
                 Window = this
             };
+
+            Logging.ControlFound(searchCriteria.Identifiers, this.Title, DateTime.Now - start);
+
+            if (result.Count() > 1)
+                Logging.MutlipleControlsWarning(result);
+
             return returnControl;
         }
 

@@ -22,7 +22,7 @@ namespace WhiteSharp
             {"ProcessNotFound", "Process with given Id was not found"},
             {"TestStarted", "Запущен тест: {0}"},
             {"And", "и"},
-            {"ControlFound", "Контрол по условию {0} найден за {1} ms"},
+            {"ControlFound", "Контрол по условию {0} в окне {1} найден за {2} ms"},
             {"ControlNotFoundException", "Контрол по условию {0} не найден"},
             {"ControlNotEnabledException", "Контрол {0} недоступен"},
             {"WindowFound", "Окно \"{0}\" найдено за {1} ms"},
@@ -46,7 +46,7 @@ namespace WhiteSharp
             {"ProcessNotFound", "Не найден процесс с заданным Id"},
             {"TestStarted", "Test started: {0}"},
             {"And", "and"},
-            {"ControlFound", "Control by {0} was found in {1} ms"},
+            {"ControlFound", "Control by {0} in window {1} was found in {2} ms"},
             {"ControlNotFoundException", "Control by {0} was not found"},
             {"ControlNotEnabledException", "Control {0} is not enabled"},
             {"WindowFound", "Window \"{0}\" was found in {1} ms"},
@@ -124,9 +124,9 @@ namespace WhiteSharp
             Write("\r\n" + description.ToUpper() + "\r\n");
         }
 
-        public static string ControlFound(By b)
+        public static string ControlFound(string identifiers, string windowTitle, TimeSpan duration)
         {
-            string s = string.Format(Strings["ControlFound"], b.Identifiers, b.Duration.TotalMilliseconds);
+            string s = string.Format(Strings["ControlFound"], identifiers, windowTitle, duration.TotalMilliseconds);
             Write(Tag(FoungTag) + s);
             return s;
         }

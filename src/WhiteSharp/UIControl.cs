@@ -31,16 +31,18 @@ namespace WhiteSharp
 
         public UIControl FindChild(By searchCriteria, int index = 0)
         {
+            DateTime start = DateTime.Now;
             List<AutomationElement> baseList = AutomationElement.FindAll(TreeScope.Descendants,
                 new PropertyCondition(AutomationElement.IsOffscreenProperty, false)).OfType<AutomationElement>().ToList();
-            UIControl returnControl = new UIControl(Finder.Find(baseList, searchCriteria).ElementAt(index),
+            List<AutomationElement> result = Finder.Find(baseList, searchCriteria);
+            UIControl returnControl = new UIControl(result.ElementAt(index),
                 actionListener)
             {
                 Identifiers = searchCriteria.Identifiers,
                 Window = Window
             };
 
-            Logging.ControlFound(searchCriteria);
+            Logging.ControlFound(searchCriteria.Identifiers, Window.Title, DateTime.Now - start);
 
             return returnControl;
         }

@@ -32,31 +32,32 @@ namespace WhiteSharp.UITests
                 "CustomUIItemScenario",
                 "ControlsTab"
             };
+            List<UIControl> results = new List<UIControl>();
 
-            var number = 1;
+            var number = 10;
             var startAll = DateTime.Now;
+            //for (int i = 0; i < number; i++)
+            //{
+            //    var starti = DateTime.Now;
+            //    foreach (var id in AutomationIdList)
+            //    {
+            //        var start = DateTime.Now;
+            //        w.Get(SearchCriteria.ByAutomationId(id));
+            //        Trace.WriteLine((DateTime.Now - start).TotalSeconds);
+            //    }
+            //    Trace.WriteLine("---------" + (DateTime.Now - starti).TotalSeconds);
+            //}
+            //Trace.WriteLine("-----------------------------------------------------");
+            //Trace.WriteLine("---------" + (DateTime.Now - startAll).TotalSeconds);
+
+            startAll = DateTime.Now;
             for (int i = 0; i < number; i++)
             {
                 var starti = DateTime.Now;
                 foreach (var id in AutomationIdList)
                 {
                     var start = DateTime.Now;
-                    w.Get(SearchCriteria.ByAutomationId(id));
-                    Trace.WriteLine((DateTime.Now - start).TotalSeconds);
-                }
-                Trace.WriteLine("---------" + (DateTime.Now - starti).TotalSeconds);
-            }
-            Trace.WriteLine("-----------------------------------------------------");
-            Trace.WriteLine("---------" + (DateTime.Now - startAll).TotalSeconds);
-
-            startAll = DateTime.Now;
-            for (int i = 0; i < number*20; i++)
-            {
-                var starti = DateTime.Now;
-                foreach (var id in AutomationIdList)
-                {
-                    var start = DateTime.Now;
-                    wnd.FindControl(By.AutomationId(id));
+                    results.Add(wnd.FindControl(By.AutomationId(id)));
                     Trace.WriteLine((DateTime.Now - start).TotalSeconds);
                 }
                 Trace.WriteLine("---------" + (DateTime.Now - starti).TotalSeconds);
