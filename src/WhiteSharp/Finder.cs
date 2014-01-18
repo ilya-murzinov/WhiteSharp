@@ -12,6 +12,7 @@ namespace WhiteSharp
 
         internal static List<AutomationElement> Find(List<AutomationElement> baseList, By searchCriteria)
         {
+            Start = DateTime.Now;
             List<AutomationElement> result = null;
             while ((result == null || !result.Any()) &&
                      ((DateTime.Now - Start).TotalMilliseconds < Settings.Default.Timeout))

@@ -22,10 +22,10 @@ namespace WhiteSharp
             {"ProcessNotFound", "Process with given Id was not found"},
             {"TestStarted", "Запущен тест: {0}"},
             {"And", "и"},
-            {"ControlFound", "Контрол по условию {0} в окне {1} найден за {2} ms"},
+            {"ControlFound", "Контрол по условию {0} в окне \"{1}\" найден за {2} секунд"},
             {"ControlNotFoundException", "Контрол по условию {0} не найден"},
             {"ControlNotEnabledException", "Контрол {0} недоступен"},
-            {"WindowFound", "Окно \"{0}\" найдено за {1} ms"},
+            {"WindowFound", "Окно \"{0}\" найдено за {1} секунд"},
             {"WindowException", "Окно \"{0}\" не найдено"},
             {"Click", "Выполнен клик по контролу {0}"},
             {"ItemSelected", "Выбран элемент {0} из комбобокса {1}"},
@@ -46,10 +46,10 @@ namespace WhiteSharp
             {"ProcessNotFound", "Не найден процесс с заданным Id"},
             {"TestStarted", "Test started: {0}"},
             {"And", "and"},
-            {"ControlFound", "Control by {0} in window {1} was found in {2} ms"},
+            {"ControlFound", "Control by {0} in window \"{1}\" was found in {2} seconds"},
             {"ControlNotFoundException", "Control by {0} was not found"},
             {"ControlNotEnabledException", "Control {0} is not enabled"},
-            {"WindowFound", "Window \"{0}\" was found in {1} ms"},
+            {"WindowFound", "Window \"{0}\" was found in {1} seconds"},
             {"WindowException", "Window \"{0}\" was not found"},
             {"Click", "Control {0} was clicked"},
             {"ItemSelected", "Item {0} was selected from combobox {1}"},
@@ -126,14 +126,14 @@ namespace WhiteSharp
 
         public static string ControlFound(string identifiers, string windowTitle, TimeSpan duration)
         {
-            string s = string.Format(Strings["ControlFound"], identifiers, windowTitle, duration.TotalMilliseconds);
+            string s = string.Format(Strings["ControlFound"], identifiers, windowTitle, duration.TotalSeconds);
             Write(Tag(FoungTag) + s);
             return s;
         }
 
         public static string WindowFound(Window window, TimeSpan duration)
         {
-            string s = string.Format(Strings["WindowFound"], window.Title, duration.TotalMilliseconds);
+            string s = string.Format(Strings["WindowFound"], window.Title, duration.TotalSeconds);
             Write(Tag(FoungTag) + s);
             return s;
         }

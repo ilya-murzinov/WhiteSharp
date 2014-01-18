@@ -34,7 +34,7 @@ namespace WhiteSharp.UITests
             };
             List<UIControl> results = new List<UIControl>();
 
-            var number = 10;
+            var number = 100;
             var startAll = DateTime.Now;
             //for (int i = 0; i < number; i++)
             //{
@@ -56,14 +56,13 @@ namespace WhiteSharp.UITests
                 var starti = DateTime.Now;
                 foreach (var id in AutomationIdList)
                 {
-                    var start = DateTime.Now;
                     results.Add(wnd.FindControl(By.AutomationId(id)));
-                    Trace.WriteLine((DateTime.Now - start).TotalSeconds);
                 }
                 Trace.WriteLine("---------" + (DateTime.Now - starti).TotalSeconds);
             }
-            Trace.WriteLine("-----------------------------------------------------");
+            Trace.WriteLine("\n\n-----------------------------------------------------");
             Trace.WriteLine("---------" + (DateTime.Now - startAll).TotalSeconds);
+            Trace.WriteLine("-----------------------------------------------------");
 
         }
     }
