@@ -1,0 +1,448 @@
+[Info - 9:23:40 AM] 'TestStack.White.Configuration.UIItemIdAppXmlConfiguration' Using TableVerticalScrollBar=Vertical Scroll Bar for White/UIItemId
+[Info - 9:23:40 AM] 'TestStack.White.Configuration.UIItemIdAppXmlConfiguration' Using TableHorizontalScrollBar=Horizontal Scroll Bar for White/UIItemId
+[Info - 9:23:40 AM] 'TestStack.White.Configuration.UIItemIdAppXmlConfiguration' Using TableColumn=Row  for White/UIItemId
+[Info - 9:23:40 AM] 'TestStack.White.Configuration.UIItemIdAppXmlConfiguration' Using TableTopLeftHeaderCell=Top Left Header Cell for White/UIItemId
+[Info - 9:23:40 AM] 'TestStack.White.Configuration.UIItemIdAppXmlConfiguration' Using TableCellNullValue=(null) for White/UIItemId
+[Info - 9:23:40 AM] 'TestStack.White.Configuration.UIItemIdAppXmlConfiguration' Using TableHeader=Top Row for White/UIItemId
+[Info - 9:23:40 AM] 'TestStack.White.Configuration.UIItemIdAppXmlConfiguration' Using HorizontalScrollBar=Horizontal ScrollBar for White/UIItemId
+[Info - 9:23:40 AM] 'TestStack.White.Configuration.UIItemIdAppXmlConfiguration' Using VerticalScrollBar=Vertical ScrollBar for White/UIItemId
+[Info - 9:23:40 AM] 'TestStack.White.Configuration.UIItemIdAppXmlConfiguration' Using TableCellPrefix= Row  for White/UIItemId
+[Warn - 9:23:41 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp - Microsoft Visual Studio Express 2013 для Windows Desktop whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:23:41 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp.txt - Google Chrome whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:23:42 AM] 'TestStack.White.UIItems.UIItem' Window with title: Visual UI Automation Verify whose dimensions are: -6,4,581,607, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:23:42 AM] 'TestStack.White.UIItems.UIItem' Window with title: TestApps whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[09:23:44 - Found] Window "MainWindow" was found in 3.7258848 seconds
+
+
+------------------------------------------------------------------------------------------
+Test started: FindChild("ScenariosPane","Button")
+------------------------------------------------------------------------------------------
+[09:23:46 - Found] Control by "AutomationId = ScenariosPane" was found in 0.2818992 seconds
+[09:23:48 - Found] Control by "ClassName = Button" was found in 0.2578224 seconds
+[09:23:48 - Warning] 11 controls was found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindChild("CheckedListBox","CheckBox")
+------------------------------------------------------------------------------------------
+[09:23:49 - Found] Control by "AutomationId = CheckedListBox" was found in 0.2568192 seconds
+[09:23:51 - Found] Control by "ClassName = CheckBox" was found in 0.2618352 seconds
+[09:23:51 - Warning] 4 controls was found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindChild("ControlsTab","TabItem")
+------------------------------------------------------------------------------------------
+[09:23:52 - Found] Control by "AutomationId = ControlsTab" was found in 0.2668512 seconds
+[09:23:54 - Found] Control by "ClassName = TabItem" was found in 0.265848 seconds
+[09:23:54 - Warning] 4 controls was found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindChild("ListBoxWpf","ListBoxItem")
+------------------------------------------------------------------------------------------
+[09:23:56 - Found] Control by "AutomationId = ListBoxWpf" was found in 0.270864 seconds
+[09:23:57 - Found] Control by "ClassName = ListBoxItem" was found in 0.2648448 seconds
+[09:23:57 - Warning] 5 controls was found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindChild("ControlsTab","ComboBox")
+------------------------------------------------------------------------------------------
+[09:23:59 - Found] Control by "AutomationId = ControlsTab" was found in 0.2668512 seconds
+[09:24:01 - Found] Control by "ClassName = ComboBox" was found in 0.2778864 seconds
+[09:24:01 - Warning] 3 controls was found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindChildMultiple("ControlsTab","ListControlsTab","ListControls","ListBoxWpf","ListBoxItem")
+------------------------------------------------------------------------------------------
+[09:24:03 - Found] Control by "AutomationId = ControlsTab" was found in 0.2678544 seconds
+[09:24:05 - Found] Control by "AutomationId = ListControlsTab" was found in 0.2668512 seconds
+[09:24:08 - Found] Control by "AutomationId = ListControls" was found in 0.2678544 seconds
+[09:24:10 - Found] Control by "AutomationId = ListBoxWpf" was found in 0.2748768 seconds
+[09:24:11 - Found] Control by "ClassName = ListBoxItem" was found in 0.2688576 seconds
+[09:24:11 - Warning] 5 controls was found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByAutomaionId("EditableComboBox")
+------------------------------------------------------------------------------------------
+[09:24:13 - Found] Control by "AutomationId = EditableComboBox" was found in 0.270864 seconds
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByAutomaionId("AComboBox")
+------------------------------------------------------------------------------------------
+[09:24:14 - Found] Control by "AutomationId = AComboBox" was found in 0.2688576 seconds
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByAutomaionId("ListBoxWithVScrollBar")
+------------------------------------------------------------------------------------------
+[09:24:16 - Found] Control by "AutomationId = ListBoxWithVScrollBar" was found in 0.2778864 seconds
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByAutomaionId("CheckedListBox")
+------------------------------------------------------------------------------------------
+[09:24:18 - Found] Control by "AutomationId = CheckedListBox" was found in 0.2999568 seconds
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByAutomaionId("OpenHorizontalSplitterButton")
+------------------------------------------------------------------------------------------
+[09:24:19 - Found] Control by "AutomationId = OpenHorizontalSplitterButton" was found in 0.2728704 seconds
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByAutomationIdNegative("Button",1)
+------------------------------------------------------------------------------------------
+[09:24:22 - Exception] Control by "AutomationId = Button" was not found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByAutomationIdNegative("TextBlock",1)
+------------------------------------------------------------------------------------------
+[09:24:24 - Exception] Control by "AutomationId = TextBlock" was not found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByAutomationIdNegative("ComboBox",2)
+------------------------------------------------------------------------------------------
+[09:24:26 - Exception] Control by "AutomationId = ComboBox" was not found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByAutomationIdNegative("TabItem",1)
+------------------------------------------------------------------------------------------
+[09:24:29 - Exception] Control by "AutomationId = TabItem" was not found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByAutomationIdNegative("TabItem",1)
+------------------------------------------------------------------------------------------
+[09:24:31 - Exception] Control by "AutomationId = TabItem" was not found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByClassNameAndIndex("TabItem",1)
+------------------------------------------------------------------------------------------
+[09:24:33 - Found] Control by "ClassName = TabItem" was found in 0.290928 seconds
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByClassNameAndIndex("TextBlock",1)
+------------------------------------------------------------------------------------------
+[09:24:34 - Found] Control by "ClassName = TextBlock" was found in 0.270864 seconds
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByClassNameAndIndex("Button",1)
+------------------------------------------------------------------------------------------
+[09:24:36 - Found] Control by "ClassName = Button" was found in 0.2688576 seconds
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByClassNameAndIndex("ComboBox",2)
+------------------------------------------------------------------------------------------
+[09:24:37 - Found] Control by "ClassName = ComboBox" was found in 0.2849088 seconds
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByClassNameAndIndex("TabItem",1)
+------------------------------------------------------------------------------------------
+[09:24:39 - Found] Control by "ClassName = TabItem" was found in 0.2688576 seconds
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByName("Open Window With Scrollbars")
+------------------------------------------------------------------------------------------
+[09:24:41 - Found] Control by "Name = Open Window With Scrollbars" was found in 0.280896 seconds
+[09:24:41 - Warning] 2 controls was found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByName("Get Multiple")
+------------------------------------------------------------------------------------------
+[09:24:42 - Found] Control by "Name = Get Multiple" was found in 0.265848 seconds
+[09:24:42 - Warning] 2 controls was found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByName("Input Controls")
+------------------------------------------------------------------------------------------
+[09:24:44 - Found] Control by "Name = Input Controls" was found in 0.2678544 seconds
+[09:24:44 - Warning] 2 controls was found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByName("File")
+------------------------------------------------------------------------------------------
+[09:24:45 - Found] Control by "Name = File" was found in 0.265848 seconds
+[09:24:45 - Warning] 2 controls was found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByName("Button in toolbar")
+------------------------------------------------------------------------------------------
+[09:24:47 - Found] Control by "Name = Button in toolbar" was found in 0.27588 seconds
+[09:24:47 - Warning] 2 controls was found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByNameNegative("OpenHorizontalSplitterButton")
+------------------------------------------------------------------------------------------
+[09:24:49 - Exception] Control by "Name = OpenHorizontalSplitterButton" was not found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByNameNegative("CheckedListBox")
+------------------------------------------------------------------------------------------
+[09:24:52 - Exception] Control by "Name = CheckedListBox" was not found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByNameNegative("ListBoxWithVScrollBar")
+------------------------------------------------------------------------------------------
+[09:24:55 - Exception] Control by "Name = ListBoxWithVScrollBar" was not found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByNameNegative("AComboBox")
+------------------------------------------------------------------------------------------
+[09:24:57 - Exception] Control by "Name = AComboBox" was not found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlByNameNegative("EditableComboBox")
+------------------------------------------------------------------------------------------
+[09:24:59 - Exception] Control by "Name = EditableComboBox" was not found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlClassName("ComboBox")
+------------------------------------------------------------------------------------------
+[09:25:01 - Found] Control by "ClassName = ComboBox" was found in 0.2728704 seconds
+[09:25:01 - Warning] 3 controls was found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlClassName("TabItem")
+------------------------------------------------------------------------------------------
+[09:25:03 - Found] Control by "ClassName = TabItem" was found in 0.27588 seconds
+[09:25:03 - Warning] 4 controls was found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlClassName("TabItem")
+------------------------------------------------------------------------------------------
+[09:25:04 - Found] Control by "ClassName = TabItem" was found in 0.280896 seconds
+[09:25:04 - Warning] 4 controls was found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlClassName("Button")
+------------------------------------------------------------------------------------------
+[09:25:06 - Found] Control by "ClassName = Button" was found in 0.2748768 seconds
+[09:25:06 - Warning] 15 controls was found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: FindControlClassName("TextBlock")
+------------------------------------------------------------------------------------------
+[09:25:07 - Found] Control by "ClassName = TextBlock" was found in 0.2748768 seconds
+[09:25:07 - Warning] 104 controls was found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: GetWindowNegativeTest("MAIN")
+------------------------------------------------------------------------------------------
+[Warn - 9:25:08 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp - Microsoft Visual Studio Express 2013 для Windows Desktop whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:08 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp.txt - Google Chrome whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:09 AM] 'TestStack.White.UIItems.UIItem' Window with title: Visual UI Automation Verify whose dimensions are: -6,4,581,607, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:09 AM] 'TestStack.White.UIItems.UIItem' Window with title: TestApps whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[09:25:10 - Exception] Window "MAIN" was not found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: GetWindowNegativeTest("MainWindows")
+------------------------------------------------------------------------------------------
+[Warn - 9:25:10 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp - Microsoft Visual Studio Express 2013 для Windows Desktop whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:10 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp.txt - Google Chrome whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:11 AM] 'TestStack.White.UIItems.UIItem' Window with title: Visual UI Automation Verify whose dimensions are: -6,4,581,607, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:11 AM] 'TestStack.White.UIItems.UIItem' Window with title: TestApps whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[09:25:12 - Exception] Window "MainWindows" was not found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: GetWindowNegativeTest("\x043B\x043E\x0443\x043A\x0433\x0433\x043A\x0433\x0430\x0433")
+------------------------------------------------------------------------------------------
+[Warn - 9:25:13 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp - Microsoft Visual Studio Express 2013 для Windows Desktop whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:13 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp.txt - Google Chrome whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:14 AM] 'TestStack.White.UIItems.UIItem' Window with title: Visual UI Automation Verify whose dimensions are: -6,4,581,607, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:14 AM] 'TestStack.White.UIItems.UIItem' Window with title: TestApps whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[09:25:15 - Exception] Window "лоукггкгаг" was not found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: GetWindowNegativeTest("wIndow")
+------------------------------------------------------------------------------------------
+[Warn - 9:25:15 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp - Microsoft Visual Studio Express 2013 для Windows Desktop whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:15 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp.txt - Google Chrome whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:16 AM] 'TestStack.White.UIItems.UIItem' Window with title: Visual UI Automation Verify whose dimensions are: -6,4,581,607, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:16 AM] 'TestStack.White.UIItems.UIItem' Window with title: TestApps whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[09:25:17 - Exception] Window "wIndow" was not found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: GetWindowNegativeTest("^%$iofkjndsf9)&*")
+------------------------------------------------------------------------------------------
+[Warn - 9:25:17 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp - Microsoft Visual Studio Express 2013 для Windows Desktop whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:17 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp.txt - Google Chrome whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:18 AM] 'TestStack.White.UIItems.UIItem' Window with title: Visual UI Automation Verify whose dimensions are: -6,4,581,607, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:18 AM] 'TestStack.White.UIItems.UIItem' Window with title: TestApps whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[09:25:19 - Exception] Window "^%$iofkjndsf9)&*" was not found
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: GetWindowPositiveTest("")
+------------------------------------------------------------------------------------------
+[Warn - 9:25:20 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp - Microsoft Visual Studio Express 2013 для Windows Desktop whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:20 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp.txt - Google Chrome whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:21 AM] 'TestStack.White.UIItems.UIItem' Window with title: Visual UI Automation Verify whose dimensions are: -6,4,581,607, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:21 AM] 'TestStack.White.UIItems.UIItem' Window with title: TestApps whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[09:25:22 - Warning] 21 windows was found
+[09:25:22 - Found] Window "MainWindow" was found in 2.3515008 seconds
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: GetWindowPositiveTest("M")
+------------------------------------------------------------------------------------------
+[Warn - 9:25:22 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp - Microsoft Visual Studio Express 2013 для Windows Desktop whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:22 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp.txt - Google Chrome whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:23 AM] 'TestStack.White.UIItems.UIItem' Window with title: Visual UI Automation Verify whose dimensions are: -6,4,581,607, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:23 AM] 'TestStack.White.UIItems.UIItem' Window with title: TestApps whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[09:25:24 - Warning] 3 windows was found
+[09:25:24 - Found] Window "MainWindow" was found in 2.4247344 seconds
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: GetWindowPositiveTest("Main")
+------------------------------------------------------------------------------------------
+[Warn - 9:25:25 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp - Microsoft Visual Studio Express 2013 для Windows Desktop whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:25 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp.txt - Google Chrome whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:26 AM] 'TestStack.White.UIItems.UIItem' Window with title: Visual UI Automation Verify whose dimensions are: -6,4,581,607, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:26 AM] 'TestStack.White.UIItems.UIItem' Window with title: TestApps whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[09:25:27 - Found] Window "MainWindow" was found in 2.3294304 seconds
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: GetWindowPositiveTest("Window")
+------------------------------------------------------------------------------------------
+[Warn - 9:25:27 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp - Microsoft Visual Studio Express 2013 для Windows Desktop whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:27 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp.txt - Google Chrome whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:28 AM] 'TestStack.White.UIItems.UIItem' Window with title: Visual UI Automation Verify whose dimensions are: -6,4,581,607, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:28 AM] 'TestStack.White.UIItems.UIItem' Window with title: TestApps whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[09:25:29 - Warning] 2 windows was found
+[09:25:29 - Found] Window "MainWindow" was found in 2.4638592 seconds
+PASSED!
+
+
+------------------------------------------------------------------------------------------
+Test started: GetWindowPositiveTest("MainW")
+------------------------------------------------------------------------------------------
+[Warn - 9:25:29 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp - Microsoft Visual Studio Express 2013 для Windows Desktop whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:29 AM] 'TestStack.White.UIItems.UIItem' Window with title: WhiteSharp.txt - Google Chrome whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:30 AM] 'TestStack.White.UIItems.UIItem' Window with title: Visual UI Automation Verify whose dimensions are: -6,4,581,607, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[Warn - 9:25:30 AM] 'TestStack.White.UIItems.UIItem' Window with title: TestApps whose dimensions are: -8,-8,1382,744, is not contained completely on the desktop 0,0,1366,768. 
+UI actions on window needing mouse would not work in area not falling under the desktop
+[09:25:32 - Found] Window "MainWindow" was found in 2.3234112 seconds
+PASSED!

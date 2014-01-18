@@ -1,0 +1,315 @@
+﻿<HTML><HEAD><style>
+          body {
+          font:normal 68% verdana,arial,helvetica;
+          color:#000000;
+          }
+
+          div.outer{
+          width:99%;
+          border: #bcd7cd 4px solid;
+          margin-top:20px;
+          }
+
+          div.inner{
+          margin:0 auto;
+          width:99%;
+          margin-bottom:10px;
+          margin-top:10px;
+          }
+
+          div.outerHeader{
+          padding-left:6px;
+          width:99%;
+          margin-bottom:10px;
+          margin-top:10px;
+          }
+
+          div.innerHeader{
+          width:99%;
+          margin-bottom:10px;
+          }
+
+          span.covered {
+          background: #00df00;
+          border:#9c9c9c 1px solid;
+          }
+          span.uncovered {
+          background: #df0000;
+          border-top:#9c9c9c 1px solid;
+          border-bottom:#9c9c9c 1px solid;
+          border-right:#9c9c9c 1px solid;
+          }
+          span.ignored {
+          background: #ffff00;
+          border-top:#9c9c9c 1px solid;
+          border-bottom:#9c9c9c 1px solid;
+          border-right:#9c9c9c 1px solid;
+          }
+
+          table{
+          border: #dcdcdc 2px solid;
+          border-collapse: collapse;
+          width:100%;
+          cellpadding:2;
+          cellspasing:0;
+          }
+
+          table.noborderHeader{
+          BORDER-BOTTOM: #dcdcdc 0px solid;
+          BORDER-RIGHT: #dcdcdc 0px solid;
+          BORDER-TOP: #dcdcdc 0px solid;
+          BORDER-LEFT: #dcdcdc 0px solid;
+          padding-left:0px;
+          padding-right:0px;
+          }
+
+          table.noborder{
+          width:100%;
+          BORDER-BOTTOM: #dcdcdc 0px solid;
+          BORDER-RIGHT: #dcdcdc 0px solid;
+          BORDER-TOP: #dcdcdc 0px solid;
+          BORDER-LEFT: #dcdcdc 0px solid;
+          padding-left:0px;
+          padding-right:0px;
+          }
+
+          div.thin{
+          /*width:95%;*/
+          BORDER-BOTTOM: #dcdcdc 2px solid;
+          BORDER-RIGHT: #dcdcdc 1px solid;
+          BORDER-TOP: #dcdcdc 1px solid;
+          BORDER-LEFT: #dcdcdc 1px solid;
+          padding-left:0px;
+          padding-right:0px;
+          }
+
+          tr.nobottom{
+          BORDER-BOTTOM: #dcdcdc 0px solid;
+          BORDER-RIGHT: #dcdcdc 0px solid;
+          BORDER-TOP: #dcdcdc 1px solid;
+          BORDER-LEFT: #dcdcdc px solid;
+          padding-left:0px;
+          padding-right:0px;
+          }
+
+          td.nobottom {
+          FONT-SIZE: 68%;
+          BORDER-BOTTOM: #dcdcdc 0px solid;
+          BORDER-RIGHT: #dcdcdc 1px solid;
+          BORDER-TOP: #dcdcdc 1px solid;
+          BORDER-LEFT: #dcdcdc 1px solid;
+          padding-left:3px;
+          padding-right:3px;
+          }
+
+          td.noborder {
+          FONT-SIZE: 68%;
+          BORDER-BOTTOM: #dcdcdc 0px solid;
+          BORDER-RIGHT: #dcdcdc 0px solid;
+          BORDER-TOP: #dcdcdc 0px solid;
+          BORDER-LEFT: #dcdcdc 0px solid;
+          padding-left:0px;
+          padding-right:0px;
+          }
+
+          td {
+          FONT-SIZE: 68%;
+          BORDER-BOTTOM: #dcdcdc 1px solid;
+          BORDER-RIGHT: #dcdcdc 1px solid;
+          BORDER-TOP: #dcdcdc 1px solid;
+          BORDER-LEFT: #dcdcdc 1px solid;
+          padding-left:3px;
+          padding-right:3px;
+          }
+          p {
+          line-height:0em;
+          margin-top:5em;
+          margin-bottom:0em;
+          }
+          h1 {
+          MARGIN: 0px 0px 5px;
+          FONT: bold 200% verdana,arial,helvetica;
+          }
+          h2 {
+          MARGIN: 10px 0px 5px;
+          FONT: bold 145% verdana,arial,helvetica;
+          }
+          h3 {
+          MARGIN: 10px 0px 5px;
+          FONT: bold 115% verdana,arial,helvetica;
+          }
+          h4 {
+          MARGIN: 10px 0px 5px;
+          FONT: bold 100% verdana,arial,helvetica;
+          }
+          h5 {
+          MARGIN: 10px 0px 5px;
+          FONT: bold 100% verdana,arial,helvetica
+          }
+          h6 {
+          MARGIN: 10px 0px 5px;
+          FONT: bold 100% verdana,arial,helvetica
+          }
+          .exception{
+          display:none;
+          }
+          .Error {
+          color:red;
+          font-weight:bold;
+          }
+          .Failure {
+          font-weight:bold;
+          color:red;
+          }
+          .Ignored {
+          font-weight:bold;
+          }
+          .FailureDetail {
+          font-size: -1;
+          padding-left: 2.0em;
+          background:#cdcdcd;
+          }
+          .Pass{
+          font-weight:bold;
+          color:green;
+          text-decoration: none;
+          BORDER-BOTTOM: #dcdcdc 0px solid;
+          BORDER-RIGHT: #dcdcdc 1px solid;
+          BORDER-TOP: #dcdcdc 1px solid;
+          BORDER-LEFT: #dcdcdc 1px solid;
+          }
+          .TableHeader {
+          background: #efefef;
+          color: #000;
+          font-weight: bold;
+          horizontal-align: center;
+          }
+
+          a.regular{
+          color:blue;
+          }
+          a:visited {
+          color:inherit;
+          }
+          a {
+          color:inherit;
+          }
+          a.link {
+          color:blue;
+          }
+          a.link:active {
+          color:blue;
+          }
+          a.link:visited {
+          color:blue;
+          }
+          a.summarie {
+          color:#000;
+          text-decoration: none;
+          }
+          a.summarie:active {
+          color:#000;
+          text-decoration: none;
+          }
+          a.summarie:visited {
+          color:#000;
+          text-decoration: none;
+          }
+          .description {
+          margin-top:1px;
+          padding:3px;
+          background-color:#dcdcdc;
+          color:#000;
+          font-weight:normal;
+          }
+          a.Pass {
+          font-weight:bold;
+          color:green;
+          }
+          a.Pass:link {
+          font-weight:bold;
+          color:green;
+          }
+          a.Pass:active {
+          font-weight:bold;
+          color:green;
+          }
+          a.Pass:visited {
+          font-weight:bold;
+          color:green;
+          }
+          a.Failure {
+          font-weight:bold;
+          color:red;
+          }
+          a.Failure:visited {
+          font-weight:bold;
+          color:red;
+          }
+          a.Failure:active {
+          font-weight:bold;
+          color:red;
+          }
+          a.error {
+          font-weight:bold;
+          color:red;
+          }
+          a.error:visited {
+          font-weight:bold;
+          color:red;
+          }
+          a.error:active {
+          font-weight:bold;
+          color:red;
+          /*text-decoration: none;
+          padding-left:5px;*/
+          }
+          a.ignored {
+          font-weight:bold;
+          color:#000;
+          }
+          a.ignored:visited {
+          color:#000;
+          font-weight:bold;
+          }
+          a.ignored:active {
+          font-weight:bold;
+          color:#000;
+          }
+          .excellent{
+          color:green;
+          font-weight:bold;
+          }
+          .good{
+          color:orange;
+          font-weight:bold;
+          }
+          .average{
+          color:orange;
+          font-weight:bold;
+          }
+          .bad{
+          color:red;
+          font-weight:bold;
+          }
+
+        </style><script language="JavaScript">
+             
+	  function Toggle(id) {
+	  var element = document.getElementById(id);
+		 if ( element.style.display == "none" )
+			element.style.display = "block";
+		 else 
+			element.style.display = "none";
+	  }
+
+	  function ToggleImage(id) {
+	  var element = document.getElementById(id);
+
+		 if ( element.innerText   == "-" )
+			element.innerText   = "+";
+		 else 
+			element.innerText = "-";
+	  }
+	
+        </script></HEAD><body><a name="#top" /><div class="outerHeader"><div class="innerHeader" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><h1 style="margin-bottom:10px;"><span>Unit Tests Results</span></h1><table class="noborderHeader"><tr><td class="noborder" width="50%" align="left"><span>Generated  on: </span>2014-01-12 - 09:25:32 <a href="#envinfo" class="link">Environment Information</a></td><td class="noborder" width="50%" align="right"><span>Designed for use with </span><a class="link" href="http://nunit.sourceforge.net/">NUnit.</a></td></tr></table></div></div><div class="outer"><div class="inner" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><h2>Summary</h2><table><tr valign="top" class="TableHeader"><td width="50%"><b>Name</b></td><td width="10%"><b>Tests</b></td><td width="10%"><b>Failures</b></td><td width="10%"><b>Errors</b></td><td width="10%"><b>Success Rate</b></td><td width="10%" nowrap="nowrap"><b>Time(s)</b></td></tr><tr valign="top" class="excellent"><td width="50%"><a href="WhiteSharp.txt" class="excellent">WhiteSharp (Click to see the log)</a></td><td width="10%">46</td><td width="10%">0</td><td width="10%">0</td><td nowrap="nowrap" width="10%" align="right">100.00 %</td><td width="10%" align="right">113.406</td></tr></table><span>Note</span>: <i>failures </i><span>are anticipated and checked for with assertions while </span><i>errors </i><span>are unanticipated.</span></div></div><div class="outer"><div class="inner" xmlns:html="http://www.w3.org/Profiles/XHTML-transitional"><h2>TestSuite Summary</h2><table><tr class="TableHeader" valign="top" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><td width="50%"><b>Name</b></td><td width="10%"><b>Tests</b></td><td width="10%"><b>Failures</b></td><td width="10%"><b>Errors</b></td><td width="10%"><b>Success Rate</b></td><td width="10%" nowrap="nowrap"><b>Time(s)</b></td></tr><tr valign="top" class="Pass"><td width="50%"><a href="#ID0AAC0CC" class="">FindChild</a></td><td width="10%">5</td><td width="10%">0</td><td width="10%">0</td><td nowrap="nowrap" width="10%" align="right"><b>100.00 %</b></td><td width="10%" align="right">16.868</td></tr><tr valign="top" class="Pass"><td width="50%"><a href="#ID0AMD0OD" class="">FindChildMultiple</a></td><td width="10%">1</td><td width="10%">0</td><td width="10%">0</td><td nowrap="nowrap" width="10%" align="right"><b>100.00 %</b></td><td width="10%" align="right">9.907</td></tr><tr valign="top" class="Pass"><td width="50%"><a href="#ID0A3D05D" class="">FindControlByAutomaionId</a></td><td width="10%">5</td><td width="10%">0</td><td width="10%">0</td><td nowrap="nowrap" width="10%" align="right"><b>100.00 %</b></td><td width="10%" align="right">7.975</td></tr><tr valign="top" class="Pass"><td width="50%"><a href="#ID0AIF0KF" class="">FindControlByAutomationIdNegative</a></td><td width="10%">5</td><td width="10%">0</td><td width="10%">0</td><td nowrap="nowrap" width="10%" align="right"><b>100.00 %</b></td><td width="10%" align="right">11.704</td></tr><tr valign="top" class="Pass"><td width="50%"><a href="#ID0AUG0WG" class="">FindControlByClassNameAndIndex</a></td><td width="10%">5</td><td width="10%">0</td><td width="10%">0</td><td nowrap="nowrap" width="10%" align="right"><b>100.00 %</b></td><td width="10%" align="right">7.688</td></tr><tr valign="top" class="Pass"><td width="50%"><a href="#ID0ABAAC0DAAC" class="">FindControlByName</a></td><td width="10%">5</td><td width="10%">0</td><td width="10%">0</td><td nowrap="nowrap" width="10%" align="right"><b>100.00 %</b></td><td width="10%" align="right">7.557</td></tr><tr valign="top" class="Pass"><td width="50%"><a href="#ID0ANBAC0PBAC" class="">FindControlByNameNegative</a></td><td width="10%">5</td><td width="10%">0</td><td width="10%">0</td><td nowrap="nowrap" width="10%" align="right"><b>100.00 %</b></td><td width="10%" align="right">12.715</td></tr><tr valign="top" class="Pass"><td width="50%"><a href="#ID0AZCAC02CAC" class="">FindControlClassName</a></td><td width="10%">5</td><td width="10%">0</td><td width="10%">0</td><td nowrap="nowrap" width="10%" align="right"><b>100.00 %</b></td><td width="10%" align="right">7.857</td></tr><tr valign="top" class="Pass"><td width="50%"><a href="#ID0AFEAC0HEAC" class="">GetWindowNegativeTest</a></td><td width="10%">5</td><td width="10%">0</td><td width="10%">0</td><td nowrap="nowrap" width="10%" align="right"><b>100.00 %</b></td><td width="10%" align="right">12.303</td></tr><tr valign="top" class="Pass"><td width="50%"><a href="#ID0ARFAC0TFAC" class="">GetWindowPositiveTest</a></td><td width="10%">5</td><td width="10%">0</td><td width="10%">0</td><td nowrap="nowrap" width="10%" align="right"><b>100.00 %</b></td><td width="10%" align="right">12.040</td></tr></table></div></div><div class="outer"><div class="inner" xmlns:html="http://www.w3.org/Profiles/XHTML-transitional"><a name="#ID0AAC0CC" /><h3><span>TestSuite </span>FindChild</h3><div class="thin"><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr class="TableHeader" valign="top"><td class="nobottom" width="80%"><b>Name</b></td><td class="nobottom" width="10%"><b>Status</b></td><td class="nobottom" width="10%" nowrap="nowrap"><b>Time(s)</b></td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindChild("CheckedListBox","CheckBox")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.868</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindChild("ControlsTab","ComboBox")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">4.148</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindChild("ControlsTab","TabItem")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">3.796</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindChild("ListBoxWpf","ListBoxItem")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.937</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindChild("ScenariosPane","Button")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">3.072</td></tr></table></div><a style="margin-bottom:10px;" href="#top" class="link">Back to top</a><a name="#ID0AMD0OD" /><h3><span>TestSuite </span>FindChildMultiple</h3><div class="thin"><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr class="TableHeader" valign="top"><td class="nobottom" width="80%"><b>Name</b></td><td class="nobottom" width="10%"><b>Status</b></td><td class="nobottom" width="10%" nowrap="nowrap"><b>Time(s)</b></td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindChildMultiple("ControlsTab","ListControlsTab","ListControls","ListBoxWpf","ListBoxItem")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">9.904</td></tr></table></div><a style="margin-bottom:10px;" href="#top" class="link">Back to top</a><a name="#ID0A3D05D" /><h3><span>TestSuite </span>FindControlByAutomaionId</h3><div class="thin"><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr class="TableHeader" valign="top"><td class="nobottom" width="80%"><b>Name</b></td><td class="nobottom" width="10%"><b>Status</b></td><td class="nobottom" width="10%" nowrap="nowrap"><b>Time(s)</b></td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByAutomaionId("AComboBox")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.845</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByAutomaionId("CheckedListBox")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.528</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByAutomaionId("EditableComboBox")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.565</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByAutomaionId("ListBoxWithVScrollBar")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.528</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByAutomaionId("OpenHorizontalSplitterButton")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.494</td></tr></table></div><a style="margin-bottom:10px;" href="#top" class="link">Back to top</a><a name="#ID0AIF0KF" /><h3><span>TestSuite </span>FindControlByAutomationIdNegative</h3><div class="thin"><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr class="TableHeader" valign="top"><td class="nobottom" width="80%"><b>Name</b></td><td class="nobottom" width="10%"><b>Status</b></td><td class="nobottom" width="10%" nowrap="nowrap"><b>Time(s)</b></td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByAutomationIdNegative("Button",1)</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.366</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByAutomationIdNegative("ComboBox",2)</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.294</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByAutomationIdNegative("TabItem",1)</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.268</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByAutomationIdNegative("TabItem",1)</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.354</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByAutomationIdNegative("TextBlock",1)</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.407</td></tr></table></div><a style="margin-bottom:10px;" href="#top" class="link">Back to top</a><a name="#ID0AUG0WG" /><h3><span>TestSuite </span>FindControlByClassNameAndIndex</h3><div class="thin"><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr class="TableHeader" valign="top"><td class="nobottom" width="80%"><b>Name</b></td><td class="nobottom" width="10%"><b>Status</b></td><td class="nobottom" width="10%" nowrap="nowrap"><b>Time(s)</b></td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByClassNameAndIndex("Button",1)</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.506</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByClassNameAndIndex("ComboBox",2)</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.548</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByClassNameAndIndex("TabItem",1)</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.540</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByClassNameAndIndex("TabItem",1)</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.576</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByClassNameAndIndex("TextBlock",1)</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.496</td></tr></table></div><a style="margin-bottom:10px;" href="#top" class="link">Back to top</a><a name="#ID0ABAAC0DAAC" /><h3><span>TestSuite </span>FindControlByName</h3><div class="thin"><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr class="TableHeader" valign="top"><td class="nobottom" width="80%"><b>Name</b></td><td class="nobottom" width="10%"><b>Status</b></td><td class="nobottom" width="10%" nowrap="nowrap"><b>Time(s)</b></td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByName("Button in toolbar")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.523</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByName("File")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.454</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByName("Get Multiple")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.527</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByName("Input Controls")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.513</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByName("Open Window With Scrollbars")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.523</td></tr></table></div><a style="margin-bottom:10px;" href="#top" class="link">Back to top</a><a name="#ID0ANBAC0PBAC" /><h3><span>TestSuite </span>FindControlByNameNegative</h3><div class="thin"><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr class="TableHeader" valign="top"><td class="nobottom" width="80%"><b>Name</b></td><td class="nobottom" width="10%"><b>Status</b></td><td class="nobottom" width="10%" nowrap="nowrap"><b>Time(s)</b></td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByNameNegative("AComboBox")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.280</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByNameNegative("CheckedListBox")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">3.167</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByNameNegative("EditableComboBox")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.395</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByNameNegative("ListBoxWithVScrollBar")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.246</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlByNameNegative("OpenHorizontalSplitterButton")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.576</td></tr></table></div><a style="margin-bottom:10px;" href="#top" class="link">Back to top</a><a name="#ID0AZCAC02CAC" /><h3><span>TestSuite </span>FindControlClassName</h3><div class="thin"><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr class="TableHeader" valign="top"><td class="nobottom" width="80%"><b>Name</b></td><td class="nobottom" width="10%"><b>Status</b></td><td class="nobottom" width="10%" nowrap="nowrap"><b>Time(s)</b></td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlClassName("Button")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.660</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlClassName("ComboBox")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.762</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlClassName("TabItem")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.542</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlClassName("TabItem")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.404</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">FindControlClassName("TextBlock")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">1.463</td></tr></table></div><a style="margin-bottom:10px;" href="#top" class="link">Back to top</a><a name="#ID0AFEAC0HEAC" /><h3><span>TestSuite </span>GetWindowNegativeTest</h3><div class="thin"><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr class="TableHeader" valign="top"><td class="nobottom" width="80%"><b>Name</b></td><td class="nobottom" width="10%"><b>Status</b></td><td class="nobottom" width="10%" nowrap="nowrap"><b>Time(s)</b></td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">GetWindowNegativeTest("\x043B\x043E\x0443\x043A\x0433\x0433\x043A\x0433\x0430\x0433")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.345</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">GetWindowNegativeTest("^%$iofkjndsf9)&amp;*")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.467</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">GetWindowNegativeTest("MAIN")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.652</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">GetWindowNegativeTest("MainWindows")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.416</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">GetWindowNegativeTest("wIndow")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.405</td></tr></table></div><a style="margin-bottom:10px;" href="#top" class="link">Back to top</a><a name="#ID0ARFAC0TFAC" /><h3><span>TestSuite </span>GetWindowPositiveTest</h3><div class="thin"><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr class="TableHeader" valign="top"><td class="nobottom" width="80%"><b>Name</b></td><td class="nobottom" width="10%"><b>Status</b></td><td class="nobottom" width="10%" nowrap="nowrap"><b>Time(s)</b></td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">GetWindowPositiveTest("")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.369</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">GetWindowPositiveTest("M")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.462</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">GetWindowPositiveTest("Main")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.357</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">GetWindowPositiveTest("MainW")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.350</td></tr></table><table class="noborder" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><tr valign="top" class="Pass"><td width="80%" class="Pass">GetWindowPositiveTest("Window")</td><td class="nobottom" width="10%" align="right">Pass</td><td class="nobottom" width="10%" align="right">2.485</td></tr></table></div><a style="margin-bottom:10px;" href="#top" class="link">Back to top</a></div></div><div class="outer"><div class="inner" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:nunit2report="urn:my-scripts"><a name="envinfo" /><h2>Environment Information</h2><table><tr class="TableHeader"><td>Property</td><td>Value</td></tr><tr><td>Machine name</td><td>ILYA-PC</td></tr><tr><td>User</td><td>Ilya</td></tr><tr><td>Operating System</td><td>Microsoft Windows NT 6.1.7601 Service Pack 1</td></tr><tr><td>.NET CLR Version</td><td>4.0.30319.18408</td></tr></table><a href="#top" class="link">Back to top</a></div></div></body></HTML>

@@ -1,0 +1,11 @@
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\bin\Debug\SampleTests.dll
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\bin\Debug\SampleTests.pdb
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\bin\Debug\nunit.framework.dll
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\bin\Debug\TestStack.White.dll
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\bin\Debug\WhiteSharp.dll
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\bin\Debug\Castle.Core.dll
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\bin\Debug\WhiteSharp.pdb
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\bin\Debug\nunit.framework.xml
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\obj\Debug\SampleTests.csprojResolveAssemblyReference.cache
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\obj\Debug\SampleTests.dll
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\obj\Debug\SampleTests.pdb

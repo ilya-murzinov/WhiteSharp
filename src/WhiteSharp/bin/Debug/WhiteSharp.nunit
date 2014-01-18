@@ -1,0 +1,6 @@
+﻿<NUnitProject>
+  <Settings activeconfig="Default" processModel="Default" domainUsage="Default" />
+  <Config name="Default" binpathtype="Auto">
+    <assembly path="WhiteSharp.dll" />
+  </Config>
+</NUnitProject>

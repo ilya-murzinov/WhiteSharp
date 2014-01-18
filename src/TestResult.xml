@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\bin\Debug\WhiteSharp.dll" total="46" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2014-01-12" time="09:25:32">
+  <environment nunit-version="2.6.3.13283" clr-version="2.0.50727.5420" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src" machine-name="ILYA-PC" user="Ilya" user-domain="Ilya-PC" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="Assembly" name="C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\bin\Debug\WhiteSharp.dll" executed="True" result="Success" success="True" time="113.406" asserts="0">
+    <results>
+      <test-suite type="Namespace" name="WhiteSharp" executed="True" result="Success" success="True" time="113.350" asserts="0">
+        <results>
+          <test-suite type="Namespace" name="UnitTests" executed="True" result="Success" success="True" time="113.333" asserts="0">
+            <results>
+              <test-suite type="TestFixture" name="FinderTests" executed="True" result="Success" success="True" time="113.284" asserts="0">
+                <results>
+                  <test-suite type="ParameterizedTest" name="FindChild" executed="True" result="Success" success="True" time="16.868" asserts="0">
+                    <results>
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindChild(&quot;ScenariosPane&quot;,&quot;Button&quot;)" executed="True" result="Success" success="True" time="3.072" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindChild(&quot;CheckedListBox&quot;,&quot;CheckBox&quot;)" executed="True" result="Success" success="True" time="2.868" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindChild(&quot;ControlsTab&quot;,&quot;TabItem&quot;)" executed="True" result="Success" success="True" time="3.796" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindChild(&quot;ListBoxWpf&quot;,&quot;ListBoxItem&quot;)" executed="True" result="Success" success="True" time="2.937" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindChild(&quot;ControlsTab&quot;,&quot;ComboBox&quot;)" executed="True" result="Success" success="True" time="4.148" asserts="0" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="FindChildMultiple" executed="True" result="Success" success="True" time="9.907" asserts="0">
+                    <results>
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindChildMultiple(&quot;ControlsTab&quot;,&quot;ListControlsTab&quot;,&quot;ListControls&quot;,&quot;ListBoxWpf&quot;,&quot;ListBoxItem&quot;)" executed="True" result="Success" success="True" time="9.904" asserts="0" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="FindControlByAutomaionId" executed="True" result="Success" success="True" time="7.975" asserts="0">
+                    <results>
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByAutomaionId(&quot;EditableComboBox&quot;)" executed="True" result="Success" success="True" time="1.565" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByAutomaionId(&quot;AComboBox&quot;)" executed="True" result="Success" success="True" time="1.845" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByAutomaionId(&quot;ListBoxWithVScrollBar&quot;)" executed="True" result="Success" success="True" time="1.528" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByAutomaionId(&quot;CheckedListBox&quot;)" executed="True" result="Success" success="True" time="1.528" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByAutomaionId(&quot;OpenHorizontalSplitterButton&quot;)" executed="True" result="Success" success="True" time="1.494" asserts="0" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="FindControlByAutomationIdNegative" executed="True" result="Success" success="True" time="11.704" asserts="0">
+                    <results>
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByAutomationIdNegative(&quot;Button&quot;,1)" executed="True" result="Success" success="True" time="2.366" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByAutomationIdNegative(&quot;TextBlock&quot;,1)" executed="True" result="Success" success="True" time="2.407" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByAutomationIdNegative(&quot;ComboBox&quot;,2)" executed="True" result="Success" success="True" time="2.294" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByAutomationIdNegative(&quot;TabItem&quot;,1)" executed="True" result="Success" success="True" time="2.268" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByAutomationIdNegative(&quot;TabItem&quot;,1)" executed="True" result="Success" success="True" time="2.354" asserts="0" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="FindControlByClassNameAndIndex" executed="True" result="Success" success="True" time="7.688" asserts="0">
+                    <results>
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByClassNameAndIndex(&quot;TabItem&quot;,1)" executed="True" result="Success" success="True" time="1.540" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByClassNameAndIndex(&quot;TextBlock&quot;,1)" executed="True" result="Success" success="True" time="1.496" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByClassNameAndIndex(&quot;Button&quot;,1)" executed="True" result="Success" success="True" time="1.506" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByClassNameAndIndex(&quot;ComboBox&quot;,2)" executed="True" result="Success" success="True" time="1.548" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByClassNameAndIndex(&quot;TabItem&quot;,1)" executed="True" result="Success" success="True" time="1.576" asserts="0" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="FindControlByName" executed="True" result="Success" success="True" time="7.557" asserts="0">
+                    <results>
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByName(&quot;Open Window With Scrollbars&quot;)" executed="True" result="Success" success="True" time="1.523" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByName(&quot;Get Multiple&quot;)" executed="True" result="Success" success="True" time="1.527" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByName(&quot;Input Controls&quot;)" executed="True" result="Success" success="True" time="1.513" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByName(&quot;File&quot;)" executed="True" result="Success" success="True" time="1.454" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByName(&quot;Button in toolbar&quot;)" executed="True" result="Success" success="True" time="1.523" asserts="0" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="FindControlByNameNegative" executed="True" result="Success" success="True" time="12.715" asserts="0">
+                    <results>
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByNameNegative(&quot;OpenHorizontalSplitterButton&quot;)" executed="True" result="Success" success="True" time="2.576" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByNameNegative(&quot;CheckedListBox&quot;)" executed="True" result="Success" success="True" time="3.167" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByNameNegative(&quot;ListBoxWithVScrollBar&quot;)" executed="True" result="Success" success="True" time="2.246" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByNameNegative(&quot;AComboBox&quot;)" executed="True" result="Success" success="True" time="2.280" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlByNameNegative(&quot;EditableComboBox&quot;)" executed="True" result="Success" success="True" time="2.395" asserts="0" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="FindControlClassName" executed="True" result="Success" success="True" time="7.857" asserts="0">
+                    <results>
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlClassName(&quot;ComboBox&quot;)" executed="True" result="Success" success="True" time="1.762" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlClassName(&quot;TabItem&quot;)" executed="True" result="Success" success="True" time="1.542" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlClassName(&quot;TabItem&quot;)" executed="True" result="Success" success="True" time="1.404" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlClassName(&quot;Button&quot;)" executed="True" result="Success" success="True" time="1.660" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.FindControlClassName(&quot;TextBlock&quot;)" executed="True" result="Success" success="True" time="1.463" asserts="0" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="GetWindowNegativeTest" executed="True" result="Success" success="True" time="12.303" asserts="0">
+                    <results>
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.GetWindowNegativeTest(&quot;MAIN&quot;)" executed="True" result="Success" success="True" time="2.652" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.GetWindowNegativeTest(&quot;MainWindows&quot;)" executed="True" result="Success" success="True" time="2.416" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.GetWindowNegativeTest(&quot;\x043B\x043E\x0443\x043A\x0433\x0433\x043A\x0433\x0430\x0433&quot;)" executed="True" result="Success" success="True" time="2.345" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.GetWindowNegativeTest(&quot;wIndow&quot;)" executed="True" result="Success" success="True" time="2.405" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.GetWindowNegativeTest(&quot;^%$iofkjndsf9)&amp;*&quot;)" executed="True" result="Success" success="True" time="2.467" asserts="0" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="GetWindowPositiveTest" executed="True" result="Success" success="True" time="12.040" asserts="0">
+                    <results>
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.GetWindowPositiveTest(&quot;&quot;)" executed="True" result="Success" success="True" time="2.369" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.GetWindowPositiveTest(&quot;M&quot;)" executed="True" result="Success" success="True" time="2.462" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.GetWindowPositiveTest(&quot;Main&quot;)" executed="True" result="Success" success="True" time="2.357" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.GetWindowPositiveTest(&quot;Window&quot;)" executed="True" result="Success" success="True" time="2.485" asserts="0" />
+                      <test-case name="WhiteSharp.UnitTests.FinderTests.GetWindowPositiveTest(&quot;MainW&quot;)" executed="True" result="Success" success="True" time="2.350" asserts="0" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="TestBaseNUnit" executed="False" result="Ignored">
+                <reason>
+                  <message><![CDATA[]]></message>
+                </reason>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

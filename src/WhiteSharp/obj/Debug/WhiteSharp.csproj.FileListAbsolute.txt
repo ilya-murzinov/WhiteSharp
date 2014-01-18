@@ -1,0 +1,8 @@
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\bin\Debug\WhiteSharp.dll.config
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\bin\Debug\WhiteSharp.dll
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\bin\Debug\WhiteSharp.pdb
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\bin\Debug\nunit.framework.dll
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\bin\Debug\nunit.framework.xml
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\obj\Debug\WhiteSharp.dll
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\obj\Debug\WhiteSharp.pdb
+C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\obj\Debug\WhiteSharp.csprojResolveAssemblyReference.cache

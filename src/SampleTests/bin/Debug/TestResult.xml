@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\bin\Debug\SampleTests.dll" total="30" errors="10" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2014-01-11" time="13:24:22">
+  <environment nunit-version="2.6.3.13283" clr-version="2.0.50727.5420" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\bin\Debug" machine-name="ILYA-PC" user="Ilya" user-domain="Ilya-PC" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="Assembly" name="C:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\bin\Debug\SampleTests.dll" executed="True" result="Failure" success="False" time="60.391" asserts="0">
+    <results>
+      <test-suite type="Namespace" name="SampleTests" executed="True" result="Failure" success="False" time="60.376" asserts="0">
+        <results>
+          <test-suite type="TestFixture" name="CalculatorTest" executed="True" result="Failure" success="False" time="60.356" asserts="1">
+            <results>
+              <test-suite type="ParameterizedTest" name="Add" executed="True" result="Success" success="True" time="23.463" asserts="0">
+                <results>
+                  <test-case name="SampleTests.CalculatorTest.Add(&quot;8&quot;)" executed="True" result="Success" success="True" time="2.506" asserts="1" />
+                  <test-case name="SampleTests.CalculatorTest.Add(&quot;6&quot;)" executed="True" result="Success" success="True" time="2.300" asserts="1" />
+                  <test-case name="SampleTests.CalculatorTest.Add(&quot;0&quot;)" executed="True" result="Success" success="True" time="2.306" asserts="1" />
+                  <test-case name="SampleTests.CalculatorTest.Add(&quot;2&quot;)" executed="True" result="Success" success="True" time="2.327" asserts="1" />
+                  <test-case name="SampleTests.CalculatorTest.Add(&quot;3&quot;)" executed="True" result="Success" success="True" time="2.336" asserts="1" />
+                  <test-case name="SampleTests.CalculatorTest.Add(&quot;4&quot;)" executed="True" result="Success" success="True" time="2.321" asserts="1" />
+                  <test-case name="SampleTests.CalculatorTest.Add(&quot;5&quot;)" executed="True" result="Success" success="True" time="2.291" asserts="1" />
+                  <test-case name="SampleTests.CalculatorTest.Add(&quot;7&quot;)" executed="True" result="Success" success="True" time="2.320" asserts="1" />
+                  <test-case name="SampleTests.CalculatorTest.Add(&quot;1&quot;)" executed="True" result="Success" success="True" time="2.323" asserts="1" />
+                  <test-case name="SampleTests.CalculatorTest.Add(&quot;9&quot;)" executed="True" result="Success" success="True" time="2.299" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="ParameterizedTest" name="Multiply" executed="True" result="Failure" success="False" time="24.639" asserts="0">
+                <results>
+                  <test-case name="SampleTests.CalculatorTest.Multiply(&quot;7&quot;)" executed="True" result="Error" success="False" time="2.132" asserts="0">
+                    <failure>
+                      <message><![CDATA[WhiteSharp.AssertException : Assertion failed. Control: "AutomationId = 150".
+                       Expected: "700", but was "1147"
+TearDown : System.Runtime.InteropServices.ExternalException : A generic error occurred in GDI+.]]></message>
+                      <stack-trace><![CDATA[at WhiteSharp.AssertThat.AreEqual(UIControl control, String expected, String actual) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\Asserts.cs:line 23
+at SampleTests.CalculatorTest.Multiply(String str) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\CalculatorTest.cs:line 71
+--TearDown
+at System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+at System.Drawing.Image.Save(String filename, ImageFormat format)
+at System.Drawing.Image.Save(String filename)
+at SampleTests.TestBaseNUnit.Stop() in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\TestBaseNUnit.cs:line 24
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case name="SampleTests.CalculatorTest.Multiply(&quot;9&quot;)" executed="True" result="Error" success="False" time="1.937" asserts="0">
+                    <failure>
+                      <message><![CDATA[WhiteSharp.AssertException : Assertion failed. Control: "AutomationId = 150".
+                       Expected: "152151082992", but was "862"
+TearDown : System.Runtime.InteropServices.ExternalException : A generic error occurred in GDI+.]]></message>
+                      <stack-trace><![CDATA[at WhiteSharp.AssertThat.AreEqual(UIControl control, String expected, String actual) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\Asserts.cs:line 23
+at SampleTests.CalculatorTest.Multiply(String str) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\CalculatorTest.cs:line 71
+--TearDown
+at System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+at System.Drawing.Image.Save(String filename, ImageFormat format)
+at System.Drawing.Image.Save(String filename)
+at SampleTests.TestBaseNUnit.Stop() in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\TestBaseNUnit.cs:line 24
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case name="SampleTests.CalculatorTest.Multiply(&quot;0&quot;)" executed="True" result="Error" success="False" time="1.885" asserts="0">
+                    <failure>
+                      <message><![CDATA[WhiteSharp.AssertException : Assertion failed. Control: "AutomationId = 150".
+                       Expected: "616900", but was "1571"
+TearDown : System.Runtime.InteropServices.ExternalException : A generic error occurred in GDI+.]]></message>
+                      <stack-trace><![CDATA[at WhiteSharp.AssertThat.AreEqual(UIControl control, String expected, String actual) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\Asserts.cs:line 23
+at SampleTests.CalculatorTest.Multiply(String str) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\CalculatorTest.cs:line 71
+--TearDown
+at System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+at System.Drawing.Image.Save(String filename, ImageFormat format)
+at System.Drawing.Image.Save(String filename)
+at SampleTests.TestBaseNUnit.Stop() in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\TestBaseNUnit.cs:line 24
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case name="SampleTests.CalculatorTest.Multiply(&quot;8&quot;)" executed="True" result="Error" success="False" time="6.975" asserts="0">
+                    <failure>
+                      <message><![CDATA[WhiteSharp.AssertException : Assertion failed. Control: "AutomationId = 150".
+                       Expected: "542255100", but was "1307"
+TearDown : System.Runtime.InteropServices.ExternalException : A generic error occurred in GDI+.]]></message>
+                      <stack-trace><![CDATA[at WhiteSharp.AssertThat.AreEqual(UIControl control, String expected, String actual) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\Asserts.cs:line 23
+at SampleTests.CalculatorTest.Multiply(String str) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\CalculatorTest.cs:line 71
+--TearDown
+at System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+at System.Drawing.Image.Save(String filename, ImageFormat format)
+at System.Drawing.Image.Save(String filename)
+at SampleTests.TestBaseNUnit.Stop() in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\TestBaseNUnit.cs:line 24
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case name="SampleTests.CalculatorTest.Multiply(&quot;6&quot;)" executed="True" result="Error" success="False" time="1.872" asserts="0">
+                    <failure>
+                      <message><![CDATA[WhiteSharp.AssertException : Assertion failed. Control: "AutomationId = 150".
+                       Expected: "899580", but was "1897"
+TearDown : System.Runtime.InteropServices.ExternalException : A generic error occurred in GDI+.]]></message>
+                      <stack-trace><![CDATA[at WhiteSharp.AssertThat.AreEqual(UIControl control, String expected, String actual) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\Asserts.cs:line 23
+at SampleTests.CalculatorTest.Multiply(String str) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\CalculatorTest.cs:line 71
+--TearDown
+at System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+at System.Drawing.Image.Save(String filename, ImageFormat format)
+at System.Drawing.Image.Save(String filename)
+at SampleTests.TestBaseNUnit.Stop() in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\TestBaseNUnit.cs:line 24
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case name="SampleTests.CalculatorTest.Multiply(&quot;1&quot;)" executed="True" result="Error" success="False" time="1.916" asserts="0">
+                    <failure>
+                      <message><![CDATA[WhiteSharp.AssertException : Assertion failed. Control: "AutomationId = 150".
+                       Expected: "236440", but was "974"
+TearDown : System.Runtime.InteropServices.ExternalException : A generic error occurred in GDI+.]]></message>
+                      <stack-trace><![CDATA[at WhiteSharp.AssertThat.AreEqual(UIControl control, String expected, String actual) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\Asserts.cs:line 23
+at SampleTests.CalculatorTest.Multiply(String str) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\CalculatorTest.cs:line 71
+--TearDown
+at System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+at System.Drawing.Image.Save(String filename, ImageFormat format)
+at System.Drawing.Image.Save(String filename)
+at SampleTests.TestBaseNUnit.Stop() in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\TestBaseNUnit.cs:line 24
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case name="SampleTests.CalculatorTest.Multiply(&quot;2&quot;)" executed="True" result="Error" success="False" time="1.885" asserts="0">
+                    <failure>
+                      <message><![CDATA[WhiteSharp.AssertException : Assertion failed. Control: "AutomationId = 150".
+                       Expected: "213136", but was "1000"
+TearDown : System.Runtime.InteropServices.ExternalException : A generic error occurred in GDI+.]]></message>
+                      <stack-trace><![CDATA[at WhiteSharp.AssertThat.AreEqual(UIControl control, String expected, String actual) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\Asserts.cs:line 23
+at SampleTests.CalculatorTest.Multiply(String str) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\CalculatorTest.cs:line 71
+--TearDown
+at System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+at System.Drawing.Image.Save(String filename, ImageFormat format)
+at System.Drawing.Image.Save(String filename)
+at SampleTests.TestBaseNUnit.Stop() in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\TestBaseNUnit.cs:line 24
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case name="SampleTests.CalculatorTest.Multiply(&quot;3&quot;)" executed="True" result="Error" success="False" time="1.875" asserts="0">
+                    <failure>
+                      <message><![CDATA[WhiteSharp.AssertException : Assertion failed. Control: "AutomationId = 150".
+                       Expected: "34447", but was "392"
+TearDown : System.Runtime.InteropServices.ExternalException : A generic error occurred in GDI+.]]></message>
+                      <stack-trace><![CDATA[at WhiteSharp.AssertThat.AreEqual(UIControl control, String expected, String actual) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\Asserts.cs:line 23
+at SampleTests.CalculatorTest.Multiply(String str) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\CalculatorTest.cs:line 71
+--TearDown
+at System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+at System.Drawing.Image.Save(String filename, ImageFormat format)
+at System.Drawing.Image.Save(String filename)
+at SampleTests.TestBaseNUnit.Stop() in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\TestBaseNUnit.cs:line 24
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case name="SampleTests.CalculatorTest.Multiply(&quot;4&quot;)" executed="True" result="Error" success="False" time="1.864" asserts="0">
+                    <failure>
+                      <message><![CDATA[WhiteSharp.AssertException : Assertion failed. Control: "AutomationId = 150".
+                       Expected: "160661", but was "810"
+TearDown : System.Runtime.InteropServices.ExternalException : A generic error occurred in GDI+.]]></message>
+                      <stack-trace><![CDATA[at WhiteSharp.AssertThat.AreEqual(UIControl control, String expected, String actual) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\Asserts.cs:line 23
+at SampleTests.CalculatorTest.Multiply(String str) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\CalculatorTest.cs:line 71
+--TearDown
+at System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+at System.Drawing.Image.Save(String filename, ImageFormat format)
+at System.Drawing.Image.Save(String filename)
+at SampleTests.TestBaseNUnit.Stop() in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\TestBaseNUnit.cs:line 24
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case name="SampleTests.CalculatorTest.Multiply(&quot;5&quot;)" executed="True" result="Error" success="False" time="1.873" asserts="0">
+                    <failure>
+                      <message><![CDATA[WhiteSharp.AssertException : Assertion failed. Control: "AutomationId = 150".
+                       Expected: "888720", but was "1886"
+TearDown : System.Runtime.InteropServices.ExternalException : A generic error occurred in GDI+.]]></message>
+                      <stack-trace><![CDATA[at WhiteSharp.AssertThat.AreEqual(UIControl control, String expected, String actual) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\WhiteSharp\Asserts.cs:line 23
+at SampleTests.CalculatorTest.Multiply(String str) in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\CalculatorTest.cs:line 71
+--TearDown
+at System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+at System.Drawing.Image.Save(String filename, ImageFormat format)
+at System.Drawing.Image.Save(String filename)
+at SampleTests.TestBaseNUnit.Stop() in c:\Users\Ilya\Documents\Visual Studio 2013\Projects\WhiteSharp\src\SampleTests\TestBaseNUnit.cs:line 24
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="ParameterizedTest" name="NumberButtonsTest" executed="True" result="Success" success="True" time="9.452" asserts="0">
+                <results>
+                  <test-case name="SampleTests.CalculatorTest.NumberButtonsTest(&quot;137&quot;,&quot;7&quot;)" executed="True" result="Success" success="True" time="0.937" asserts="1" />
+                  <test-case name="SampleTests.CalculatorTest.NumberButtonsTest(&quot;136&quot;,&quot;6&quot;)" executed="True" result="Success" success="True" time="0.943" asserts="1" />
+                  <test-case name="SampleTests.CalculatorTest.NumberButtonsTest(&quot;130&quot;,&quot;0&quot;)" executed="True" result="Success" success="True" time="0.917" asserts="1" />
+                  <test-case name="SampleTests.CalculatorTest.NumberButtonsTest(&quot;138&quot;,&quot;8&quot;)" executed="True" result="Success" success="True" time="0.953" asserts="1" />
+                  <test-case name="SampleTests.CalculatorTest.NumberButtonsTest(&quot;139&quot;,&quot;9&quot;)" executed="True" result="Success" success="True" time="0.929" asserts="1" />
+                  <test-case name="SampleTests.CalculatorTest.NumberButtonsTest(&quot;131&quot;,&quot;1&quot;)" executed="True" result="Success" success="True" time="0.955" asserts="1" />
+                  <test-case name="SampleTests.CalculatorTest.NumberButtonsTest(&quot;132&quot;,&quot;2&quot;)" executed="True" result="Success" success="True" time="0.935" asserts="1" />
+                  <test-case name="SampleTests.CalculatorTest.NumberButtonsTest(&quot;133&quot;,&quot;3&quot;)" executed="True" result="Success" success="True" time="0.951" asserts="1" />
+                  <test-case name="SampleTests.CalculatorTest.NumberButtonsTest(&quot;134&quot;,&quot;4&quot;)" executed="True" result="Success" success="True" time="0.933" asserts="1" />
+                  <test-case name="SampleTests.CalculatorTest.NumberButtonsTest(&quot;135&quot;,&quot;5&quot;)" executed="True" result="Success" success="True" time="0.945" asserts="1" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
