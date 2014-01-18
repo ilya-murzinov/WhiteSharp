@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
@@ -30,7 +31,9 @@ namespace WhiteSharp
 
         public UIControl FindChild(By searchCriteria, int index = 0)
         {
-            UIControl returnControl = new UIControl(Finder.Find(AutomationElement, searchCriteria).ElementAt(index),
+            List<AutomationElement> baseList = AutomationElement.FindAll(TreeScope.Descendants,
+                new PropertyCondition(AutomationElement.IsOffscreenProperty, false)).OfType<AutomationElement>().ToList();
+            UIControl returnControl = new UIControl(Finder.Find(baseList, searchCriteria).ElementAt(index),
                 actionListener)
             {
                 Identifiers = searchCriteria.Identifiers,
@@ -135,13 +138,8 @@ namespace WhiteSharp
         public UIControl WaitForControlEnabled()
         {
             DateTime start = DateTime.Now;
-            object o;
-            if (Window.FindControl("busyIndicator").AutomationElement.TryGetCurrentPattern(TogglePattern.Pattern, out o))
-                ;
-            TogglePattern p = (TogglePattern) o;
 
-            while ((!Enabled || p.Current.ToggleState == ToggleState.On) &&
-                   (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
+            while (!Enabled && (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
             {
                 Trace.WriteLine(AutomationElement.Current.AutomationId + " - " + Enabled);
                 Thread.Sleep(Settings.Default.Delay);

@@ -80,6 +80,7 @@
     </Compile>
     <Compile Include="UIControl.cs" />
     <Compile Include="UITests\ActionTests.cs" />
+    <Compile Include="UITests\PerformanceTest.cs" />
     <Compile Include="UIWindow.cs" />
     <Compile Include="Asserts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

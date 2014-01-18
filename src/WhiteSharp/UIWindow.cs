@@ -59,10 +59,15 @@ namespace WhiteSharp
             InitializeOption);
 
         private static int _processId;
-
         public int ProcessId
         {
             get { return _processId; }
+        }
+
+        private static List<AutomationElement> _baseList;
+        internal List<AutomationElement> BaseList 
+        {
+            get { return _baseList; }
         }
 
         private static List<string> _identifiers = new List<string>();
@@ -174,8 +179,7 @@ namespace WhiteSharp
             if (windows == null || !windows.Any())
                 throw new WindowNotFoundException(
                     Logging.WindowException(_identifiers.Aggregate((x, y) => x + ", " + y)));
-
-
+            
             Window returnWindow = windows.First();
             Logging.WindowFound(returnWindow, DateTime.Now - _start);
             if (windows.Count > 1)
@@ -188,22 +192,22 @@ namespace WhiteSharp
 
             _processId = returnWindow.AutomationElement.Current.ProcessId;
 
+            _baseList = returnWindow.AutomationElement.FindAll(TreeScope.Descendants,
+                new PropertyCondition(AutomationElement.IsOffscreenProperty, false)).OfType<AutomationElement>().ToList();
+
             return returnWindow;
         }
 
         #endregion
 
         public UIControl FindControl(By searchCriteria, int index = 0)
-        {
-            UIControl returnControl = new UIControl(Finder.Find(AutomationElement, searchCriteria).ElementAt(index),
+        {            
+            UIControl returnControl = new UIControl(Finder.Find(BaseList, searchCriteria).ElementAt(index),
                 actionListener)
             {
                 Identifiers = searchCriteria.Identifiers,
                 Window = this
             };
-
-            Logging.ControlFound(searchCriteria);
-
             return returnControl;
         }
 
@@ -219,7 +223,7 @@ namespace WhiteSharp
 
         public List<AutomationElement> FindAll(By searchCriteria)
         {
-            return Finder.Find(AutomationElement, searchCriteria);
+            return Finder.Find(BaseList, searchCriteria);
         }
 
         public void Send(string value)

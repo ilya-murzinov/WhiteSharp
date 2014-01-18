@@ -10,35 +10,34 @@ namespace WhiteSharp
     {
         internal static DateTime Start;
 
-        internal static List<AutomationElement> Find(AutomationElement automationElement, By searchCriteria)
+        internal static List<AutomationElement> Find(List<AutomationElement> baseList, By searchCriteria)
         {
             Start = DateTime.Now;
-            List<AutomationElement> list = null;
-            do
+            List<AutomationElement> result = null;
+            while ((result == null || !result.Any()) &&
+                     ((DateTime.Now - Start).TotalMilliseconds < Settings.Default.Timeout))
             {
-                Thread.Sleep(Settings.Default.Delay);
                 try
                 {
-                    list = automationElement
-                        .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
-                        .OfType<AutomationElement>().ToList().FindAll(searchCriteria.Result).ToList();
+                    result = baseList.FindAll(searchCriteria.Result);
                 }
                 catch (Exception e)
                 {
                     Logging.Exception(e);
                 }
-            } while ((list == null || !list.Any()) &&
-                     ((DateTime.Now - Start).TotalMilliseconds < Settings.Default.Timeout));
+            }
 
-            if (list == null || !list.Any())
+            if (result == null || !result.Any())
                 throw new ControlNotFoundException(
                     Logging.ControlNotFoundException(searchCriteria.Identifiers));
 
-            if (list.Count() > 1)
-                Logging.MutlipleControlsWarning(list);
+            Logging.ControlFound(searchCriteria);
 
-            searchCriteria.Duration = DateTime.Now - Start;
-            return list;
+            if (result.Count() > 1)
+                Logging.MutlipleControlsWarning(result);
+
+            searchCriteria.Duration = (DateTime.Now - Start);
+            return result;
         }
     }
 
