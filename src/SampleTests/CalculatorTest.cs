@@ -7,6 +7,8 @@ namespace SampleTests
     public class CalculatorScreenObject
     {
         private UIWindow window;
+        private UIControl help;
+        private UIControl about;
 
         private UIControl display;
         private UIControl clearEverything;
@@ -22,6 +24,7 @@ namespace SampleTests
         protected CalculatorScreenObject()
         {
             window = new UIWindow("Calculator");
+            help = window.FindControl("Item 3");
             display = window.FindControl("150");
             for (int i = 0; i < 10; i++)
             {
@@ -38,7 +41,7 @@ namespace SampleTests
         private static CalculatorScreenObject instance;
         public static CalculatorScreenObject Instance
         {
-            get { return instance ?? (instance = new CalculatorScreenObject()); }
+            get { return instance = new CalculatorScreenObject(); }
         }
 
         public CalculatorScreenObject CheckDisplayTextEquals(string text)
@@ -84,6 +87,13 @@ namespace SampleTests
             divide.Click();
             return this;
         }
+        public AboutDialog OpenAboutCalculator()
+        {
+            help.Click();
+            about = help.FindChild("Item 302");
+            about.Click();
+            return AboutDialog.Instance;
+        }
     }
 
     public class AboutDialog
@@ -96,6 +106,18 @@ namespace SampleTests
         public static AboutDialog Instance
         {
             get { return instance ?? (instance = new AboutDialog()); }
+        }
+
+        private AboutDialog()
+        {
+            window = new UIWindow("Calculator").ModalWindow("About Calculator");
+            btnOk = window.FindControl("1");
+        }
+
+        public CalculatorScreenObject Close()
+        {
+            btnOk.Click();
+            return CalculatorScreenObject.Instance;
         }
     }
 
@@ -211,6 +233,11 @@ namespace SampleTests
                 .PressEquals()
                 .CheckDisplayTextEquals((i / j).ToString())
                 .ClearScreen();
+        }
+        [TestCase]
+        public void OpenAboutCalculator()
+        {
+            CalculatorScreenObject.Instance.OpenAboutCalculator().Close();
         }
     }
 }
