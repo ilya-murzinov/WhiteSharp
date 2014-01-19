@@ -148,7 +148,7 @@ namespace WhiteSharp
         public static string ItemSelected(string item, string id)
         {
             string s = string.Format(Strings["ItemSelected"], item, id);
-            Write(ActionTag + s);
+            Write(Tag(ActionTag) + s);
             return s;
         }
 
@@ -209,7 +209,7 @@ namespace WhiteSharp
 
         public static string Exception(Exception e)
         {
-            Write(Tag(ExceptionTag) + e.Message);
+            Write(Tag(ExceptionTag) + e.Message + "\r\n" + e.StackTrace);
             return e.Message;
         }
     }

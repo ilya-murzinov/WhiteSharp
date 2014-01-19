@@ -12,6 +12,7 @@ namespace WhiteSharp.UITests
         public void Start()
         {
             Logging.Start(TestContext.CurrentContext.Test.Name);
+            Window.FindControl(By.ClassName("TabItem").AndName("List Controls")).Click();
         }
 
         [TearDown]
@@ -28,7 +29,7 @@ namespace WhiteSharp.UITests
 
         public UIWindow Window;
         public static string WindowTitle = "MainWindow";
-        public static string Path = @"..\..\..\..\\Tools\\TestApps\\WpfTestApplication.exe";
+        public static string Path = @"..\..\..\..\\TestApps\\WpfTestApplication.exe";
         public static string ResultsPath = "\\Results";
         private readonly Process proc = Process.Start(Path);
 

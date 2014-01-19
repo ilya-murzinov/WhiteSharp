@@ -128,7 +128,8 @@ namespace WhiteSharp.UITests
         public void FindGeriCell(int i, int j, string result)
         {
             Window.FindControl(By.ClassName("TabItem").AndName("Data Grid")).Click();
-            var c = Window.FindControl(By.GridCell(i, j));
+            var container = Window.FindControl("ControlsTab");
+            var c = container.FindChild(By.GridCell(i, j));
             AssertThat.AreEqual(c, c.GetText(), result);
         }
 

@@ -102,11 +102,13 @@ namespace WhiteSharp
             var b = new By();
             b._result.Add(x =>
             {
-                object o;
-                x.TryGetCurrentPattern(TableItemPattern.Pattern, out o);
-                TableItemPattern pattern = (TableItemPattern) o;
-                if (pattern.Current.Column.Equals(i) && pattern.Current.Row.Equals(j))
+                object o;                
+                if (x.TryGetCurrentPattern(TableItemPattern.Pattern, out o))
+                {
+                    TableItemPattern pattern = (TableItemPattern)o;
+                    if (pattern.Current.Column.Equals(i) && pattern.Current.Row.Equals(j))
                     return true;
+                }
                 return false;
             });
             b._identifiers.Add(String.Format("GridCell = {0}, {1}", i, j));

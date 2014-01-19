@@ -13,17 +13,17 @@ namespace WhiteSharp.UITests
         {
             var control = Window.FindControl(id);
             control.SelectItem("");
-            AssertThat.AreEqual(control, control.GetText(), item);
+            AssertThat.AreEqual(control, item, control.GetText());
         }
 
-        [TestCase("AComboBox", 2, "Test2")]
-        [TestCase("EditableComboBox", 4, "Test4")]
-        [TestCase("DataBoundComboBox", 3, "Test3")]
+        [TestCase("AComboBox", 2, "Test3")]
+        [TestCase("EditableComboBox", 3, "Test4")]
+        [TestCase("DataBoundComboBox", 3, "Test4")]
         public void SelectItemTest(string id, int item, string result)
         {
             var control = Window.FindControl(id);
             control.SelectItem(item);
-            AssertThat.AreEqual(control, control.GetText(), result);
+            AssertThat.AreEqual(control, result, control.GetText());
         }
     }
 }
