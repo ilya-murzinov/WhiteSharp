@@ -53,11 +53,6 @@ namespace WhiteSharp
 
         #endregion
 
-        public new UIWindow ModalWindow(string title)
-        {
-            return new UIWindow(ProcessId, x => x.Title.Equals(Process.GetProcessById(ProcessId).MainWindowTitle));
-        }
-
         private static readonly InitializeOption InitializeOption = InitializeOption.NoCache;
 
         private new static readonly WindowSession WindowSession = new WindowSession(new ApplicationSession(),

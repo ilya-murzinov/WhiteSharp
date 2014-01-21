@@ -41,12 +41,12 @@ namespace SampleTests
         private static CalculatorScreenObject instance;
         public static CalculatorScreenObject Instance
         {
-            get { return instance = new CalculatorScreenObject(); }
+            get { return instance ?? (instance = new CalculatorScreenObject()); }
         }
 
         public CalculatorScreenObject CheckDisplayTextEquals(string text)
         {
-            AssertThat.AreEqual(display, text, display.GetText());
+            AssertThat.AreEqual(display, text, Math.Round(double.Parse(display.GetText()), 15).ToString());
             return this;
         }
         public CalculatorScreenObject ClearScreen()
@@ -110,7 +110,7 @@ namespace SampleTests
 
         private AboutDialog()
         {
-            window = new UIWindow("Calculator").ModalWindow("About Calculator");
+            window = new UIWindow("Calculator");
             btnOk = window.FindControl("1");
         }
 
@@ -224,14 +224,14 @@ namespace SampleTests
         public void Divide(string str)
         {
             var r = new Random();
-            int i = r.Next(1000);
-            int j = r.Next(1000);
+            double i = r.Next(1000);
+            double j = r.Next(1000);
             CalculatorScreenObject.Instance
-                .Press(i)
+                .Press((int) i)
                 .PressDivide()
-                .Press(j)
+                .Press((int) j)
                 .PressEquals()
-                .CheckDisplayTextEquals((i / j).ToString())
+                .CheckDisplayTextEquals(Math.Round(i / j, 15).ToString())
                 .ClearScreen();
         }
         [TestCase]
