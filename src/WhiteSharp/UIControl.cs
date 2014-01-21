@@ -141,13 +141,13 @@ namespace WhiteSharp
         {
             DateTime start = DateTime.Now;
 
-            while (!Enabled && (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
+            while (!AutomationElement.Current.IsEnabled && (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
             {
                 Trace.WriteLine(AutomationElement.Current.AutomationId + " - " + Enabled);
                 Thread.Sleep(Settings.Default.Delay);
             }
 
-            if (!Enabled)
+            if (!AutomationElement.Current.IsEnabled)
                 throw new ControlNotEnabledException(Logging.ControlNotEnabledException(Identifiers));
             return this;
         }

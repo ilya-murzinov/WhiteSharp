@@ -24,17 +24,9 @@ namespace SampleTests
                 new ScreenCapture().CaptureScreenShot()
                     .Save("Results\\" + name.Substring(0, name.IndexOf("(")) + ".bmp");
             }
-
-            //Clear screen
-            MainWindow.FindControl(By.AutomationId("81")).Click();
-            Assert.True(Display.Name.Equals("0"));
-
-            Logging.Write(TestContext.CurrentContext.Result.Status.ToString().ToUpper() + "!");
         }
 
         private readonly Process proc = Process.Start(@"C:\Windows\System32\calc.exe");
-        public static UIWindow MainWindow;
-        public UIControl Display;
 
         public TestContext TestContext { get; set; }
 
@@ -43,9 +35,6 @@ namespace SampleTests
         {
             Application app = Application.Attach(proc);
             app.WaitWhileBusy();
-            MainWindow = new UIWindow("Calculator");
-            Display = MainWindow.FindControl(By.AutomationId("150"));
-            Assert.True(Display.Name.Equals("0"));
         }
 
         [TestFixtureTearDown]
