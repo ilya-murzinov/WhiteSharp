@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
@@ -18,33 +17,45 @@ namespace WhiteSharp
     public class UIControl : UIItem, IUIControl
     {
         public UIWindow Window { get; internal set; }
-        internal string Identifiers { get; set; }
+        public string Identifiers { get; set; }
 
         internal UIControl(AutomationElement element, ActionListener listener) : base(element, listener)
         {
         }
 
-        public string GetId()
+        public UIControl(AutomationElement element)
+        {            
+        }
+
+        internal string GetId()
         {
             return AutomationElement.GetId();
         }
 
         public UIControl FindChild(By searchCriteria, int index = 0)
         {
-            DateTime start = DateTime.Now;
-            List<AutomationElement> baseList = AutomationElement.FindAll(TreeScope.Descendants,
-                new PropertyCondition(AutomationElement.IsOffscreenProperty, false)).OfType<AutomationElement>().ToList();
-            List<AutomationElement> result = Finder.Find(baseList, searchCriteria);
-            UIControl returnControl = new UIControl(result.ElementAt(index),
+            List<AutomationElement> baseAutomationElementList = automationElement
+                .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
+                .OfType<AutomationElement>().ToList();
+            UIControl returnControl =
+                new UIControl(Finder.Find(baseAutomationElementList, searchCriteria).ElementAt(index),
                 actionListener)
             {
                 Identifiers = searchCriteria.Identifiers,
                 Window = Window
             };
 
-            Logging.ControlFound(searchCriteria.Identifiers, Window.Title, DateTime.Now - start);
+            Logging.ControlFound(searchCriteria);
 
             return returnControl;
+        }
+
+        public List<AutomationElement> FindChildren(By searchCriteria)
+        {
+            List<AutomationElement> baseAutomationElementList = automationElement
+                .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
+                .OfType<AutomationElement>().ToList();
+            return Finder.Find(baseAutomationElementList, searchCriteria);
         }
 
         public UIControl FindChild(string automationId)
@@ -77,13 +88,48 @@ namespace WhiteSharp
 
         public new UIControl Click()
         {
-            WaitForControlEnabled();
+            WaitForEnabled();
             return ClickAnyway();
+        }
+
+
+        public bool Exists(By searchCriteria)
+        {
+            try
+            {
+                if (AutomationElement.FindAll(TreeScope.Children,
+                    new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
+                    .OfType<AutomationElement>().ToList().FindAll(searchCriteria.Result).Count > 0)
+                    return true;
+                return false;
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public UIControl ClearValue()
+        {
+            object o;
+            if (AutomationElement.TryGetCurrentPattern(ValuePattern.Pattern, out o))
+            {
+                ValuePattern pattern = (ValuePattern)o;
+                if (!pattern.Current.IsReadOnly)
+                {
+                    pattern.SetValue("");
+                }
+            }
+            else
+                throw new GeneralException(string.Format(Logging.Strings["UnsupportedPattern"], "Value Pattern"));
+
+            return this;
         }
 
         public UIControl Send(string value)
         {
-            WaitForControlEnabled();
+            WaitForEnabled();
             DateTime start = DateTime.Now;
             while (!AutomationElement.Current.HasKeyboardFocus &&
                    (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
@@ -116,8 +162,21 @@ namespace WhiteSharp
                     Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.DOWN);
                     break;
                 }
+                case "{Del}":
+                {
+                    Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.DELETE);
+                    break;
+                }
+                case "^{a}":
+                {
+                    Keyboard.Instance.HoldKey(KeyboardInput.SpecialKeys.CONTROL);
+                    Keyboard.Instance.Enter("a");
+                    Keyboard.Instance.LeaveKey(KeyboardInput.SpecialKeys.CONTROL);
+                    break;
+                }
                 default:
                 {
+                    ClearValue();
                     SendKeys.SendWait(value);
                     break;
                 }
@@ -137,39 +196,67 @@ namespace WhiteSharp
             return AutomationElement.GetText();
         }
 
-        public UIControl WaitForControlEnabled()
+        public UIControl WaitForEnabled()
         {
             DateTime start = DateTime.Now;
+            int count = 0;
 
-            while (!AutomationElement.Current.IsEnabled && (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
+            while (count < 100 &&
+                       (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
             {
-                Trace.WriteLine(AutomationElement.Current.AutomationId + " - " + Enabled);
-                Thread.Sleep(Settings.Default.Delay);
+                while (!Enabled &&
+                       (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
+                {
+                    Thread.Sleep(Settings.Default.Delay);
+                }
+
+                if (Enabled)
+                {
+                    count++;
+                }
             }
 
-            if (!AutomationElement.Current.IsEnabled)
+            if (!Enabled &&
+                    (DateTime.Now - start).TotalMilliseconds > Settings.Default.Timeout)
                 throw new ControlNotEnabledException(Logging.ControlNotEnabledException(Identifiers));
             return this;
         }
 
-        public void SelectItem(string name)
+        public UIControl Wait(int milliseconds)
         {
-            WaitForControlEnabled();
-            if (!AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
-            {
-                throw new GeneralException(string.Format(Logging.Strings["NotACombobox"], GetId()));
-            }
-            var p = (ValuePattern) AutomationElement.GetCurrentPattern(ValuePattern.Pattern);
-            p.SetValue(name);
-            Logging.ItemSelected(name, Identifiers);
+            Thread.Sleep(milliseconds);
+            return this;
         }
 
-        public void SelectItem(int index)
+        public UIControl SelectItem(string name)
         {
-            WaitForControlEnabled();
+            WaitForEnabled();
+            if (!AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
+                throw new GeneralException(string.Format(Logging.Strings["NotACombobox"], Identifiers));
+
+            object o;
+
+            if (AutomationElement.TryGetCurrentPattern(ValuePattern.Pattern, out o))
+            {
+                ValuePattern valuePattern = (ValuePattern) o;
+                valuePattern.SetValue(name);
+            }
+            else
+            {
+                ComboBox comboBox = new ComboBox(AutomationElement, ActionListener);
+                comboBox.Select(name);
+            }
+
+            Logging.ItemSelected(name, Identifiers);
+            return this;
+        }
+
+        public UIControl SelectItem(int index)
+        {
+            WaitForEnabled();
             if (!AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
             {
-                throw new GeneralException(string.Format(Logging.Strings["NotACombobox"], GetId()));
+                throw new GeneralException(string.Format(Logging.Strings["NotACombobox"], Identifiers));
             }
             var combobox = new ComboBox(AutomationElement, actionListener);
             try
@@ -181,6 +268,42 @@ namespace WhiteSharp
                 Logging.Exception(e);
             }
             Logging.ItemSelected(index.ToString(), Identifiers);
+            return this;
+        }
+
+        public UIControl SelectFirstItem()
+        {
+            return SelectItem("");
+        }
+
+        public void SetToggleState(ToggleState state)
+        {
+            object objPat;
+            if (AutomationElement.TryGetCurrentPattern(TogglePattern.Pattern, out objPat))
+            {
+                TogglePattern togglePattern = (TogglePattern)objPat;
+                if (togglePattern.Current.ToggleState != state)
+                {
+                    togglePattern.Toggle();
+                }
+            }
+            else
+            {
+                throw new GeneralException(string.Format(Logging.Strings["UnsupportedPattern"], Identifiers, "TogglePattern"));
+            }
+        }
+
+        public void SelectRadioButton()
+        {
+            if (AutomationElement.Current.ControlType.Equals(ControlType.RadioButton))
+            {
+                var p = (SelectionItemPattern) AutomationElement.GetCurrentPattern(SelectionItemPattern.Pattern);
+                p.Select();
+            }
+            else
+            {
+                throw new GeneralException(string.Format(Logging.Strings["NotARadioButton"], Identifiers));
+            }
         }
 
         public new UIControl DrawHighlight()
