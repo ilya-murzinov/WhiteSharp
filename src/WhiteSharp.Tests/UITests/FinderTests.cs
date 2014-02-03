@@ -14,7 +14,7 @@ namespace WhiteSharp.Tests.UITests
         [TestCase("^%$iofkjndsf9)&*")]
         public void GetWindowNegativeTest(string title)
         {
-            new UIWindow(title);
+            new Window(title);
         }
 
         [TestCase("")]
@@ -24,14 +24,14 @@ namespace WhiteSharp.Tests.UITests
         [TestCase("M")]
         public void GetWindowPositiveTest(string title)
         {
-            new UIWindow(title);
+            new Window(title);
         }
 
         [TestCase("M", "a", "Win", "d", "in", "ndow")]
         [TestCase("Катарсис")]
         public void GetWindowMultiplePositiveTest(params string[] titles)
         {
-            new UIWindow(titles);
+            new Window(titles);
         }
 
         [TestCase("AComboBox")]
@@ -90,7 +90,7 @@ namespace WhiteSharp.Tests.UITests
             MainWindow.Instance.Window.FindControl(By.ClassName(id), index);
         }
 
-        [TestCase("TextBlock", 1), ExpectedException(typeof (ControlNotFoundException))]
+        [TestCase("TextBlock", 1), ExpectedException(typeof(ControlNotFoundException))]
         [TestCase("ComboBox", 2)]
         [TestCase("TabItem", 1)]
         [TestCase("TabItem", 1)]
@@ -100,7 +100,7 @@ namespace WhiteSharp.Tests.UITests
             MainWindow.Instance.Window.FindControl(By.AutomationId(id));
         }
 
-        [TestCase("AComboBox"), ExpectedException(typeof (ControlNotFoundException))]
+        [TestCase("AComboBox"), ExpectedException(typeof(ControlNotFoundException))]
         [TestCase("EditableComboBox")]
         [TestCase("OpenHorizontalSplitterButton")]
         [TestCase("ListBoxWithVScrollBar")]

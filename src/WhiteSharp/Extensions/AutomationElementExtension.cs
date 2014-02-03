@@ -75,9 +75,16 @@ namespace WhiteSharp.Extensions
 
         public static string Title(this AutomationElement element)
         {
-            return
-                element.FindFirst(TreeScope.Children,
+            string returnName = null;
+            try
+            {
+                returnName = element.FindFirst(TreeScope.Children,
                     new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.TitleBar)).Current.Name;
+            }
+            catch (Exception)
+            {
+            }
+            return returnName ?? "";
         }
     }
 }
