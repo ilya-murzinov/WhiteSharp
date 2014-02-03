@@ -2,11 +2,11 @@
 {
     class MainWindowListControlsTab : MainWindow
     {
-        public UIWindow Window;
+        public Window Window;
 
         protected MainWindowListControlsTab()
         {
-            Window = new UIWindow(Title);
+            Window = new Window(Title);
         }
 
         private static MainWindowListControlsTab _instance;
