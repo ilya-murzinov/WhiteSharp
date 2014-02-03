@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Automation;
@@ -147,9 +146,9 @@ namespace WhiteSharp
             return s;
         }
 
-        public static string WindowFound(Window window, TimeSpan duration)
+        public static string WindowFound(string windowTitle, TimeSpan duration)
         {
-            string s = string.Format(Strings["WindowFound"], window.Title, duration.TotalSeconds);
+            string s = string.Format(Strings["WindowFound"], windowTitle, duration.TotalSeconds);
             Write(new Tag(FoungTag) + s, false);
             return s;
         }
@@ -189,9 +188,9 @@ namespace WhiteSharp
             return s;
         }
 
-        public static string MutlipleWindowsWarning(List<Window> list)
+        public static string MutlipleWindowsWarning(int count)
         {
-            string s = string.Format(Strings["MultipleWindowsWarning"], list.Count);
+            string s = string.Format(Strings["MultipleWindowsWarning"], count);
             Write(new Tag(WarningTag) + s, false);
             return s;
         }

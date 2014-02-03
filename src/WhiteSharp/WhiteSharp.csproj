@@ -69,17 +69,19 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="Extensions\AutomationElementExtension.cs" />
     <Compile Include="Finder.cs" />
-    <Compile Include="Interfaces\IUIControl.cs" />
-    <Compile Include="Interfaces\IUIWindow.cs" />
+    <Compile Include="Interfaces\IControl.cs" />
+    <Compile Include="Interfaces\IWindow.cs" />
     <Compile Include="Logging.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="UIControl.cs" />
-    <Compile Include="UIWindow.cs" />
+    <Compile Include="Control.cs" />
+    <Compile Include="Desktop.cs" />
+    <Compile Include="Window.cs" />
     <Compile Include="Asserts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <LastGenOutput>AssemblyInfo2.cs</LastGenOutput>

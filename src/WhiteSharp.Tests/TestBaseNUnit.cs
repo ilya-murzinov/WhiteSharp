@@ -13,7 +13,7 @@ namespace WhiteSharp.Tests
     [TestFixture(Ignore = true)]
     public class TestBaseNUnit
     {
-        public static string Path = @"..\..\..\..\\Tools\\TestApps\\WpfTestApplication.exe";
+        public static string Path = @"..\..\..\..\\TestApps\\WpfTestApplication.exe";
         public static string ResultsPath = "\\Results";
         private readonly Process _proc = Process.Start(Path);
 

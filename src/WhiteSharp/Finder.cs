@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Automation;
+using WhiteSharp.Extensions;
 
 namespace WhiteSharp
 {
@@ -61,11 +62,27 @@ namespace WhiteSharp
             return b;
         }
 
+        public static By Predicate(Predicate<AutomationElement> predicate)
+        {
+            var b = new By();
+            b._result.Add(predicate);
+            b._identifiers.Add(String.Format("Predicate = {0}", predicate));
+            return b;
+        }
+
         public static By AutomationIdContains(string automationId)
         {
             var b = new By();
             b._result.Add(x => x.Current.AutomationId.Contains(automationId));
             b._identifiers.Add(String.Format("AutomationId {0} {1}", Logging.Strings["Contains"], automationId));
+            return b;
+        }
+
+        public static By TextContains(string text)
+        {
+            var b = new By();
+            b._result.Add(x => x.GetText().Contains(text));
+            b._identifiers.Add(String.Format("Text: \"{0}\"", text));
             return b;
         }
 
@@ -115,7 +132,7 @@ namespace WhiteSharp
         {
             var b = new By();
             b._result.Add(x => x.Current.ControlType.Equals(type));
-            b._identifiers.Add(String.Format("ControlType = {0}", type));
+            b._identifiers.Add(String.Format("ControlType = {0}", type.ProgrammaticName));
             return b;
         }
 
@@ -123,6 +140,13 @@ namespace WhiteSharp
         {
             _result.Add(x => x.Current.AutomationId.Equals(automationId));
             _identifiers.Add(String.Format("AutomationId = {0}", automationId));
+            return this;
+        }
+
+        public By AndPredicate(Predicate<AutomationElement> predicate)
+        {
+            _result.Add(predicate);
+            _identifiers.Add(String.Format("Predicate = {0}", predicate));
             return this;
         }
 
@@ -157,7 +181,7 @@ namespace WhiteSharp
         public By AndControlType(ControlType type)
         {
             _result.Add(x => x.Current.ControlType.Equals(type));
-            _identifiers.Add(String.Format("ControlType = {0}", type));
+            _identifiers.Add(String.Format("ControlType = {0}", type.ProgrammaticName));
             return this;
         }
 

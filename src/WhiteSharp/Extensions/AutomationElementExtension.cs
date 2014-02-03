@@ -1,7 +1,9 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Linq;
 using System.Windows.Automation;
 using Castle.Core.Internal;
+using TestStack.White.UIItems.TreeItems;
 
 namespace WhiteSharp.Extensions
 {
@@ -69,6 +71,13 @@ namespace WhiteSharp.Extensions
             }.FirstOrDefault(x => !x.IsNullOrEmpty()) ?? "";
 
             return text;
+        }
+
+        public static string Title(this AutomationElement element)
+        {
+            return
+                element.FindFirst(TreeScope.Children,
+                    new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.TitleBar)).Current.Name;
         }
     }
 }

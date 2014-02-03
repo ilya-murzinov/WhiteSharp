@@ -15,7 +15,7 @@ namespace WhiteSharp
         /// <param name="control">Target control</param>
         /// <param name="expected"></param>
         /// <param name="actual"></param>
-        public static void AreEqual(UIControl control, string expected, string actual)
+        public static void AreEqual(Control control, string expected, string actual)
         {
             if (!expected.Equals(actual))
             {
@@ -30,7 +30,7 @@ namespace WhiteSharp
         /// <param name="control">Target control</param>
         /// <param name="value"></param>
         /// <param name="actual"></param>
-        public static void StringContains(UIControl control, string value, string actual)
+        public static void StringContains(Control control, string value, string actual)
         {
             if (!value.Contains(actual))
             {
@@ -65,13 +65,13 @@ namespace WhiteSharp
         }
 
         /// <summary>
-        /// Checks if every UIControl in given list is enabled
+        /// Checks if every Control in given list is enabled
         /// Throws AssertException if the condition not satisfied
         /// </summary>
         /// <param name="items"></param>
-        public static void Enabled(params UIControl[] items)
+        public static void Enabled(params Control[] items)
         {
-            var list = new List<UIControl>(items);
+            var list = new List<Control>(items);
             List<AutomationElement> result = list.Select(x => items[list.IndexOf(x)].AutomationElement).ToList();
             Enabled(result);
         }
@@ -102,13 +102,13 @@ namespace WhiteSharp
         }
 
         /// <summary>
-        /// Checks if every UIControl in given list is not enabled
+        /// Checks if every Control in given list is not enabled
         /// Throws AssertException if the condition not satisfied
         /// </summary>
         /// <param name="items"></param>
-        public static void NotEnabled(params UIControl[] items)
+        public static void NotEnabled(params Control[] items)
         {
-            var list = new List<UIControl>(items);
+            var list = new List<Control>(items);
             List<AutomationElement> result = list.Select(x => items[list.IndexOf(x)].AutomationElement).ToList();
             NotEnabled(result);
         }

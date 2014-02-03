@@ -14,7 +14,7 @@ namespace WhiteSharp.Tests.UITests
         [TestCase("^%$iofkjndsf9)&*")]
         public void GetWindowNegativeTest(string title)
         {
-            new UIWindow(title);
+            new Window(title);
         }
 
         [TestCase("")]
@@ -24,14 +24,14 @@ namespace WhiteSharp.Tests.UITests
         [TestCase("M")]
         public void GetWindowPositiveTest(string title)
         {
-            new UIWindow(title);
+            new Window(title);
         }
 
         [TestCase("M", "a", "Win", "d", "in", "ndow")]
         [TestCase("Катарсис")]
         public void GetWindowMultiplePositiveTest(params string[] titles)
         {
-            new UIWindow(titles);
+            new Window(titles);
         }
 
         [TestCase("AComboBox")]

@@ -3,12 +3,21 @@ using System.Windows.Automation;
 
 namespace WhiteSharp.Interfaces
 {
-    public interface IUIWindow
+    //TODO: add adequate descriptions here
+    public interface IWindow
     {
         /// <summary>
         /// ProcessId of window.
         /// </summary>
         int ProcessId { get; }
+
+        AutomationElement AutomationElement { get; }
+
+        string Title { get; }
+
+        WindowVisualState DisplayState { get; }
+
+        List<AutomationElement> BaseAutomationElementList { get;  }
 
         /// <summary>
         /// Finds control inside the window.
@@ -17,7 +26,7 @@ namespace WhiteSharp.Interfaces
         /// <param name="searchCriteria"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        UIControl FindControl(By searchCriteria, int index);
+        Control FindControl(By searchCriteria, int index);
         /// <summary>
         /// Finds control by AutomationId inside the window.
         /// If there is multiple controls with the same AutomationId, use FindChild(By searchCriteria, int index) instead.
@@ -26,20 +35,28 @@ namespace WhiteSharp.Interfaces
         ///     .AndClassName("Button"));</example>
         /// </summary>
         /// <param name="automationId"></param>
+        /// <param name="index"></param>
         /// <returns></returns>
-        UIControl FindControl(string automationId, int index);
+        Control FindControl(string automationId, int index);
         /// <summary>
         /// Finds control by ControlType inside the window.
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        UIControl FindControl(ControlType type);
+        Control FindControl(ControlType type);
         /// <summary>
         /// Finds all AutomationElements inside the window.
         /// </summary>
         /// <param name="searchCriteria"></param>
         /// <returns></returns>
         List<AutomationElement> FindAll(By searchCriteria);
+
+        bool Exists(By searchCriteria);
+        bool Exists(string automationId);
+        bool Exists(By searchCriteria, out object o);
+        bool Exists(string automationId, out object o);
+        Control ClickIfExists(By searchCriteria);
+        Control ClickIfExists(string automationId);
 
         /// <summary>
         /// Sends shortcut to the window.

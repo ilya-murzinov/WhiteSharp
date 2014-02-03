@@ -3,11 +3,11 @@
     class MainWindow
     {
         protected string Title = "MainWindow";
-        public UIWindow Window;
+        public Window Window;
 
         protected MainWindow()
         {
-            Window = new UIWindow(Title);
+            Window = new Window(Title);
         }
 
         private static MainWindow _instance;
