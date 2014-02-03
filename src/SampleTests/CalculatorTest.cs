@@ -90,7 +90,7 @@ namespace SampleTests
         public AboutDialog OpenAboutCalculator()
         {
             help.Click();
-            about = help.FindChild("Item 302");
+            about = help.FindControl("Item 302");
             about.Click();
             return AboutDialog.Instance;
         }
