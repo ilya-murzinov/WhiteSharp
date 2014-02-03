@@ -72,6 +72,7 @@
     <Compile Include="Interfaces\IUIControl.cs" />
     <Compile Include="Interfaces\IUIWindow.cs" />
     <Compile Include="Logging.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Settings.Designer.cs">
       <AutoGen>True</AutoGen>

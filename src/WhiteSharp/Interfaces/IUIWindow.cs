@@ -10,6 +10,8 @@ namespace WhiteSharp.Interfaces
         /// </summary>
         int ProcessId { get; }
 
+        List<AutomationElement> BaseAutomationElementList { get;  }
+
         /// <summary>
         /// Finds control inside the window.
         /// Index is not nessesary, zero by default. Use this parameter if there is more than one identical controls.
@@ -18,6 +20,7 @@ namespace WhiteSharp.Interfaces
         /// <param name="index"></param>
         /// <returns></returns>
         UIControl FindControl(By searchCriteria, int index);
+
         /// <summary>
         /// Finds control by AutomationId inside the window.
         /// If there is multiple controls with the same AutomationId, use FindChild(By searchCriteria, int index) instead.
@@ -26,6 +29,7 @@ namespace WhiteSharp.Interfaces
         ///     .AndClassName("Button"));</example>
         /// </summary>
         /// <param name="automationId"></param>
+        /// <param name="index"></param>
         /// <returns></returns>
         UIControl FindControl(string automationId, int index);
         /// <summary>
