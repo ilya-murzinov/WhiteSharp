@@ -1,8 +1,10 @@
-﻿using TestStack.White;
+﻿using System;
+using TestStack.White;
 
 namespace WhiteSharp
 {
-    internal class GeneralException : WhiteException
+    [Serializable]
+    public class GeneralException : WhiteException
     {
         public GeneralException(string message)
             : base(message)
@@ -10,7 +12,8 @@ namespace WhiteSharp
         }
     }
 
-    internal class WindowNotFoundException : WhiteException
+    [Serializable]
+    public class WindowNotFoundException : WhiteException
     {
         public WindowNotFoundException(string message)
             : base(message)
@@ -18,7 +21,8 @@ namespace WhiteSharp
         }
     }
 
-    internal class ControlNotFoundException : WhiteException
+    [Serializable]
+    public class ControlNotFoundException : WhiteException
     {
         public ControlNotFoundException(string message)
             : base(message)
@@ -26,7 +30,8 @@ namespace WhiteSharp
         }
     }
 
-    internal class ControlNotEnabledException : WhiteException
+    [Serializable]
+    public class ControlNotEnabledException : WhiteException
     {
         public ControlNotEnabledException(string message)
             : base(message)
@@ -34,7 +39,8 @@ namespace WhiteSharp
         }
     }
 
-    internal class AssertException : WhiteException
+    [Serializable]
+    public class AssertException : WhiteException
     {
         public AssertException(string message)
             : base(message)
