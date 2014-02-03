@@ -65,7 +65,7 @@ namespace WhiteSharp
         }
 
         /// <summary>
-        /// Checks if every UIControl in given list is enabled
+        /// Checks if every Control in given list is enabled
         /// Throws AssertException if the condition not satisfied
         /// </summary>
         /// <param name="items"></param>
@@ -102,7 +102,7 @@ namespace WhiteSharp
         }
 
         /// <summary>
-        /// Checks if every UIControl in given list is not enabled
+        /// Checks if every Control in given list is not enabled
         /// Throws AssertException if the condition not satisfied
         /// </summary>
         /// <param name="items"></param>

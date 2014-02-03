@@ -6,24 +6,24 @@ namespace SampleTests
 {
     public class CalculatorScreenObject
     {
-        private UIWindow window;
-        private UIControl help;
-        private UIControl about;
+        private Window window;
+        private Control help;
+        private Control about;
 
-        private UIControl display;
-        private UIControl clearEverything;
+        private Control display;
+        private Control clearEverything;
 
-        private UIControl[] numbers = new UIControl[10];
+        private Control[] numbers = new Control[10];
 
-        private UIControl equals;
-        private UIControl add;
-        private UIControl substract;
-        private UIControl multiply;
-        private UIControl divide;
+        private Control equals;
+        private Control add;
+        private Control substract;
+        private Control multiply;
+        private Control divide;
 
         protected CalculatorScreenObject()
         {
-            window = new UIWindow("Calculator");
+            window = new Window("Calculator");
             help = window.FindControl("Item 3");
             display = window.FindControl("150");
             for (int i = 0; i < 10; i++)
@@ -98,9 +98,9 @@ namespace SampleTests
 
     public class AboutDialog
     {
-        private UIWindow window;
+        private Window window;
 
-        private UIControl btnOk;
+        private Control btnOk;
 
         private static AboutDialog instance;
         public static AboutDialog Instance
@@ -110,7 +110,7 @@ namespace SampleTests
 
         private AboutDialog()
         {
-            window = new UIWindow("Calculator");
+            window = new Window("Calculator");
             btnOk = window.FindControl("1");
         }
 

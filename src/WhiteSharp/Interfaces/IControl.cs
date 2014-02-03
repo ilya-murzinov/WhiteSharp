@@ -14,28 +14,28 @@ namespace WhiteSharp.Interfaces
         string Identifiers { get; }
 
         /// <summary>
-        /// Finds control inside parent UIControl.
+        /// Finds control inside parent Control.
         /// Index is not nessesary, zero by default. Use this parameter only if there is more than one identical controls.
         /// </summary>
         /// <param name="searchCriteria"></param>
         /// <param name="index"></param>
-        /// <returns>new UIControl</returns>
+        /// <returns>new Control</returns>
         Control FindChild(By searchCriteria, int index);
         /// <summary>
-        /// Finds control by AutomationId inside parent UIControl.
+        /// Finds control by AutomationId inside parent Control.
         /// If there is multiple controls with the same AutomationId, use FindChild(By searchCriteria, int index) instead.
         /// </summary>
         /// <param name="automationId"></param>
-        /// <returns>new UIControl</returns>
+        /// <returns>new Control</returns>
         Control FindChild(string automationId);
         /// <summary>
-        /// Finds control by ControlType inside parent UIControl.
+        /// Finds control by ControlType inside parent Control.
         /// </summary>
         /// <param name="type"></param>
-        /// <returns>new UIControl</returns>
+        /// <returns>new Control</returns>
         Control FindChild(ControlType type);
         /// <summary>
-        /// Finds all AutomationElements inside parent UIControl.
+        /// Finds all AutomationElements inside parent Control.
         /// </summary>
         /// <param name="searchCriteria"></param>
         /// <returns>List of AutomationElements</returns>
@@ -51,26 +51,26 @@ namespace WhiteSharp.Interfaces
         /// <summary>
         /// 
         /// </summary>
-        /// <returns>this UIControl</returns>
+        /// <returns>this Control</returns>
         Control WaitForEnabled();
         /// <summary>
         /// Pauses playback for given time.
         /// Not supposed to be used in normal situations, use this only in exstreme cases.
         /// </summary>
         /// <param name="milliseconds"></param>
-        /// <returns>this UIControl</returns>
+        /// <returns>this Control</returns>
         Control Wait(int milliseconds);
 
         /// <summary>
         /// Clicks control after waiting it to get enabled.
         /// </summary>
-        /// <returns>this UIControl</returns>
+        /// <returns>this Control</returns>
         Control Click();
         Control DoubleClick();
         /// <summary>
         /// Clicks control without waiting it to get enabled.
         /// </summary>
-        /// <returns>this UIControl</returns>
+        /// <returns>this Control</returns>
         Control ClickAnyway();
 
         Control ClearValue();
@@ -79,7 +79,7 @@ namespace WhiteSharp.Interfaces
         /// Supported shortcuts: {F5}, {Esc}, {Enter}, {Tab}, {Down}
         /// </summary>
         /// <param name="message"></param>
-        /// <returns>this UIControl</returns>
+        /// <returns>this Control</returns>
         Control Send(string message);
 
         /// <summary>
