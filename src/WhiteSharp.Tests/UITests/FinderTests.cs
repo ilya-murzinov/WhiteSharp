@@ -117,7 +117,7 @@ namespace WhiteSharp.Tests.UITests
         [TestCase("CheckedListBox", "CheckBox")]
         public void FindChild(string parentId, string childId)
         {
-            MainWindow.Instance.Window.FindControl(By.AutomationId(parentId)).FindChild(By.ClassName(childId));
+            MainWindow.Instance.Window.FindControl(By.AutomationId(parentId)).FindControl(By.ClassName(childId));
         }
 
         [TestCase("AComboBox", "", "ComboBox")]

@@ -19,7 +19,9 @@ namespace WhiteSharp
 
         public static void OnTop(this Window window)
         {
-            window.DisplayState = WindowVisualState.Maximized;
+            if (window.DisplayState == WindowVisualState.Minimized)
+                window.DisplayState = WindowVisualState.Maximized;
+
             SetWindowPos(new IntPtr(window.AutomationElement.Current.NativeWindowHandle), HWND_TOP, 0, 0, 0, 0,
                 SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
         }

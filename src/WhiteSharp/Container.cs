@@ -16,21 +16,36 @@ namespace WhiteSharp
     {
         public string Title { get; protected set; }
         public AutomationElement AutomationElement { get; protected set; }
-        public List<AutomationElement> BaseAutomationElementList { get; protected set; } 
+        public List<AutomationElement> BaseAutomationElementList { get; protected set; }
+
+        internal static List<AutomationElement> Find(List<AutomationElement> baseAutomationElementList, By searchCriteria)
+        {
+            List<AutomationElement> list;
+
+            try
+            {
+                list = baseAutomationElementList.FindAll(searchCriteria.Result).ToList();
+            }
+            catch (ElementNotAvailableException)
+            {
+                return null;
+            }
+
+            return list;
+        }
 
         public Control FindControl(By searchCriteria, int index = 0)
         {
             DateTime start = DateTime.Now;
-            List<AutomationElement> element = Finder.Find(BaseAutomationElementList, searchCriteria);
+            List<AutomationElement> element = Find(BaseAutomationElementList, searchCriteria);
 
             if (element == null || !element.Any())
             {
                 BaseAutomationElementList = new Window(Title).AutomationElement
                     .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
                     .OfType<AutomationElement>().ToList();
-                element = Finder.Find(BaseAutomationElementList, searchCriteria);
+                element = Find(BaseAutomationElementList, searchCriteria);
             }
-
 
             Control returnControl = new Control(element.ElementAt(index))
             {
@@ -40,7 +55,13 @@ namespace WhiteSharp
 
             searchCriteria.Duration = (DateTime.Now - start).TotalSeconds;
 
+            if (element == null || !element.Any())
+                throw new ControlNotFoundException(
+                    Logging.ControlNotFoundException(searchCriteria.Identifiers));
+
             Logging.ControlFound(searchCriteria);
+            if (element.Count() > 1)
+                Logging.MutlipleControlsWarning(element);            
 
             return returnControl;
         }
@@ -57,7 +78,7 @@ namespace WhiteSharp
 
         public List<AutomationElement> FindAll(By searchCriteria)
         {
-            return Finder.Find(BaseAutomationElementList, searchCriteria);
+            return Find(BaseAutomationElementList, searchCriteria);
         }
 
         public bool Exists(By searchCriteria)

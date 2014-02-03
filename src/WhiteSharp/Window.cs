@@ -15,19 +15,15 @@ namespace WhiteSharp
     public class Window : Container, IWindow
     {
         #region Private Fields
-        private static int _processId;
         private WindowVisualState _displayState;
-        private readonly WindowPattern _windowPattern;
+        private WindowPattern WindowPattern { get; set; }
         private static List<string> _identifiers = new List<string>();
         private static DateTime _start; 
         #endregion
 
         #region Properties
 
-        public int ProcessId
-        {
-            get { return _processId; }
-        }
+        public int ProcessId { get; private set; }
 
         public WindowVisualState DisplayState
         {
@@ -36,7 +32,7 @@ namespace WhiteSharp
             {
                 if (_displayState != value)
                 {
-                    _windowPattern.SetWindowVisualState(value);
+                    WindowPattern.SetWindowVisualState(value);
                     _displayState = value;
                 }
             }
@@ -49,12 +45,13 @@ namespace WhiteSharp
         internal Window(AutomationElement element)
         {
             AutomationElement = element;
-            _windowPattern = (WindowPattern) element.GetCurrentPattern(WindowPattern.Pattern);
+            WindowPattern = (WindowPattern) element.GetCurrentPattern(WindowPattern.Pattern);
             BaseAutomationElementList = element
                 .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
                 .OfType<AutomationElement>().ToList();
             Title = element.Title();
-            _processId = element.Current.ProcessId;
+            ProcessId = element.Current.ProcessId;
+            _displayState = WindowPattern.Current.WindowVisualState;
 
             this.OnTop();
         }
@@ -189,12 +186,6 @@ namespace WhiteSharp
 
         #endregion
 
-        #region Control Finders
-
-        
-
-        #endregion
-
         #region Actions
 
         public void Send(string value)
@@ -236,7 +227,7 @@ namespace WhiteSharp
 
         public void Close()
         {
-            _windowPattern.Close();
+            WindowPattern.Close();
             Logging.WindowClosed(Title);
         } 
         #endregion
