@@ -9,8 +9,9 @@ namespace WhiteSharp.Interfaces
         AutomationElement AutomationElement { get; }
         bool Enabled { get; }
         string Name { get; }
-
-        Window Window { get; }
+        
+        //TODO: make this work. Problem in time leak if Control initializer
+        //Window Window { get; }
         string Identifiers { get; }
 
         /// <summary>

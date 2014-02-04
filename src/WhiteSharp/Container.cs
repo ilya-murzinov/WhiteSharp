@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Windows.Automation;
-using Castle.Core.Internal;
-using TestStack.White.InputDevices;
-using TestStack.White.WindowsAPI;
 using WhiteSharp.Interfaces;
-using WhiteSharp.Extensions;
 
 namespace WhiteSharp
 {
@@ -18,50 +12,53 @@ namespace WhiteSharp
         public AutomationElement AutomationElement { get; protected set; }
         public List<AutomationElement> BaseAutomationElementList { get; protected set; }
 
-        internal static List<AutomationElement> Find(List<AutomationElement> baseAutomationElementList, By searchCriteria)
+        internal List<AutomationElement> Find(AutomationElement automationElement, By searchCriteria)
         {
-            List<AutomationElement> list;
+            DateTime start = DateTime.Now;
 
-            try
+            if (BaseAutomationElementList == null || !BaseAutomationElementList.Any())
+                BaseAutomationElementList = automationElement
+                    .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
+                    .OfType<AutomationElement>().ToList();
+
+            List<AutomationElement> list = new List<AutomationElement>();
+
+            while (!list.Any() && (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout) 
             {
-                list = baseAutomationElementList.FindAll(searchCriteria.Result).ToList();
+                try
+                {
+                    list = BaseAutomationElementList.FindAll(searchCriteria.Result).ToList();
+                }
+                catch (Exception e)
+                {
+                    Logging.Exception(e);
+                    BaseAutomationElementList = new Window(Title).AutomationElement
+                        .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
+                        .OfType<AutomationElement>().ToList();
+                } 
             }
-            catch (ElementNotAvailableException)
-            {
-                return null;
-            }
+            if (!list.Any())
+                throw new ControlNotFoundException(
+                    Logging.ControlNotFoundException(searchCriteria.Identifiers));
+
+            searchCriteria.Duration = (DateTime.Now - start).TotalSeconds;
 
             return list;
         }
 
         public Control FindControl(By searchCriteria, int index = 0)
         {
-            DateTime start = DateTime.Now;
-            List<AutomationElement> element = Find(BaseAutomationElementList, searchCriteria);
-
-            if (element == null || !element.Any())
+            List<AutomationElement> elements = Find(AutomationElement, searchCriteria);
+            
+            Control returnControl = new Control(elements.ElementAt(index))
             {
-                BaseAutomationElementList = new Window(Title).AutomationElement
-                    .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
-                    .OfType<AutomationElement>().ToList();
-                element = Find(BaseAutomationElementList, searchCriteria);
-            }
-
-            Control returnControl = new Control(element.ElementAt(index))
-            {
-                Identifiers = searchCriteria.Identifiers,
-                Window = new Window(this.AutomationElement)
+                Identifiers = searchCriteria.Identifiers
             };
-
-            searchCriteria.Duration = (DateTime.Now - start).TotalSeconds;
-
-            if (element == null || !element.Any())
-                throw new ControlNotFoundException(
-                    Logging.ControlNotFoundException(searchCriteria.Identifiers));
-
+            
             Logging.ControlFound(searchCriteria);
-            if (element.Count() > 1)
-                Logging.MutlipleControlsWarning(element);            
+
+            if (elements.Count() > 1)
+                Logging.MutlipleControlsWarning(elements);
 
             return returnControl;
         }
@@ -78,7 +75,7 @@ namespace WhiteSharp
 
         public List<AutomationElement> FindAll(By searchCriteria)
         {
-            return Find(BaseAutomationElementList, searchCriteria);
+            return Find(AutomationElement, searchCriteria);
         }
 
         public bool Exists(By searchCriteria)

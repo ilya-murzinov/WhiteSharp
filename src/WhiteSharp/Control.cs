@@ -16,7 +16,9 @@ namespace WhiteSharp
     public class Control : Container, IControl
     {
         #region Properties
-        public Window Window { get; internal set; }
+
+        //public Window Window { get; internal set; }
+
         public string Identifiers { get; internal set; }
 
         public bool Enabled

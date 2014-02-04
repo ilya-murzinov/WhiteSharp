@@ -83,7 +83,6 @@
     </Compile>
     <Compile Include="Control.cs" />
     <Compile Include="Desktop.cs" />
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="Window.cs" />
     <Compile Include="Asserts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

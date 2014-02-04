@@ -21,7 +21,7 @@ namespace WhiteSharp.Interfaces
         Control FindControl(By searchCriteria, int index);
         /// <summary>
         /// Finds control by AutomationId inside the window.
-        /// If there is multiple controls with the same AutomationId, use FindChild(By searchCriteria, int index) instead.
+        /// If there is multiple controls with the same AutomationId, use FindControl(By searchCriteria, int index) instead.
         /// You can combine searc criteria as you want, e.g.
         /// <example>FindControl(By.AutomationId("OpenVerticalSplitterButton").AndName("Launch Vertical GridSplitter Window")
         ///     .AndClassName("Button"));</example>
