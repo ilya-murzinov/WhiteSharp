@@ -117,7 +117,7 @@ namespace WhiteSharp.Tests.UITests
         [TestCase("CheckedListBox", "CheckBox")]
         public void FindChild(string parentId, string childId)
         {
-            MainWindow.Instance.Window.FindControl(By.AutomationId(parentId)).FindChild(By.ClassName(childId));
+            MainWindow.Instance.Window.FindControl(By.AutomationId(parentId)).FindControl(By.ClassName(childId));
         }
 
         [TestCase("AComboBox", "", "ComboBox")]
@@ -142,8 +142,8 @@ namespace WhiteSharp.Tests.UITests
         [TestCase("ControlsTab", "ListControlsTab", "ListControls", "ListBoxWpf", "ListBoxItem")]
         public void FindChildMultiple(string id1, string id2, string id3, string id4, string id5)
         {
-            MainWindow.Instance.Window.FindControl(By.AutomationId(id1)).FindChild(By.AutomationId(id2)).FindChild(By.AutomationId(id3))
-                .FindChild(By.AutomationId(id4)).FindChild(By.ClassName(id5));
+            MainWindow.Instance.Window.FindControl(By.AutomationId(id1)).FindControl(By.AutomationId(id2)).FindControl(By.AutomationId(id3))
+                .FindControl(By.AutomationId(id4)).FindControl(By.ClassName(id5));
         }
     }
 }

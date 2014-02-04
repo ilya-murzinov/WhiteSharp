@@ -13,20 +13,13 @@ using ComboBox = TestStack.White.UIItems.ListBoxItems.ComboBox;
 
 namespace WhiteSharp
 {
-    public class Control : IControl
+    public class Control : Container, IControl
     {
-        #region Private Fields
-        private readonly AutomationElement _automationElement; 
-        #endregion
-
         #region Properties
-        public Window Window { get; internal set; }
-        public string Identifiers { get; internal set; }
 
-        public AutomationElement AutomationElement
-        {
-            get { return _automationElement; }
-        }
+        //public Window Window { get; internal set; }
+
+        public string Identifiers { get; internal set; }
 
         public bool Enabled
         {
@@ -40,97 +33,8 @@ namespace WhiteSharp
 
         internal Control(AutomationElement element)
         {
-            _automationElement = element;
+            AutomationElement = element;
         } 
-        #endregion
-
-        #region Finders
-        public Control FindChild(By searchCriteria, int index = 0)
-        {
-            List<AutomationElement> baseAutomationElementList = AutomationElement
-                .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
-                .OfType<AutomationElement>().ToList();
-            Control returnControl =
-                new Control(Finder.Find(baseAutomationElementList, searchCriteria).ElementAt(index))
-            {
-                Identifiers = searchCriteria.Identifiers,
-                Window = Window
-            };
-
-            Logging.ControlFound(searchCriteria);
-
-            return returnControl;
-        }
-
-        public List<AutomationElement> FindChildren(By searchCriteria)
-        {
-            List<AutomationElement> baseAutomationElementList = AutomationElement
-                .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
-                .OfType<AutomationElement>().ToList();
-            return Finder.Find(baseAutomationElementList, searchCriteria);
-        }
-
-        public Control FindChild(string automationId)
-        {
-            return FindChild(By.AutomationId(automationId));
-        }
-
-        public Control FindChild(ControlType type)
-        {
-            return FindChild(By.ControlType(type));
-        }
-
-        public bool Exists(By searchCriteria)
-        {
-            try
-            {
-                if (AutomationElement.FindAll(TreeScope.Subtree,
-                    new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
-                    .OfType<AutomationElement>().ToList().FindAll(searchCriteria.Result).Count > 0)
-                    return true;
-                return false;
-
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        public bool Exists(string automationId)
-        {
-            return Exists(By.AutomationId(automationId));
-        }
-
-        public bool Exists(By searchCriteria, out object o)
-        {
-            DateTime start = DateTime.Now;
-            o = null;
-
-            while ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
-            {
-                try
-                {
-                    List<AutomationElement> elements = AutomationElement.FindAll(TreeScope.Subtree,
-                        new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
-                        .OfType<AutomationElement>().ToList().FindAll(searchCriteria.Result);
-                    if (elements.Count > 0)
-                    {
-                        o = elements.ElementAt(0);
-                        return true;
-                    }
-                }
-                catch (Exception)
-                {
-                }
-            }
-            return false;
-        }
-
-        public bool Exists(string automationId, out object o)
-        {
-            return Exists(By.AutomationId(automationId), out o);
-        }
         #endregion
 
         #region Actions
@@ -162,25 +66,6 @@ namespace WhiteSharp
         {
             Mouse.Instance.DoubleClick(AutomationElement.GetClickablePoint());
             return this;
-        }
-
-        public Control ClickIfExists(By searchCriteria)
-        {
-            Control control = null;
-            object o;
-
-            if (Exists(searchCriteria, out o))
-            {
-                control = new Control((AutomationElement)o);
-                control.Click();
-            }
-
-            return control;
-        }
-
-        public Control ClickIfExists(string automationId)
-        {
-            return ClickIfExists(By.AutomationId(automationId));
         }
 
         public Control ClearValue()

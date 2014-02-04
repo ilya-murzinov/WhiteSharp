@@ -12,34 +12,18 @@ using WhiteSharp.Extensions;
 
 namespace WhiteSharp
 {
-    public class Window : IWindow
+    public class Window : Container, IWindow
     {
         #region Private Fields
-        private readonly string _title;
-        private readonly AutomationElement _automationElement;
-        private static int _processId;
         private WindowVisualState _displayState;
-        private readonly WindowPattern _windowPattern;
-        private List<AutomationElement> _baseAutomationElementList = new List<AutomationElement>();
+        private WindowPattern WindowPattern { get; set; }
         private static List<string> _identifiers = new List<string>();
         private static DateTime _start; 
         #endregion
 
         #region Properties
-        public int ProcessId
-        {
-            get { return _processId; }
-        }
 
-        public AutomationElement AutomationElement
-        {
-            get { return _automationElement; }
-        }
-
-        public string Title
-        {
-            get { return _title; }
-        }
+        public int ProcessId { get; private set; }
 
         public WindowVisualState DisplayState
         {
@@ -48,29 +32,26 @@ namespace WhiteSharp
             {
                 if (_displayState != value)
                 {
-                    _windowPattern.SetWindowVisualState(value);
+                    WindowPattern.SetWindowVisualState(value);
                     _displayState = value;
                 }
             }
         }
 
-        public List<AutomationElement> BaseAutomationElementList
-        {
-            get { return _baseAutomationElementList; }
-        } 
         #endregion
 
         #region Constructors
 
-        private Window(AutomationElement element)
+        internal Window(AutomationElement element)
         {
-            _automationElement = element;
-            _windowPattern = (WindowPattern) element.GetCurrentPattern(WindowPattern.Pattern);
-            _baseAutomationElementList = element
+            AutomationElement = element;
+            WindowPattern = (WindowPattern) element.GetCurrentPattern(WindowPattern.Pattern);
+            BaseAutomationElementList = element
                 .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
                 .OfType<AutomationElement>().ToList();
-            _title = element.Title();
-            _processId = element.Current.ProcessId;
+            Title = element.Title();
+            ProcessId = element.Current.ProcessId;
+            _displayState = WindowPattern.Current.WindowVisualState;
 
             this.OnTop();
         }
@@ -205,131 +186,7 @@ namespace WhiteSharp
 
         #endregion
 
-        #region Control Finders
-
-        public Control FindControl(By searchCriteria, int index = 0)
-        {
-            DateTime start = DateTime.Now;
-            List<AutomationElement> element = Finder.Find(_baseAutomationElementList, searchCriteria);
-
-            if (element == null || !element.Any())
-            {
-                _baseAutomationElementList = new Window(_title).AutomationElement
-                    .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
-                    .OfType<AutomationElement>().ToList();
-                element = Finder.Find(_baseAutomationElementList, searchCriteria);
-            }
-
-
-            Control returnControl = new Control(element.ElementAt(index))
-            {
-                Identifiers = searchCriteria.Identifiers,
-                Window = this
-            };
-
-            searchCriteria.Duration = (DateTime.Now - start).TotalSeconds;
-
-            Logging.ControlFound(searchCriteria);
-
-            return returnControl;
-        }
-
-        public Control FindControl(string automationId, int index = 0)
-        {
-            return FindControl(By.AutomationId(automationId), index);
-        }
-
-        public Control FindControl(ControlType type)
-        {
-            return FindControl(By.ControlType(type));
-        }
-
-        public List<AutomationElement> FindAll(By searchCriteria)
-        {
-            return Finder.Find(_baseAutomationElementList, searchCriteria);
-        }
-
-        public bool Exists(By searchCriteria)
-        {
-            DateTime start = DateTime.Now;
-
-            while ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
-            {
-                try
-                {
-                    List<AutomationElement> elements = AutomationElement.FindAll(TreeScope.Subtree,
-                        new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
-                        .OfType<AutomationElement>().ToList().FindAll(searchCriteria.Result);
-                    if (elements.Count > 0)
-                    {
-                        return true;
-                    }
-                    return false;
-
-                }
-                catch (Exception)
-                {
-                }
-            }
-            return false;
-        }
-
-        public bool Exists(string automationId)
-        {
-            return Exists(By.AutomationId(automationId));
-        }
-
-        public bool Exists(By searchCriteria, out object o)
-        {
-            DateTime start = DateTime.Now;
-            o = null;
-
-            while ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
-            {
-                try
-                {
-                    List<AutomationElement> elements = AutomationElement.FindAll(TreeScope.Subtree,
-                        new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
-                        .OfType<AutomationElement>().ToList().FindAll(searchCriteria.Result);
-                    if (elements.Count > 0)
-                    {
-                        o = elements.ElementAt(0);
-                        return true;
-                    }
-                }
-                catch (Exception)
-                {
-                } 
-            }
-            return false;
-        }
-
-        public bool Exists(string automationId, out object o)
-        {
-            return Exists(By.AutomationId(automationId), out o);
-        }
-
-        #endregion
-
         #region Actions
-        public Control ClickIfExists(By searchCriteria)
-        {
-            Control control = null;
-            object o;
-
-            if (Exists(searchCriteria, out o))
-            {
-                control = new Control((AutomationElement)o);
-                control.Click();
-            }
-
-            return control;
-        }
-
-        public Control ClickIfExists(string automationId)
-        {
-            return ClickIfExists(By.AutomationId(automationId));
-        }
 
         public void Send(string value)
         {
@@ -370,8 +227,8 @@ namespace WhiteSharp
 
         public void Close()
         {
-            _windowPattern.Close();
-            Logging.WindowClosed(_title);
+            WindowPattern.Close();
+            Logging.WindowClosed(Title);
         } 
         #endregion
     }

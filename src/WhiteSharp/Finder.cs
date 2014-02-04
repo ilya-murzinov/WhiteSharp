@@ -6,32 +6,6 @@ using WhiteSharp.Extensions;
 
 namespace WhiteSharp
 {
-    public class Finder
-    {
-        internal static List<AutomationElement> Find(List<AutomationElement> baseAutomationElementList, By searchCriteria)
-        {
-            List<AutomationElement> list;
-                
-            try
-            {
-                list = baseAutomationElementList.FindAll(searchCriteria.Result).ToList();
-            }
-            catch (ElementNotAvailableException)
-            {
-                return null;
-            }
-
-            if (list == null || !list.Any())
-                throw new ControlNotFoundException(
-                    Logging.ControlNotFoundException(searchCriteria.Identifiers));
-
-            if (list.Count() > 1)
-                Logging.MutlipleControlsWarning(list);
-
-            return list;
-        }
-    }
-
     public class By
     {
         private readonly List<Predicate<AutomationElement>> _result = new List<Predicate<AutomationElement>>();
