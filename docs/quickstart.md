@@ -57,4 +57,4 @@ control.SetToggleState(ToggleState.On);
 
 Thats it, the first test is ready!
 ----------------------------------
-For further information see [full docs](index.md) and how to use this with [screen objects pattern](srceenobjects.md).
+For further information see [full docs](index.md) and how to use this with [screen objects pattern](screenobjects.md).
