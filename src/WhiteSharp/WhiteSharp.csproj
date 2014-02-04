@@ -69,10 +69,11 @@
     <Compile Include="Container.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Extensions\AutomationElementExtension.cs" />
-    <Compile Include="Finder.cs" />
+    <Compile Include="By.cs" />
     <Compile Include="Interfaces\IContainer.cs" />
     <Compile Include="Interfaces\IControl.cs" />
     <Compile Include="Interfaces\IWindow.cs" />
+    <Compile Include="Keyboard.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Settings.cs" />

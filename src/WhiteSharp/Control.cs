@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Security.Authentication;
 using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
@@ -88,55 +88,14 @@ namespace WhiteSharp
         public Control Send(string value)
         {
             Click();
+            ClearValue();
+            Keyboard.Send(value);
+            return this;
+        }
 
-            switch (value)
-            {
-                case "{F5}":
-                    {
-                        Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.F5);
-                        break;
-                    }
-                case "{Tab}":
-                    {
-                        Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.TAB);
-                        break;
-                    }
-                case "{Esc}":
-                    {
-                        Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.ESCAPE);
-                        break;
-                    }
-                case "{Enter}":
-                    {
-                        Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
-                        break;
-                    }
-                case "{Down}":
-                    {
-                        Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.DOWN);
-                        break;
-                    }
-                case "{Del}":
-                    {
-                        Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.DELETE);
-                        break;
-                    }
-                case "^{a}":
-                    {
-                        Keyboard.Instance.HoldKey(KeyboardInput.SpecialKeys.CONTROL);
-                        Keyboard.Instance.Enter("a");
-                        Keyboard.Instance.LeaveKey(KeyboardInput.SpecialKeys.CONTROL);
-                        break;
-                    }
-                default:
-                    {
-                        ClearValue();
-                        SendKeys.SendWait(value);
-                        break;
-                    }
-            }
-
-            Logging.Sent(value);
+        public Control Send(Keys key)
+        {
+            Keyboard.Send(key);
             return this;
         }
 

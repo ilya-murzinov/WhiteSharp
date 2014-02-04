@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Automation;
-using TestStack.White.UIItems.WindowItems;
 
 namespace WhiteSharp
 {

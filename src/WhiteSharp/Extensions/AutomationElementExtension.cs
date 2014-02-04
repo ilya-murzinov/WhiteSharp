@@ -1,9 +1,7 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Linq;
 using System.Windows.Automation;
 using Castle.Core.Internal;
-using TestStack.White.UIItems.TreeItems;
 
 namespace WhiteSharp.Extensions
 {

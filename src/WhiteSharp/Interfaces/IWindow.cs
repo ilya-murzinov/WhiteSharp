@@ -63,6 +63,6 @@ namespace WhiteSharp.Interfaces
         /// Supported shortcuts: {F5}, {Esc}, {Tab}, {Alt}+{F4}, ^{Enter}
         /// </summary>
         /// <param name="message"></param>
-        void Send(string message);
+        void Send(Keys key);
     }
 }

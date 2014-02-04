@@ -5,26 +5,26 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Automation;
 using Castle.Core.Internal;
-using TestStack.White.InputDevices;
-using TestStack.White.WindowsAPI;
-using WhiteSharp.Interfaces;
 using WhiteSharp.Extensions;
+using WhiteSharp.Interfaces;
 
 namespace WhiteSharp
 {
     public class Window : Container, IWindow
     {
         #region Private Fields
-        private WindowVisualState _displayState;
-        private WindowPattern WindowPattern { get; set; }
+        private static DateTime _start;
         private static List<string> _identifiers = new List<string>();
-        private static DateTime _start; 
+        private WindowVisualState _displayState;
         #endregion
 
         #region Properties
-
         public int ProcessId { get; private set; }
-
+        internal WindowPattern WindowPattern { get; private set; }
+        internal List<string> Identifiers
+        {
+            get { return _identifiers; }
+        }
         public WindowVisualState DisplayState
         {
             get { return _displayState; }
@@ -37,7 +37,6 @@ namespace WhiteSharp
                 }
             }
         }
-
         #endregion
 
         #region Constructors
@@ -80,50 +79,37 @@ namespace WhiteSharp
 
         #region Window Finders
 
-        private static List<AutomationElement> FindWindows(params string[] titles)
-        {
-            _identifiers = new List<string>();
-            List<AutomationElement> windows = new List<AutomationElement>();
-            _start = DateTime.Now;
-            titles.ForEach(x=>_identifiers.Add(x));
-
-            while (!windows.Any() && (DateTime.Now - _start).TotalMilliseconds < Settings.Default.Timeout)
-            {
-                try
-                {
-                    windows = Desktop.Instance.Windows
-                        .FindAll(window => titles.Select(x => window.Title().Contains(x)).All(x => x.Equals(true))).ToList();
-                }
-                catch (Exception e)
-                {
-                    Logging.Exception(e);
-                }
-                Thread.Sleep(Settings.Default.Delay);
-            }
-            return windows;
-        }
-
         private static List<AutomationElement> FindWindows(Predicate<AutomationElement> predicate)
         {
             _identifiers = new List<string>();
-            List<AutomationElement> windows = null;
+            List<AutomationElement> windows = new List<AutomationElement>();
 
             _start = DateTime.Now;
 
-            do
+            while (!windows.Any() && ((DateTime.Now - _start).TotalMilliseconds < Settings.Default.Timeout))
             {
                 try
                 {
                     windows = Desktop.Instance.Windows.FindAll(predicate);
                 }
-                catch (ElementNotAvailableException e)
+                catch (Exception e)
                 {
-                    Logging.Exception(e);
                 }
                 Thread.Sleep(Settings.Default.Delay);
-            } while (windows == null &&
-                     (!windows.Any() && ((DateTime.Now - _start).TotalMilliseconds < Settings.Default.Timeout)));
+            }
+
             _identifiers.Add(predicate.ToString());
+
+            return windows;
+        }
+
+        private static List<AutomationElement> FindWindows(params string[] titles)
+        {
+            _identifiers = new List<string>();
+            List<AutomationElement> windows = new List<AutomationElement>();
+            _start = DateTime.Now;
+            titles.ForEach(x => _identifiers.Add(x));
+            windows = FindWindows(window => titles.Select(x => window.Title().Contains(x)).All(x => x.Equals(true)));
             return windows;
         }
 
@@ -140,8 +126,8 @@ namespace WhiteSharp
                 throw new GeneralException(Logging.Strings["ProcessNotFound"]);
             }
             _identifiers.Add(processId.ToString());
-            return Desktop.Instance.Windows
-                .FindAll(window => window.Current.ProcessId.Equals(processId));
+
+            return FindWindows(window => window.Current.ProcessId.Equals(processId));
         }
 
         private static List<AutomationElement> FindWindows(int processId, Predicate<AutomationElement> p)
@@ -149,21 +135,23 @@ namespace WhiteSharp
             _identifiers = new List<string>();
             List<AutomationElement> windows = null;
             _start = DateTime.Now;
-            while ((windows == null || 
+
+            while ((windows == null ||
                         !windows.Any()) && ((DateTime.Now - _start).TotalMilliseconds < Settings.Default.Timeout))
             {
                 try
                 {
-                    windows = Desktop.Instance.Windows.FindAll(p)
-                        .Where(x => x.Current.ProcessId.Equals(processId)).ToList();
+                    windows = FindWindows(p).Where(x => x.Current.ProcessId.Equals(processId)).ToList();
                 }
                 catch (Exception e)
                 {
                     Logging.Exception(e);
                 }
                 Thread.Sleep(Settings.Default.Delay);
-            } 
+            }
+
             _identifiers.Add(processId + " " + p);
+
             return windows;
         }
 
@@ -175,7 +163,7 @@ namespace WhiteSharp
 
 
             AutomationElement returnWindow = windows.First();
-            
+
             Logging.WindowFound(returnWindow.Title(), DateTime.Now - _start);
 
             if (windows.Count > 1)
@@ -188,41 +176,9 @@ namespace WhiteSharp
 
         #region Actions
 
-        public void Send(string value)
+        public void Send(Keys key)
         {
-            switch (value)
-            {
-                case "{F5}":
-                    {
-                        Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.F5);
-                        break;
-                    }
-                case "{Tab}":
-                    {
-                        Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.TAB);
-                        break;
-                    }
-                case "{Esc}":
-                    {
-                        Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.ESCAPE);
-                        break;
-                    }
-                case "{Alt}+{F4}":
-                    {
-                        Keyboard.Instance.HoldKey(KeyboardInput.SpecialKeys.ALT);
-                        Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.F4);
-                        Keyboard.Instance.LeaveKey(KeyboardInput.SpecialKeys.ALT);
-                        break;
-                    }
-                case "^{ENTER}":
-                    {
-                        Keyboard.Instance.HoldKey(KeyboardInput.SpecialKeys.CONTROL);
-                        Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
-                        Keyboard.Instance.LeaveKey(KeyboardInput.SpecialKeys.CONTROL);
-                        break;
-                    }
-            }
-            Logging.Sent(value);
+            Keyboard.Send(key);
         }
 
         public void Close()
