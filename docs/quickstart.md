@@ -25,7 +25,8 @@ For examlpe,
 string automationId = "id";
 string name = "name";
 ControlType controlType = ControlType.Combobox;
-var control = window.FindControl(By.AutomationId(automationId).AndNameContains(name)
+var control = window.FindControl(By.AutomationId(automationId)
+    .AndNameContains(name)
     .AndControlType(controlType));
 ```      
 If you are lucky to have unique AutomationId, you can simplify this even more:
