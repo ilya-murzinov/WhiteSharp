@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Security.Authentication;
 using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
 using TestStack.White.InputDevices;
 using TestStack.White.UIItems;
-using TestStack.White.WindowsAPI;
 using WhiteSharp.Extensions;
 using WhiteSharp.Interfaces;
 using ComboBox = TestStack.White.UIItems.ListBoxItems.ComboBox;
@@ -80,22 +77,21 @@ namespace WhiteSharp
                 }
             }
             else
-                throw new GeneralException(string.Format(Logging.Strings["UnsupportedPattern"], "Value Pattern"));
+                throw new GeneralException(string.Format(Logging.Strings["UnsupportedPattern"], Identifiers, "Value Pattern"));
 
             return this;
         }
 
         public Control Send(string value)
         {
-            Click();
             ClearValue();
-            Keyboard.Send(value);
+            Keyboard.Instance.Send(value);
             return this;
         }
 
         public Control Send(Keys key)
         {
-            Keyboard.Send(key);
+            Keyboard.Instance.Send(key);
             return this;
         }
 

@@ -12,31 +12,31 @@ namespace WhiteSharp
 
     class Keyboard
     {
-        private static readonly Dictionary<Keys, Action> KeysDistionary = new Dictionary
+        private readonly Dictionary<Keys, Action> _keysDistionary = new Dictionary
             <Keys, Action>();
 
-        static Keyboard()
+        private Keyboard()
         {
-            KeysDistionary.Add(Keys.F5, 
+            _keysDistionary.Add(Keys.F5, 
                 () => TestStack.White.InputDevices.Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.F5));
-            KeysDistionary.Add(Keys.Tab,
+            _keysDistionary.Add(Keys.Tab,
                 () => TestStack.White.InputDevices.Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.TAB));
-            KeysDistionary.Add(Keys.Esc,
+            _keysDistionary.Add(Keys.Esc,
                 () => TestStack.White.InputDevices.Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.ESCAPE));
-            KeysDistionary.Add(Keys.Enter,
+            _keysDistionary.Add(Keys.Enter,
                 () => TestStack.White.InputDevices.Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN));
-            KeysDistionary.Add(Keys.Del,
+            _keysDistionary.Add(Keys.Del,
                 () => TestStack.White.InputDevices.Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.DELETE));
-            KeysDistionary.Add(Keys.Down,
+            _keysDistionary.Add(Keys.Down,
                 () => TestStack.White.InputDevices.Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.DOWN));
-            KeysDistionary.Add(Keys.CtrlA,
+            _keysDistionary.Add(Keys.CtrlA,
                 () =>
                 {
                     TestStack.White.InputDevices.Keyboard.Instance.HoldKey(KeyboardInput.SpecialKeys.CONTROL);
                     TestStack.White.InputDevices.Keyboard.Instance.Enter("a");
                     TestStack.White.InputDevices.Keyboard.Instance.LeaveKey(KeyboardInput.SpecialKeys.CONTROL);
                 });
-            KeysDistionary.Add(Keys.CtrlEnter,
+            _keysDistionary.Add(Keys.CtrlEnter,
                 () =>
                 {
                     TestStack.White.InputDevices.Keyboard.Instance.HoldKey(KeyboardInput.SpecialKeys.CONTROL);
@@ -45,14 +45,21 @@ namespace WhiteSharp
                 });
         }
 
-        public static void Send(Keys key)
+        private static Keyboard _instance;
+
+        public static Keyboard Instance
         {
-            KeysDistionary[key].Invoke();
+            get { return _instance ?? (_instance = new Keyboard()); }
+        }
+
+        public void Send(Keys key)
+        {
+            _keysDistionary[key].Invoke();
 
             Logging.Sent(key.ToString("G"));
         }
 
-        public static void Send(string value)
+        public void Send(string value)
         {
             SendKeys.SendWait(value);
 

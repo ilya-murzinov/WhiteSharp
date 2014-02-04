@@ -178,7 +178,7 @@ namespace WhiteSharp
 
         public void Send(Keys key)
         {
-            Keyboard.Send(key);
+            Keyboard.Instance.Send(key);
         }
 
         public void Close()

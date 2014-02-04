@@ -8,11 +8,14 @@ namespace WhiteSharp
 {
     public class Container : IContainer
     {
+        #region Properties
         public string Title { get; protected set; }
         public AutomationElement AutomationElement { get; protected set; }
-        public List<AutomationElement> BaseAutomationElementList { get; protected set; }
+        public List<AutomationElement> BaseAutomationElementList { get; protected set; } 
+        #endregion
 
-        internal List<AutomationElement> Find(AutomationElement automationElement, By searchCriteria)
+        #region Finders
+        internal List<AutomationElement> Find(AutomationElement automationElement, By searchCriteria, int index)
         {
             DateTime start = DateTime.Now;
 
@@ -23,19 +26,19 @@ namespace WhiteSharp
 
             List<AutomationElement> list = new List<AutomationElement>();
 
-            while (!list.Any() && (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout) 
+            while (!list.Any() && (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
             {
                 try
                 {
                     list = BaseAutomationElementList.FindAll(searchCriteria.Result).ToList();
+                    list.ElementAt(index);
                 }
                 catch (Exception e)
                 {
-                    Logging.Exception(e);
                     BaseAutomationElementList = new Window(Title).AutomationElement
                         .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
                         .OfType<AutomationElement>().ToList();
-                } 
+                }
             }
             if (!list.Any())
                 throw new ControlNotFoundException(
@@ -48,13 +51,13 @@ namespace WhiteSharp
 
         public Control FindControl(By searchCriteria, int index = 0)
         {
-            List<AutomationElement> elements = Find(AutomationElement, searchCriteria);
-            
+            List<AutomationElement> elements = Find(AutomationElement, searchCriteria, index);
+
             Control returnControl = new Control(elements.ElementAt(index))
             {
                 Identifiers = searchCriteria.Identifiers
             };
-            
+
             Logging.ControlFound(searchCriteria);
 
             if (elements.Count() > 1)
@@ -75,9 +78,11 @@ namespace WhiteSharp
 
         public List<AutomationElement> FindAll(By searchCriteria)
         {
-            return Find(AutomationElement, searchCriteria);
-        }
+            return Find(AutomationElement, searchCriteria, 0);
+        } 
+        #endregion
 
+        #region Exists
         public bool Exists(By searchCriteria)
         {
             DateTime start = DateTime.Now;
@@ -136,7 +141,8 @@ namespace WhiteSharp
         public bool Exists(string automationId, out object o)
         {
             return Exists(By.AutomationId(automationId), out o);
-        }
+        } 
+        #endregion
 
         public Control ClickIfExists(By searchCriteria)
         {
