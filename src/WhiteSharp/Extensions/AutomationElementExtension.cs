@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Windows;
 using System.Windows.Automation;
 using Castle.Core.Internal;
 
@@ -83,6 +84,16 @@ namespace WhiteSharp.Extensions
             {
             }
             return returnName ?? "";
+        }
+
+        public static void DrawHighlight(this AutomationElement element)
+        {
+            Rect rectangle = element.Current.BoundingRectangle;
+
+            if (rectangle != Rect.Empty)
+            {
+                new Drawing.FrameRectangle(rectangle).Highlight();
+            }
         }
     }
 }

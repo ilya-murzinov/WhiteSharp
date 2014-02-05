@@ -3,7 +3,6 @@ using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
 using TestStack.White.InputDevices;
-using TestStack.White.UIItems;
 using WhiteSharp.Extensions;
 using WhiteSharp.Interfaces;
 using ComboBox = TestStack.White.UIItems.ListBoxItems.ComboBox;
@@ -226,7 +225,7 @@ namespace WhiteSharp
 
         public Control DrawHighlight()
         {
-            new UIItem(AutomationElement, null).DrawHighlight();
+            AutomationElement.DrawHighlight();
             return this;
         }
     }

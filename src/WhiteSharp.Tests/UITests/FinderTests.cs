@@ -5,18 +5,8 @@ using WhiteSharp.Tests.ScreenObjects;
 namespace WhiteSharp.Tests.UITests
 {
     [TestFixture]
-    public class FinderTests : TestBaseNUnit
+    public class FinderPositiveTests : TestBaseNUnit
     {
-        [TestCase("лоукггкгаг"), ExpectedException(typeof (WindowNotFoundException))]
-        [TestCase("MAIN")]
-        [TestCase("wIndow")]
-        [TestCase("MainWindows")]
-        [TestCase("^%$iofkjndsf9)&*")]
-        public void GetWindowNegativeTest(string title)
-        {
-            new Window(title);
-        }
-
         [TestCase("")]
         [TestCase("Main")]
         [TestCase("Window")]
@@ -90,32 +80,12 @@ namespace WhiteSharp.Tests.UITests
             MainWindow.Instance.Window.FindControl(By.ClassName(id), index);
         }
 
-        [TestCase("TextBlock", 1), ExpectedException(typeof(ControlNotFoundException))]
-        [TestCase("ComboBox", 2)]
-        [TestCase("TabItem", 1)]
-        [TestCase("TabItem", 1)]
-        [TestCase("Button", 1)]
-        public void FindControlByAutomationIdNegative(string id, int index)
-        {
-            MainWindow.Instance.Window.FindControl(By.AutomationId(id));
-        }
-
-        [TestCase("AComboBox"), ExpectedException(typeof(ControlNotFoundException))]
-        [TestCase("EditableComboBox")]
-        [TestCase("OpenHorizontalSplitterButton")]
-        [TestCase("ListBoxWithVScrollBar")]
-        [TestCase("CheckedListBox")]
-        public void FindControlByNameNegative(string id)
-        {
-            MainWindow.Instance.Window.FindControl(By.Name(id));
-        }
-
         [TestCase("ControlsTab", "ComboBox")]
         [TestCase("ControlsTab", "TabItem")]
         [TestCase("ListBoxWpf", "ListBoxItem")]
         [TestCase("ScenariosPane", "Button")]
         [TestCase("CheckedListBox", "CheckBox")]
-        public void FindChild(string parentId, string childId)
+        public void FindControl(string parentId, string childId)
         {
             MainWindow.Instance.Window.FindControl(By.AutomationId(parentId)).FindControl(By.ClassName(childId));
         }
@@ -140,10 +110,45 @@ namespace WhiteSharp.Tests.UITests
         }
 
         [TestCase("ControlsTab", "ListControlsTab", "ListControls", "ListBoxWpf", "ListBoxItem")]
-        public void FindChildMultiple(string id1, string id2, string id3, string id4, string id5)
+        public void FindControlMultiple(string id1, string id2, string id3, string id4, string id5)
         {
             MainWindow.Instance.Window.FindControl(By.AutomationId(id1)).FindControl(By.AutomationId(id2)).FindControl(By.AutomationId(id3))
                 .FindControl(By.AutomationId(id4)).FindControl(By.ClassName(id5));
         }
+    }
+
+    [TestFixture]
+    public class FinderNegativeTests : TestBaseNUnit
+    {
+        [TestCase("лоукггкгаг"), ExpectedException(typeof(WindowNotFoundException))]
+        [TestCase("MAIN")]
+        [TestCase("wIndow")]
+        [TestCase("MainWindows")]
+        [TestCase("^%$iofkjndsf9)&*")]
+        public void GetWindowNegativeTest(string title)
+        {
+            new Window(title);
+        }
+
+        [TestCase("TextBlock", 1), ExpectedException(typeof(ControlNotFoundException))]
+        [TestCase("ComboBox", 2)]
+        [TestCase("TabItem", 1)]
+        [TestCase("TabItem", 1)]
+        [TestCase("Button", 1)]
+        public void FindControlByAutomationIdNegative(string id, int index)
+        {
+            MainWindow.Instance.Window.FindControl(By.AutomationId(id));
+        }
+
+        [TestCase("AComboBox"), ExpectedException(typeof(ControlNotFoundException))]
+        [TestCase("EditableComboBox")]
+        [TestCase("OpenHorizontalSplitterButton")]
+        [TestCase("ListBoxWithVScrollBar")]
+        [TestCase("CheckedListBox")]
+        public void FindControlByNameNegative(string id)
+        {
+            MainWindow.Instance.Window.FindControl(By.Name(id));
+        }
+
     }
 }
