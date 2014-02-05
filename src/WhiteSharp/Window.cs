@@ -10,7 +10,7 @@ using WhiteSharp.Interfaces;
 
 namespace WhiteSharp
 {
-    public class Window : Container, IWindow
+    public class Window : Container
     {
         #region Private Fields
         private static DateTime _start;
@@ -20,6 +20,7 @@ namespace WhiteSharp
 
         #region Properties
         public int ProcessId { get; private set; }
+        internal static string Title { get; set; }
         internal WindowPattern WindowPattern { get; private set; }
         internal List<string> Identifiers
         {
@@ -184,7 +185,7 @@ namespace WhiteSharp
         public void Close()
         {
             WindowPattern.Close();
-            Logging.WindowClosed(Title);
+            Logging.WindowClosed(Window.Title);
         } 
         #endregion
     }

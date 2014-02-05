@@ -84,6 +84,7 @@ namespace WhiteSharp
 
         public Control Send(string value)
         {
+            WaitForEnabled();
             ClearValue();
             Keyboard.Instance.Send(value);
             return this;

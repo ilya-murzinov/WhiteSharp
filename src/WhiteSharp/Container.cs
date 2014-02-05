@@ -6,13 +6,19 @@ using WhiteSharp.Interfaces;
 
 namespace WhiteSharp
 {
-    public class Container : IContainer
+    public class Container
     {
         #region Properties
-        public string Title { get; protected set; }
         public AutomationElement AutomationElement { get; protected set; }
         public List<AutomationElement> BaseAutomationElementList { get; protected set; } 
         #endregion
+
+        private void RefreshBaseList(AutomationElement automationElement)
+        {
+            BaseAutomationElementList = automationElement
+                    .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
+                    .OfType<AutomationElement>().ToList();
+        }
 
         #region Finders
         internal List<AutomationElement> Find(AutomationElement automationElement, By searchCriteria, int index)
@@ -20,9 +26,7 @@ namespace WhiteSharp
             DateTime start = DateTime.Now;
 
             if (BaseAutomationElementList == null || !BaseAutomationElementList.Any())
-                BaseAutomationElementList = automationElement
-                    .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
-                    .OfType<AutomationElement>().ToList();
+                RefreshBaseList(automationElement);
 
             List<AutomationElement> list = new List<AutomationElement>();
 
@@ -33,11 +37,13 @@ namespace WhiteSharp
                     list = BaseAutomationElementList.FindAll(searchCriteria.Result).ToList();
                     list.ElementAt(index);
                 }
-                catch (Exception e)
+                catch (ElementNotAvailableException)
                 {
-                    BaseAutomationElementList = new Window(Title).AutomationElement
-                        .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
-                        .OfType<AutomationElement>().ToList();
+                    RefreshBaseList(new Window(Window.Title).AutomationElement);
+                }
+                catch (Exception)
+                {
+                    RefreshBaseList(AutomationElement);
                 }
             }
             if (!list.Any())
