@@ -13,7 +13,7 @@
 
         public static new MainWindowDataGridTab Instance
         {
-            get { return _instance ?? (_instance = new MainWindowDataGridTab()); }
+            get { return (_instance = new MainWindowDataGridTab()); }
         }
     }
 }

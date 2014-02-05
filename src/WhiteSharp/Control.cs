@@ -3,6 +3,7 @@ using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
 using TestStack.White.InputDevices;
+using TestStack.White.UIItems.Actions;
 using WhiteSharp.Extensions;
 using WhiteSharp.Interfaces;
 using ComboBox = TestStack.White.UIItems.ListBoxItems.ComboBox;
@@ -117,7 +118,7 @@ namespace WhiteSharp
             else
             {
                 //TODO: replace this ro remove link to TestStack.White
-                ComboBox comboBox = new ComboBox(AutomationElement, null);
+                ComboBox comboBox = new ComboBox(AutomationElement, new NullActionListener());
                 comboBox.Select(name);
             }
 

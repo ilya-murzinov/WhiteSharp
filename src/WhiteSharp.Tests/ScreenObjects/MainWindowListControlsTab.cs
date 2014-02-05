@@ -13,7 +13,7 @@
 
         public static new MainWindowListControlsTab Instance
         {
-            get { return _instance ?? (_instance = new MainWindowListControlsTab()); }
+            get { return (_instance = new MainWindowListControlsTab()); }
         }
 
         public MainWindowDataGridTab OpenDataGrid()

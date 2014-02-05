@@ -14,7 +14,7 @@
 
         public static MainWindow Instance
         {
-            get { return _instance ?? (_instance = new MainWindow()); }
+            get { return (_instance = new MainWindow()); }
         }
     }
 }
