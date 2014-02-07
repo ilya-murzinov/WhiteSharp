@@ -9,3 +9,8 @@ Docs
 ----
 
 View docs [here](http://murz42.viewdocs.io/WhiteSharp)
+
+License
+-------
+
+[MIT License](LICENSE.txt)
