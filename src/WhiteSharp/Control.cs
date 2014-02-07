@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
@@ -10,12 +12,12 @@ using ComboBox = TestStack.White.UIItems.ListBoxItems.ComboBox;
 
 namespace WhiteSharp
 {
-    public class Control : Container, IControl
+    public class Control : IControl
     {
         #region Properties
-
         //public Window Window { get; internal set; }
-
+        public AutomationElement AutomationElement { get; protected set; }
+        public List<AutomationElement> BaseAutomationElementList { get; protected set; } 
         public string Identifiers { get; internal set; }
 
         public bool Enabled
@@ -33,6 +35,152 @@ namespace WhiteSharp
             AutomationElement = element;
         } 
         #endregion
+
+        private void RefreshBaseList(AutomationElement automationElement)
+        {
+            BaseAutomationElementList = automationElement
+                    .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
+                    .OfType<AutomationElement>().ToList();
+        }
+
+        internal List<AutomationElement> Find(AutomationElement automationElement, By searchCriteria, int index)
+        {
+            DateTime start = DateTime.Now;
+
+            RefreshBaseList(AutomationElement);
+
+            List<AutomationElement> list = BaseAutomationElementList.FindAll(searchCriteria.Result).ToList();
+
+            if (!list.Any())
+                throw new ControlNotFoundException(
+                    Logging.ControlNotFoundException(searchCriteria.Identifiers));
+
+            searchCriteria.Duration = (DateTime.Now - start).TotalSeconds;
+
+            return list;
+        }
+
+        public Control FindControl(By searchCriteria, int index = 0)
+        {
+            List<AutomationElement> list = new List<AutomationElement>();
+            
+            while (!list.Any())
+            {
+                try
+                {
+                    list = BaseAutomationElementList.FindAll(searchCriteria.Result).ToList();
+                    list.ElementAt(index);
+                }
+                catch (Exception)
+                {
+                    RefreshBaseList(AutomationElement);
+                }
+            }
+
+            Control returnControl = new Control(list.ElementAt(index))
+            {
+                Identifiers = searchCriteria.Identifiers
+            };
+
+            Logging.ControlFound(searchCriteria);
+
+            if (list.Count() > 1)
+                Logging.MutlipleControlsWarning(list);
+
+            return returnControl;
+        }
+
+        public Control FindControl(string automationId, int index = 0)
+        {
+            return FindControl(By.AutomationId(automationId), index);
+        }
+
+        public Control FindControl(ControlType type)
+        {
+            return FindControl(By.ControlType(type));
+        }
+
+        public List<AutomationElement> FindAll(By searchCriteria)
+        {
+            return Find(AutomationElement, searchCriteria, 0);
+        }
+
+        public bool Exists(By searchCriteria)
+        {
+            DateTime start = DateTime.Now;
+
+            while ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
+            {
+                try
+                {
+                    RefreshBaseList(AutomationElement);
+                    List<AutomationElement> elements = BaseAutomationElementList.FindAll(searchCriteria.Result);
+                    if (elements.Count > 0)
+                    {
+                        return true;
+                    }
+                    return false;
+
+                }
+                catch (Exception)
+                {
+                }
+            }
+            return false;
+        }
+
+        public bool Exists(string automationId)
+        {
+            return Exists(By.AutomationId(automationId));
+        }
+
+        public bool Exists(By searchCriteria, out object o)
+        {
+            DateTime start = DateTime.Now;
+            o = null;
+
+            while ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
+            {
+                try
+                {
+                    RefreshBaseList(AutomationElement);
+                    List<AutomationElement> elements = BaseAutomationElementList.FindAll(searchCriteria.Result);
+                    if (elements.Count > 0)
+                    {
+                        o = elements.ElementAt(0);
+                        return true;
+                    }
+                }
+                catch (Exception)
+                {
+                }
+            }
+            return false;
+        }
+
+        public bool Exists(string automationId, out object o)
+        {
+            return Exists(By.AutomationId(automationId), out o);
+        }
+
+        public Control ClickIfExists(By searchCriteria)
+        {
+            Control control = null;
+            object o;
+
+            if (Exists(searchCriteria, out o))
+            {
+                control = new Control((AutomationElement)o);
+                control.Click();
+            }
+
+            return control;
+        }
+
+        public Control ClickIfExists(string automationId)
+        {
+            return ClickIfExists(By.AutomationId(automationId));
+        }
 
         #region Actions
         public Control ClickAnyway()
@@ -85,6 +233,7 @@ namespace WhiteSharp
         public Control Send(string value)
         {
             WaitForEnabled();
+            AutomationElement.SetFocus();
             ClearValue();
             Keyboard.Instance.Send(value);
             return this;
@@ -98,6 +247,7 @@ namespace WhiteSharp
 
         public Control Send(int value)
         {
+            AutomationElement.SetFocus();
             SendKeys.SendWait(value.ToString());
             return this;
         }
