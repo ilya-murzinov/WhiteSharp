@@ -10,20 +10,21 @@ using WhiteSharp.Interfaces;
 
 namespace WhiteSharp
 {
-    public class Window
+    public class Window : IWindow
     {
         #region Private Fields
         private static DateTime _start;
         private static List<string> _identifiers = new List<string>();
         private WindowVisualState _displayState;
-        private bool _changed;
+        private bool _contentChanged;
+        private bool _isClosed;
         #endregion
 
         #region Properties
         public AutomationElement AutomationElement { get; protected set; }
         public List<AutomationElement> BaseAutomationElementList { get; protected set; } 
         public int ProcessId { get; private set; }
-        internal static string Title { get; set; }
+        public string Title { get; set; }
         internal WindowPattern WindowPattern { get; private set; }
         internal static string Identifiers
         {
@@ -49,10 +50,9 @@ namespace WhiteSharp
         {
             AutomationElement = element;
             SetStructureChangeEventHandler();
+            SetOnCloseEventHandler();
             WindowPattern = (WindowPattern) element.GetCurrentPattern(WindowPattern.Pattern);
-            BaseAutomationElementList = element
-                .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
-                .OfType<AutomationElement>().ToList();
+            RefreshBaseList(AutomationElement);
             Title = element.Title();
             ProcessId = element.Current.ProcessId;
             _displayState = WindowPattern.Current.WindowVisualState;
@@ -183,19 +183,37 @@ namespace WhiteSharp
 
         #endregion
 
+        #region Event Handlers
         private void SetStructureChangeEventHandler()
         {
             StructureChangedEventHandler eventHandler = OnStructureChange;
-            Automation.AddStructureChangedEventHandler(AutomationElement, 
+            Automation.AddStructureChangedEventHandler(AutomationElement,
                 TreeScope.Descendants, eventHandler);
         }
 
         private void OnStructureChange(object sender, AutomationEventArgs e)
         {
-            if (!_changed) 
-                _changed = true;
+            if (!_contentChanged)
+                _contentChanged = true;
         }
 
+        private void SetOnCloseEventHandler()
+        {
+            AutomationEventHandler eventHandler = OnClosed;
+            Automation.AddAutomationEventHandler(WindowPattern.WindowClosedEvent,
+                AutomationElement, TreeScope.Element, eventHandler);
+        }
+
+        private void OnClosed(object sender, AutomationEventArgs e)
+        {
+            AutomationElement = null;
+            BaseAutomationElementList = null;
+            if (!_isClosed)
+                _isClosed = true;
+        }
+        #endregion
+
+        #region Control Finders
         private void RefreshBaseList(AutomationElement automationElement)
         {
             BaseAutomationElementList = automationElement
@@ -207,15 +225,24 @@ namespace WhiteSharp
         {
             DateTime start = DateTime.Now;
 
-            if (_changed)
+            if (_isClosed)
+            {
+                Window newWindow = new Window(Title);
+                AutomationElement = newWindow.AutomationElement;
+                RefreshBaseList(AutomationElement);
+                SetStructureChangeEventHandler();
+                SetOnCloseEventHandler();
+                _isClosed = false;
+            }
+            else if (_contentChanged)
             {
                 RefreshBaseList(AutomationElement);
-                _changed = false;
+                _contentChanged = false;
             }
 
             List<AutomationElement> list = new List<AutomationElement>();
 
-            while (!list.Any())
+            while (!list.Any() && (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout / 10)
             {
                 try
                 {
@@ -224,10 +251,10 @@ namespace WhiteSharp
                 }
                 catch (Exception)
                 {
-                    if (_changed)
+                    if (_contentChanged)
                     {
                         RefreshBaseList(AutomationElement);
-                        _changed = false;
+                        _contentChanged = false;
                     }
                 }
             }
@@ -272,7 +299,10 @@ namespace WhiteSharp
         {
             return Find(AutomationElement, searchCriteria, 0);
         }
+        
+        #endregion
 
+        #region Exists
         public bool Exists(By searchCriteria)
         {
             DateTime start = DateTime.Now;
@@ -281,10 +311,10 @@ namespace WhiteSharp
             {
                 try
                 {
-                    if (_changed)
+                    if (_contentChanged)
                     {
                         RefreshBaseList(AutomationElement);
-                        _changed = false;
+                        _contentChanged = false;
                     }
                     List<AutomationElement> elements = BaseAutomationElementList.FindAll(searchCriteria.Result);
                     if (elements.Count > 0)
@@ -315,10 +345,10 @@ namespace WhiteSharp
             {
                 try
                 {
-                    if (_changed)
+                    if (_contentChanged)
                     {
                         RefreshBaseList(AutomationElement);
-                        _changed = false;
+                        _contentChanged = false;
                     }
                     List<AutomationElement> elements = BaseAutomationElementList.FindAll(searchCriteria.Result);
                     if (elements.Count > 0)
@@ -337,7 +367,21 @@ namespace WhiteSharp
         public bool Exists(string automationId, out object o)
         {
             return Exists(By.AutomationId(automationId), out o);
-        } 
+        }  
+        #endregion
+
+        #region Actions
+
+        public void Send(Keys key)
+        {
+            Keyboard.Instance.Send(key);
+        }
+
+        public void Close()
+        {
+            WindowPattern.Close();
+            Logging.WindowClosed(Title);
+        }
 
         public Control ClickIfExists(By searchCriteria)
         {
@@ -357,19 +401,6 @@ namespace WhiteSharp
         {
             return ClickIfExists(By.AutomationId(automationId));
         }
-
-        #region Actions
-
-        public void Send(Keys key)
-        {
-            Keyboard.Instance.Send(key);
-        }
-
-        public void Close()
-        {
-            WindowPattern.Close();
-            Logging.WindowClosed(Window.Title);
-        } 
         #endregion
     }
 }

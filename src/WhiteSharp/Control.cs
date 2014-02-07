@@ -36,6 +36,7 @@ namespace WhiteSharp
         } 
         #endregion
 
+        #region Control Finders
         private void RefreshBaseList(AutomationElement automationElement)
         {
             BaseAutomationElementList = automationElement
@@ -63,7 +64,7 @@ namespace WhiteSharp
         public Control FindControl(By searchCriteria, int index = 0)
         {
             List<AutomationElement> list = new List<AutomationElement>();
-            
+
             while (!list.Any())
             {
                 try
@@ -103,8 +104,10 @@ namespace WhiteSharp
         public List<AutomationElement> FindAll(By searchCriteria)
         {
             return Find(AutomationElement, searchCriteria, 0);
-        }
+        } 
+        #endregion
 
+        #region Exists
         public bool Exists(By searchCriteria)
         {
             DateTime start = DateTime.Now;
@@ -162,25 +165,7 @@ namespace WhiteSharp
         {
             return Exists(By.AutomationId(automationId), out o);
         }
-
-        public Control ClickIfExists(By searchCriteria)
-        {
-            Control control = null;
-            object o;
-
-            if (Exists(searchCriteria, out o))
-            {
-                control = new Control((AutomationElement)o);
-                control.Click();
-            }
-
-            return control;
-        }
-
-        public Control ClickIfExists(string automationId)
-        {
-            return ClickIfExists(By.AutomationId(automationId));
-        }
+        #endregion
 
         #region Actions
         public Control ClickAnyway()
@@ -329,8 +314,25 @@ namespace WhiteSharp
             {
                 throw new GeneralException(string.Format(Logging.Strings["NotARadioButton"], Identifiers));
             }
-        } 
-        #endregion
+        }
+        public Control ClickIfExists(By searchCriteria)
+        {
+            Control control = null;
+            object o;
+
+            if (Exists(searchCriteria, out o))
+            {
+                control = new Control((AutomationElement)o);
+                control.Click();
+            }
+
+            return control;
+        }
+
+        public Control ClickIfExists(string automationId)
+        {
+            return ClickIfExists(By.AutomationId(automationId));
+        }
 
         public Control WaitForEnabled()
         {
@@ -379,5 +381,6 @@ namespace WhiteSharp
             AutomationElement.DrawHighlight();
             return this;
         }
+        #endregion
     }
 }
