@@ -24,7 +24,7 @@ namespace WhiteSharp
         public AutomationElement AutomationElement { get; protected set; }
         public List<AutomationElement> BaseAutomationElementList { get; protected set; } 
         public int ProcessId { get; private set; }
-        public string Title { get; set; }
+        public string Title { get; private set; }
         internal WindowPattern WindowPattern { get; private set; }
         internal static string Identifiers
         {
@@ -381,6 +381,7 @@ namespace WhiteSharp
         {
             WindowPattern.Close();
             Logging.WindowClosed(Title);
+            Automation.RemoveAllEventHandlers();
         }
 
         public Control ClickIfExists(By searchCriteria)
