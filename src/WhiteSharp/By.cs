@@ -9,11 +9,14 @@ namespace WhiteSharp
     public class By
     {
         #region Private Fields
+
+        private readonly List<string> _identifiers = new List<string>();
         private readonly List<Predicate<AutomationElement>> _result = new List<Predicate<AutomationElement>>();
-        private readonly List<string> _identifiers = new List<string>(); 
+
         #endregion
 
         #region Properties
+
         internal string Identifiers
         {
             get { return _identifiers.Select(x => string.Format("\"{0}\"", x)).Aggregate((x, y) => x + ", " + y); }
@@ -24,10 +27,12 @@ namespace WhiteSharp
         internal Predicate<AutomationElement> Result
         {
             get { return _result.Aggregate((x, y) => And(x, y)); }
-        } 
+        }
+
         #endregion
 
         #region Static Methods
+
         public static By AutomationId(string automationId)
         {
             var b = new By();
@@ -92,7 +97,7 @@ namespace WhiteSharp
                 object o;
                 if (x.TryGetCurrentPattern(TableItemPattern.Pattern, out o))
                 {
-                    TableItemPattern pattern = (TableItemPattern)o;
+                    var pattern = (TableItemPattern) o;
                     if (pattern.Current.Column.Equals(i) && pattern.Current.Row.Equals(j))
                         return true;
                 }
@@ -108,10 +113,12 @@ namespace WhiteSharp
             b._result.Add(x => x.Current.ControlType.Equals(type));
             b._identifiers.Add(String.Format("ControlType = {0}", type.ProgrammaticName));
             return b;
-        } 
+        }
+
         #endregion
 
         #region Non-static Methods
+
         public By AndAutomationId(string automationId)
         {
             _result.Add(x => x.Current.AutomationId.Equals(automationId));
@@ -166,7 +173,8 @@ namespace WhiteSharp
             _result.Add(x => x.Current.IsEnabled);
             _identifiers.Add(string.Format("Enabled = {0}", b));
             return this;
-        } 
+        }
+
         #endregion
 
         private static Predicate<T> And<T>(params Predicate<T>[] predicates)

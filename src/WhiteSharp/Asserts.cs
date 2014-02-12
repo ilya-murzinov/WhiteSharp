@@ -10,7 +10,7 @@ namespace WhiteSharp
     public class AssertThat
     {
         /// <summary>
-        /// Throws AssertException if the condition not satisfied
+        ///     Throws AssertException if the condition not satisfied
         /// </summary>
         /// <param name="control">Target control</param>
         /// <param name="expected"></param>
@@ -25,7 +25,7 @@ namespace WhiteSharp
         }
 
         /// <summary>
-        /// Throws AssertException if the condition not satisfied
+        ///     Throws AssertException if the condition not satisfied
         /// </summary>
         /// <param name="control">Target control</param>
         /// <param name="value"></param>
@@ -40,8 +40,8 @@ namespace WhiteSharp
         }
 
         /// <summary>
-        /// Checks if every AutomationElement in given list is enabled
-        /// Throws AssertException if the condition not satisfied
+        ///     Checks if every AutomationElement in given list is enabled
+        ///     Throws AssertException if the condition not satisfied
         /// </summary>
         /// <param name="list"></param>
         public static void Enabled(List<AutomationElement> list)
@@ -65,8 +65,8 @@ namespace WhiteSharp
         }
 
         /// <summary>
-        /// Checks if every Control in given list is enabled
-        /// Throws AssertException if the condition not satisfied
+        ///     Checks if every Control in given list is enabled
+        ///     Throws AssertException if the condition not satisfied
         /// </summary>
         /// <param name="items"></param>
         public static void Enabled(params Control[] items)
@@ -77,8 +77,8 @@ namespace WhiteSharp
         }
 
         /// <summary>
-        /// Checks if every AutomationElement in given list is not enabled
-        /// Throws AssertException if the condition not satisfied
+        ///     Checks if every AutomationElement in given list is not enabled
+        ///     Throws AssertException if the condition not satisfied
         /// </summary>
         /// <param name="list"></param>
         public static void NotEnabled(List<AutomationElement> list)
@@ -102,8 +102,8 @@ namespace WhiteSharp
         }
 
         /// <summary>
-        /// Checks if every Control in given list is not enabled
-        /// Throws AssertException if the condition not satisfied
+        ///     Checks if every Control in given list is not enabled
+        ///     Throws AssertException if the condition not satisfied
         /// </summary>
         /// <param name="items"></param>
         public static void NotEnabled(params Control[] items)

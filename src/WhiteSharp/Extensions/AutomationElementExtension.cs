@@ -3,11 +3,28 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Automation;
 using Castle.Core.Internal;
+using WhiteSharp.Drawing;
 
 namespace WhiteSharp.Extensions
 {
     public static class AutomationElementExtension
     {
+        internal static bool IsOffScreen(this AutomationElement automationElement)
+        {
+            try
+            {
+                return automationElement.Current.IsOffscreen;
+            }
+            catch (ElementNotAvailableException)
+            {
+                return true;
+            }
+            catch (InvalidOperationException)
+            {
+                return true;
+            }
+        }
+
         internal static string GetId(this AutomationElement automationElement)
         {
             string[] identifiers =
@@ -92,7 +109,7 @@ namespace WhiteSharp.Extensions
 
             if (rectangle != Rect.Empty)
             {
-                new Drawing.FrameRectangle(rectangle).Highlight();
+                new FrameRectangle(rectangle).Highlight();
             }
         }
     }

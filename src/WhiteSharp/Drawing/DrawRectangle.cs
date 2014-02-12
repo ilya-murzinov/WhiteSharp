@@ -9,9 +9,9 @@ namespace WhiteSharp.Drawing
 {
     internal class ScreenRectangle
     {
-        private readonly Form _form = new Form();
         //TODO: Think about making color configurable
         private readonly Color _color = Color.Red;
+        private readonly Form _form = new Form();
 
         internal ScreenRectangle(Rect rectangle)
         {
@@ -31,7 +31,8 @@ namespace WhiteSharp.Drawing
             NativeMethods.SetWindowLong(_form.Handle, -20, num1 | 0x80);
 
             //Set position
-            NativeMethods.SetWindowPos(_form.Handle, new IntPtr(-1), Convert.ToInt32(rectangle.X), Convert.ToInt32(rectangle.Y),
+            NativeMethods.SetWindowPos(_form.Handle, new IntPtr(-1), Convert.ToInt32(rectangle.X),
+                Convert.ToInt32(rectangle.Y),
                 Convert.ToInt32(rectangle.Width), Convert.ToInt32(rectangle.Height), 0x10);
         }
 
@@ -49,21 +50,28 @@ namespace WhiteSharp.Drawing
     internal class FrameRectangle
     {
         //Using 4 rectangles to display each border
-        private ScreenRectangle leftBorder;
-        private ScreenRectangle topBorder;
-        private ScreenRectangle rightBorder;
+        private readonly ScreenRectangle[] rectangles;
         private ScreenRectangle bottomBorder;
-
-        private ScreenRectangle[] rectangles;
+        private ScreenRectangle leftBorder;
+        private ScreenRectangle rightBorder;
+        private ScreenRectangle topBorder;
         private int width = 3;
 
         internal FrameRectangle(Rect boundingRectangle)
         {
-            leftBorder = new ScreenRectangle(new Rect(boundingRectangle.X - width, boundingRectangle.Y - width, width, boundingRectangle.Height + 2 * width));
-            topBorder = new ScreenRectangle(new Rect(boundingRectangle.X, boundingRectangle.Y - width, boundingRectangle.Width, width));
-            rightBorder = new ScreenRectangle(new Rect(boundingRectangle.X + boundingRectangle.Width, boundingRectangle.Y - width, width, boundingRectangle.Height + 2 * width));
-            bottomBorder = new ScreenRectangle(new Rect(boundingRectangle.X, boundingRectangle.Y + boundingRectangle.Height, boundingRectangle.Width, width));
-            rectangles = new ScreenRectangle[] { leftBorder, topBorder, rightBorder, bottomBorder };
+            leftBorder =
+                new ScreenRectangle(new Rect(boundingRectangle.X - width, boundingRectangle.Y - width, width,
+                    boundingRectangle.Height + 2*width));
+            topBorder =
+                new ScreenRectangle(new Rect(boundingRectangle.X, boundingRectangle.Y - width, boundingRectangle.Width,
+                    width));
+            rightBorder =
+                new ScreenRectangle(new Rect(boundingRectangle.X + boundingRectangle.Width, boundingRectangle.Y - width,
+                    width, boundingRectangle.Height + 2*width));
+            bottomBorder =
+                new ScreenRectangle(new Rect(boundingRectangle.X, boundingRectangle.Y + boundingRectangle.Height,
+                    boundingRectangle.Width, width));
+            rectangles = new[] {leftBorder, topBorder, rightBorder, bottomBorder};
         }
 
         internal virtual void Highlight()
