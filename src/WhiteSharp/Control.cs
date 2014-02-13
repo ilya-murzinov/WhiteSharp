@@ -15,11 +15,16 @@ namespace WhiteSharp
 {
     public class Control : IControl
     {
-        private AutomationElement _automationElement;
+        #region Private Fields
+
+        private AutomationElement _automationElement; 
+
+        #endregion
 
         #region Properties
 
         public List<AutomationElement> BaseAutomationElementList { get; protected set; }
+
         public Window Window { get; internal set; }
 
         public bool IsOffScreen
@@ -74,17 +79,13 @@ namespace WhiteSharp
         {
             DateTime start = DateTime.Now;
 
-            if (IsOffScreen)
-            {
-                AutomationElement = new Window(Window.Title).AutomationElement;
-                RefreshBaseList(AutomationElement);
-            }
+            RefreshBaseList(AutomationElement);
 
             var list = new List<AutomationElement>();
             AutomationElement element = null;
 
             while ((!list.Any() || element == null) &&
-                   (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout/10)
+                    (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
             {
                 try
                 {
@@ -112,7 +113,8 @@ namespace WhiteSharp
 
             var returnControl = new Control(elements.ElementAt(index))
             {
-                Identifiers = searchCriteria.Identifiers
+                Identifiers = searchCriteria.Identifiers,
+                Window = Window
             };
 
             Logging.ControlFound(searchCriteria);

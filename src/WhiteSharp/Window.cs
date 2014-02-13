@@ -17,14 +17,23 @@ namespace WhiteSharp
         private static DateTime _start;
         private static List<string> _identifiers = new List<string>();
         private AutomationElement _automationElement;
-        private bool _contentChanged;
         private WindowVisualState _displayState;
-        private bool _isClosed;
         private WindowPattern _windowPattern;
 
         #endregion
 
         #region Properties
+
+        public AutomationElement AutomationElement
+        {
+            get
+            {
+                return (!_automationElement.IsOffScreen())
+                    ? _automationElement
+                    : new Window(Title).AutomationElement;
+            }
+            protected set { _automationElement = value; }
+        }
 
         internal WindowPattern WindowPattern
         {
@@ -46,21 +55,11 @@ namespace WhiteSharp
         {
             get { return _automationElement.IsOffScreen(); }
         }
-
-        public AutomationElement AutomationElement
-        {
-            get
-            {
-                if (!_automationElement.IsOffScreen())
-                    return _automationElement;
-                _automationElement = new Window(Title).AutomationElement;
-                return _automationElement;
-            }
-            protected set { _automationElement = value; }
-        }
-
+        
         public List<AutomationElement> BaseAutomationElementList { get; protected set; }
+        
         public int ProcessId { get; private set; }
+        
         public string Title { get; private set; }
 
         public WindowVisualState DisplayState
@@ -264,7 +263,7 @@ namespace WhiteSharp
             AutomationElement element = null;
 
             while ((!list.Any() || element == null) &&
-                   (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout/10)
+                   (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
             {
                 try
                 {
@@ -273,7 +272,9 @@ namespace WhiteSharp
                 }
                 catch (Exception)
                 {
-                    RefreshBaseList(AutomationElement);
+                    RefreshBaseList(IsOffScreen 
+                        ? new Window(Title).AutomationElement 
+                        : AutomationElement);
                 }
             }
 
@@ -298,11 +299,8 @@ namespace WhiteSharp
             {
                 try
                 {
-                    if (_contentChanged)
-                    {
-                        RefreshBaseList(AutomationElement);
-                        _contentChanged = false;
-                    }
+                    RefreshBaseList(AutomationElement);
+
                     List<AutomationElement> elements = BaseAutomationElementList.FindAll(searchCriteria.Result);
                     if (elements.Count > 0)
                     {
@@ -331,11 +329,8 @@ namespace WhiteSharp
             {
                 try
                 {
-                    if (_contentChanged)
-                    {
-                        RefreshBaseList(AutomationElement);
-                        _contentChanged = false;
-                    }
+                    RefreshBaseList(AutomationElement);
+
                     List<AutomationElement> elements = BaseAutomationElementList.FindAll(searchCriteria.Result);
                     if (elements.Count > 0)
                     {
