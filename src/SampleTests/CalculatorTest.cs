@@ -1,6 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using WhiteSharp;
+using Shouldly;
 
 namespace SampleTests
 {
@@ -46,7 +47,7 @@ namespace SampleTests
 
         public CalculatorScreenObject CheckDisplayTextEquals(string text)
         {
-            AssertThat.AreEqual(display, text, Math.Round(double.Parse(display.GetText()), 15).ToString());
+            Math.Round(double.Parse(display.GetText()), 15).ToString().ShouldBe(text);
             return this;
         }
         public CalculatorScreenObject ClearScreen()

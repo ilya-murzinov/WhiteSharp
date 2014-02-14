@@ -42,6 +42,9 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Shouldly">
+      <HintPath>..\..\lib\Shouldly.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="TestStack.White">

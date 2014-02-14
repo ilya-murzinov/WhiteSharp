@@ -39,14 +39,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq">
-      <HintPath>..\..\Libs\Moq.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\Libs\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Shouldly">
-      <HintPath>..\..\Libs\Shouldly.dll</HintPath>
+      <HintPath>..\..\lib\Shouldly.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -78,9 +75,6 @@
     <Compile Include="UITests\FinderTests.cs" />
     <Compile Include="TestBaseNUnit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="UITests\RunTests.bat" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WhiteSharp\WhiteSharp.csproj">
