@@ -2,12 +2,11 @@
 using System.Linq;
 using System.Windows.Automation;
 
-
 namespace WhiteSharp
 {
     internal class Desktop
     {
-        public List<AutomationElement> Windows { get; private set; }
+        private static Desktop _instance;
 
         private Desktop()
         {
@@ -16,7 +15,7 @@ namespace WhiteSharp
                 .OfType<AutomationElement>().ToList();
         }
 
-        private static Desktop _instance;
+        public List<AutomationElement> Windows { get; private set; }
 
         public static Desktop Instance
         {

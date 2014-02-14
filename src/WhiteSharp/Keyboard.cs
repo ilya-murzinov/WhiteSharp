@@ -7,17 +7,26 @@ namespace WhiteSharp
 {
     public enum Keys
     {
-        F5, Tab, Esc, Enter, Down, Del, CtrlA, CtrlEnter
+        F5,
+        Tab,
+        Esc,
+        Enter,
+        Down,
+        Del,
+        CtrlA,
+        CtrlEnter
     }
 
-    class Keyboard
+    internal class Keyboard
     {
+        private static Keyboard _instance;
+
         private readonly Dictionary<Keys, Action> _keysDistionary = new Dictionary
             <Keys, Action>();
 
         private Keyboard()
         {
-            _keysDistionary.Add(Keys.F5, 
+            _keysDistionary.Add(Keys.F5,
                 () => TestStack.White.InputDevices.Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.F5));
             _keysDistionary.Add(Keys.Tab,
                 () => TestStack.White.InputDevices.Keyboard.Instance.PressSpecialKey(KeyboardInput.SpecialKeys.TAB));
@@ -44,8 +53,6 @@ namespace WhiteSharp
                     TestStack.White.InputDevices.Keyboard.Instance.LeaveKey(KeyboardInput.SpecialKeys.CONTROL);
                 });
         }
-
-        private static Keyboard _instance;
 
         public static Keyboard Instance
         {

@@ -13,23 +13,55 @@ namespace WhiteSharp
     public class Window : IWindow
     {
         #region Private Fields
+
         private static DateTime _start;
         private static List<string> _identifiers = new List<string>();
+        private AutomationElement _automationElement;
         private WindowVisualState _displayState;
-        private bool _contentChanged;
-        private bool _isClosed;
+        private WindowPattern _windowPattern;
+
         #endregion
 
         #region Properties
-        public AutomationElement AutomationElement { get; protected set; }
-        public List<AutomationElement> BaseAutomationElementList { get; protected set; } 
-        public int ProcessId { get; private set; }
-        public string Title { get; private set; }
-        internal WindowPattern WindowPattern { get; private set; }
+
+        public AutomationElement AutomationElement
+        {
+            get
+            {
+                return (!_automationElement.IsOffScreen())
+                    ? _automationElement
+                    : new Window(Title).AutomationElement;
+            }
+            protected set { _automationElement = value; }
+        }
+
+        internal WindowPattern WindowPattern
+        {
+            get
+            {
+                return IsOffScreen
+                    ? _windowPattern
+                    : (WindowPattern) AutomationElement.GetCurrentPattern(WindowPattern.Pattern);
+            }
+            private set { _windowPattern = value; }
+        }
+
         internal static string Identifiers
         {
             get { return _identifiers.Aggregate((x, y) => x + ", " + y); }
         }
+
+        public bool IsOffScreen
+        {
+            get { return _automationElement.IsOffScreen(); }
+        }
+        
+        public List<AutomationElement> BaseAutomationElementList { get; protected set; }
+        
+        public int ProcessId { get; private set; }
+        
+        public string Title { get; private set; }
+
         public WindowVisualState DisplayState
         {
             get { return _displayState; }
@@ -42,6 +74,7 @@ namespace WhiteSharp
                 }
             }
         }
+
         #endregion
 
         #region Constructors
@@ -49,8 +82,6 @@ namespace WhiteSharp
         internal Window(AutomationElement element)
         {
             AutomationElement = element;
-            SetStructureChangeEventHandler();
-            SetOnCloseEventHandler();
             WindowPattern = (WindowPattern) element.GetCurrentPattern(WindowPattern.Pattern);
             RefreshBaseList(AutomationElement);
             Title = element.Title();
@@ -86,8 +117,7 @@ namespace WhiteSharp
 
         private static List<AutomationElement> FindWindows(Predicate<AutomationElement> predicate)
         {
-            _identifiers = new List<string>();
-            List<AutomationElement> windows = new List<AutomationElement>();
+            var windows = new List<AutomationElement>();
 
             _start = DateTime.Now;
 
@@ -114,7 +144,7 @@ namespace WhiteSharp
         private static List<AutomationElement> FindWindows(params string[] titles)
         {
             _identifiers = new List<string>();
-            List<AutomationElement> windows = new List<AutomationElement>();
+            var windows = new List<AutomationElement>();
             _start = DateTime.Now;
             titles.ForEach(x => _identifiers.Add(x));
             windows = FindWindows(window => titles.Select(x => window.Title().Contains(x)).All(x => x.Equals(true)));
@@ -145,7 +175,7 @@ namespace WhiteSharp
             _start = DateTime.Now;
 
             while ((windows == null ||
-                        !windows.Any()) && ((DateTime.Now - _start).TotalMilliseconds < Settings.Default.Timeout))
+                    !windows.Any()) && ((DateTime.Now - _start).TotalMilliseconds < Settings.Default.Timeout))
             {
                 try
                 {
@@ -181,100 +211,23 @@ namespace WhiteSharp
             return returnWindow;
         }
 
-        #endregion
-
-        #region Event Handlers
-        private void SetStructureChangeEventHandler()
+        public Window FindModalWindow(string title)
         {
-            StructureChangedEventHandler eventHandler = OnStructureChange;
-            Automation.AddStructureChangedEventHandler(AutomationElement,
-                TreeScope.Descendants, eventHandler);
+            return new Window(FindControl(By.ControlType(ControlType.Window).AndName(title)).AutomationElement);
         }
 
-        private void OnStructureChange(object sender, AutomationEventArgs e)
-        {
-            if (!_contentChanged)
-                _contentChanged = true;
-        }
-
-        private void SetOnCloseEventHandler()
-        {
-            AutomationEventHandler eventHandler = OnClosed;
-            Automation.AddAutomationEventHandler(WindowPattern.WindowClosedEvent,
-                AutomationElement, TreeScope.Element, eventHandler);
-        }
-
-        private void OnClosed(object sender, AutomationEventArgs e)
-        {
-            AutomationElement = null;
-            BaseAutomationElementList = null;
-            if (!_isClosed)
-                _isClosed = true;
-        }
         #endregion
 
         #region Control Finders
-        private void RefreshBaseList(AutomationElement automationElement)
-        {
-            BaseAutomationElementList = automationElement
-                    .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
-                    .OfType<AutomationElement>().ToList();
-        }
-
-        internal List<AutomationElement> Find(AutomationElement automationElement, By searchCriteria, int index)
-        {
-            DateTime start = DateTime.Now;
-
-            if (_isClosed)
-            {
-                Window newWindow = new Window(Title);
-                AutomationElement = newWindow.AutomationElement;
-                RefreshBaseList(AutomationElement);
-                SetStructureChangeEventHandler();
-                SetOnCloseEventHandler();
-                _isClosed = false;
-            }
-            else if (_contentChanged)
-            {
-                RefreshBaseList(AutomationElement);
-                _contentChanged = false;
-            }
-
-            List<AutomationElement> list = new List<AutomationElement>();
-
-            while (!list.Any() && (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout / 10)
-            {
-                try
-                {
-                    list = BaseAutomationElementList.FindAll(searchCriteria.Result).ToList();
-                    list.ElementAt(index);
-                }
-                catch (Exception)
-                {
-                    if (_contentChanged)
-                    {
-                        RefreshBaseList(AutomationElement);
-                        _contentChanged = false;
-                    }
-                }
-            }
-
-            if (!list.Any())
-                throw new ControlNotFoundException(
-                    Logging.ControlNotFoundException(searchCriteria.Identifiers));
-
-            searchCriteria.Duration = (DateTime.Now - start).TotalSeconds;
-
-            return list;
-        }
 
         public Control FindControl(By searchCriteria, int index = 0)
         {
             List<AutomationElement> elements = Find(AutomationElement, searchCriteria, index);
 
-            Control returnControl = new Control(elements.ElementAt(index))
+            var returnControl = new Control(elements.ElementAt(index))
             {
-                Identifiers = searchCriteria.Identifiers
+                Identifiers = searchCriteria.Identifiers,
+                Window = this
             };
 
             Logging.ControlFound(searchCriteria);
@@ -299,10 +252,50 @@ namespace WhiteSharp
         {
             return Find(AutomationElement, searchCriteria, 0);
         }
-        
+
+        private void RefreshBaseList(AutomationElement automationElement)
+        {
+            BaseAutomationElementList = automationElement
+                .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
+                .OfType<AutomationElement>().ToList();
+        }
+
+        internal List<AutomationElement> Find(AutomationElement automationElement, By searchCriteria, int index)
+        {
+            DateTime start = DateTime.Now;
+
+            var list = new List<AutomationElement>();
+            AutomationElement element = null;
+
+            while ((!list.Any() || element == null) &&
+                   (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
+            {
+                try
+                {
+                    list = BaseAutomationElementList.FindAll(searchCriteria.Result);
+                    element = list.ElementAt(index);
+                }
+                catch (Exception)
+                {
+                    RefreshBaseList(IsOffScreen 
+                        ? new Window(Title).AutomationElement 
+                        : AutomationElement);
+                }
+            }
+
+            if (element == null)
+                throw new ControlNotFoundException(
+                    Logging.ControlNotFoundException(searchCriteria.Identifiers));
+
+            searchCriteria.Duration = (DateTime.Now - start).TotalSeconds;
+
+            return list;
+        }
+
         #endregion
 
         #region Exists
+
         public bool Exists(By searchCriteria)
         {
             DateTime start = DateTime.Now;
@@ -311,18 +304,14 @@ namespace WhiteSharp
             {
                 try
                 {
-                    if (_contentChanged)
-                    {
-                        RefreshBaseList(AutomationElement);
-                        _contentChanged = false;
-                    }
+                    RefreshBaseList(AutomationElement);
+
                     List<AutomationElement> elements = BaseAutomationElementList.FindAll(searchCriteria.Result);
                     if (elements.Count > 0)
                     {
                         return true;
                     }
                     return false;
-
                 }
                 catch (Exception)
                 {
@@ -345,11 +334,8 @@ namespace WhiteSharp
             {
                 try
                 {
-                    if (_contentChanged)
-                    {
-                        RefreshBaseList(AutomationElement);
-                        _contentChanged = false;
-                    }
+                    RefreshBaseList(AutomationElement);
+
                     List<AutomationElement> elements = BaseAutomationElementList.FindAll(searchCriteria.Result);
                     if (elements.Count > 0)
                     {
@@ -367,7 +353,8 @@ namespace WhiteSharp
         public bool Exists(string automationId, out object o)
         {
             return Exists(By.AutomationId(automationId), out o);
-        }  
+        }
+
         #endregion
 
         #region Actions
@@ -377,13 +364,6 @@ namespace WhiteSharp
             Keyboard.Instance.Send(key);
         }
 
-        public void Close()
-        {
-            WindowPattern.Close();
-            Logging.WindowClosed(Title);
-            Automation.RemoveAllEventHandlers();
-        }
-
         public Control ClickIfExists(By searchCriteria)
         {
             Control control = null;
@@ -391,7 +371,7 @@ namespace WhiteSharp
 
             if (Exists(searchCriteria, out o))
             {
-                control = new Control((AutomationElement)o);
+                control = new Control((AutomationElement) o);
                 control.Click();
             }
 
@@ -402,6 +382,13 @@ namespace WhiteSharp
         {
             return ClickIfExists(By.AutomationId(automationId));
         }
+
+        public void Close()
+        {
+            WindowPattern.Close();
+            Logging.WindowClosed(Title);
+        }
+
         #endregion
     }
 }

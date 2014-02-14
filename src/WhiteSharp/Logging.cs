@@ -8,7 +8,8 @@ namespace WhiteSharp
     public class Logging
     {
         #region Strings
-        public readonly static Dictionary<string, string> Strings = new Dictionary<string, string>();
+
+        public static readonly Dictionary<string, string> Strings = new Dictionary<string, string>();
 
         private static readonly Dictionary<string, string> StringsRu = new Dictionary<string, string>
         {
@@ -62,7 +63,8 @@ namespace WhiteSharp
             {"NotACombobox", "Control \"{0}\" is not a combobox"},
             {"NotARadioButton", "Control {0} is noy a radio button"},
             {"UnsupportedPattern", "Control {0} doesn't support {1} pattern"}
-        }; 
+        };
+
         #endregion
 
         #region Constructor
@@ -73,10 +75,12 @@ namespace WhiteSharp
                 Strings = new Dictionary<string, string>(StringsEn);
             if (Settings.Default.Language.Equals("Ru"))
                 Strings = new Dictionary<string, string>(StringsRu);
-        } 
+        }
+
         #endregion
 
         #region Tags
+
         private const string StartOpenTag =
             "\r\n\r\n------------------------------------------------------------------------------------------";
 
@@ -92,7 +96,8 @@ namespace WhiteSharp
 
         private class Tag
         {
-            private string _tag;
+            private readonly string _tag;
+
             public Tag(string tag)
             {
                 _tag = string.Format("[{0} - {1}] ", DateTime.Now.TimeOfDay.ToString(@"hh\:mm\:ss"), tag);
@@ -103,9 +108,11 @@ namespace WhiteSharp
                 return _tag;
             }
         }
+
         #endregion
 
         #region Private Members
+
         private static void Write(string msg, bool writeToStdOut = true)
         {
             if (writeToStdOut)
@@ -115,10 +122,12 @@ namespace WhiteSharp
             }
             else
                 Trace.WriteLine(msg);
-        } 
+        }
+
         #endregion
 
         #region Public Members
+
         public static void Start(string msg)
         {
             Write(StartOpenTag);
@@ -230,9 +239,10 @@ namespace WhiteSharp
 
         public static string Exception(Exception e)
         {
-            Write(new Tag(ExceptionTag) + e.Message + "\n" + e.StackTrace);
+            Write(new Tag(ExceptionTag) + e.Message + "\n" + e.StackTrace, false);
             return e.Message;
-        } 
+        }
+
         #endregion
     }
 }
