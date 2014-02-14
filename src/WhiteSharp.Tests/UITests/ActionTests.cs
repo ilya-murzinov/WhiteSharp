@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.Windows.Automation;
+using NUnit.Framework;
+using Shouldly;
 using WhiteSharp.Tests.ScreenObjects;
 
 namespace WhiteSharp.Tests.UITests
@@ -11,9 +13,9 @@ namespace WhiteSharp.Tests.UITests
         [TestCase("DataBoundComboBox", "Test5")]
         public void SelectItemTest(string id, string item)
         {
-            var control = MainWindow.Instance.Window.FindControl(id);
+            Control control = MainWindow.Instance.Window.FindControl(id);
             control.SelectItem(item);
-            AssertThat.AreEqual(control, item, control.GetText());
+            control.GetText().ShouldBe(item);
         }
 
         [TestCase("AComboBox", 2, "Test3")]
@@ -21,9 +23,44 @@ namespace WhiteSharp.Tests.UITests
         [TestCase("DataBoundComboBox", 2, "Test3")]
         public void SelectItemTest(string id, int item, string result)
         {
-            var control = MainWindow.Instance.Window.FindControl(id);
+            Control control = MainWindow.Instance.Window.FindControl(id);
             control.SelectItem(item);
-            AssertThat.AreEqual(control, result, control.GetText());
+            control.GetText().ShouldBe(result);
+        }
+
+        [TestCase]
+        public void ClickChangeItemsButtonTest()
+        {
+            Window window = MainWindow.Instance.Window;
+            Control listItems = window.FindControl("ListBoxWpf");
+            listItems.FindControl(By.Name("Spielberg"));
+            Control button = window.FindControl("ChangeListItems");
+            button.Click();
+            listItems.FindControl(By.Name("Jackson"));
+        }
+
+        [Test]
+        public void ScrollTest()
+        {
+            MainWindow.Instance
+                .OpenListViewWindow()
+                .ScrollVScrollList(ScrollAmount.LargeIncrement)
+                .ScrollHScrollList(ScrollAmount.LargeIncrement)
+                .ScrollVScrollList(ScrollAmount.SmallIncrement)
+                .ScrollHScrollList(ScrollAmount.SmallIncrement)
+                .ScrollVScrollList(ScrollAmount.LargeDecrement)
+                .ScrollHScrollList(ScrollAmount.LargeDecrement)
+                .ScrollVScrollList(ScrollAmount.SmallDecrement)
+                .ScrollHScrollList(ScrollAmount.SmallDecrement)
+                .Close();
+        }
+
+        [Test]
+        public void MessageBoxTest()
+        {
+            MainWindow.Instance
+                .OpenMessageBox()
+                .CloseMessageBox();
         }
     }
 }

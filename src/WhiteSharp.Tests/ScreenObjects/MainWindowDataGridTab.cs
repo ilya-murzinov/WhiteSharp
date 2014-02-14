@@ -1,17 +1,15 @@
 ﻿namespace WhiteSharp.Tests.ScreenObjects
 {
-    class MainWindowDataGridTab : MainWindow
+    internal class MainWindowDataGridTab : MainWindow
     {
-        public Window Window;
+        private static MainWindowDataGridTab _instance;
 
         protected MainWindowDataGridTab()
         {
             Window = new Window(Title);
         }
 
-        private static MainWindowDataGridTab _instance;
-
-        public static new MainWindowDataGridTab Instance
+        public new static MainWindowDataGridTab Instance
         {
             get { return (_instance = new MainWindowDataGridTab()); }
         }

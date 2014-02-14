@@ -1,17 +1,15 @@
 ﻿namespace WhiteSharp.Tests.ScreenObjects
 {
-    class MainWindowListControlsTab : MainWindow
+    internal class MainWindowListControlsTab : MainWindow
     {
-        public Window Window;
+        private static MainWindowListControlsTab _instance;
 
         protected MainWindowListControlsTab()
         {
             Window = new Window(Title);
         }
 
-        private static MainWindowListControlsTab _instance;
-
-        public static new MainWindowListControlsTab Instance
+        public new static MainWindowListControlsTab Instance
         {
             get { return (_instance = new MainWindowListControlsTab()); }
         }

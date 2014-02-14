@@ -39,16 +39,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq">
+      <HintPath>..\..\Libs\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\..\Libs\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Shouldly">
+      <HintPath>..\..\Libs\Shouldly.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="TestStack.White">
-      <HintPath>..\..\lib\TestStack.White.dll</HintPath>
+      <HintPath>..\..\Libs\TestStack.White.dll</HintPath>
     </Reference>
     <Reference Include="UIAutomationClient" />
     <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -63,6 +70,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ScreenObjects\ListViewWindow.cs" />
     <Compile Include="ScreenObjects\MainWindow.cs" />
     <Compile Include="ScreenObjects\MainWindowDataGridTab.cs" />
     <Compile Include="ScreenObjects\MainWindowListControlsTab.cs" />
@@ -70,6 +78,9 @@
     <Compile Include="UITests\FinderTests.cs" />
     <Compile Include="TestBaseNUnit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UITests\RunTests.bat" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WhiteSharp\WhiteSharp.csproj">

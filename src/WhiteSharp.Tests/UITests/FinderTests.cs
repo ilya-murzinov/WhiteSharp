@@ -1,5 +1,6 @@
 ﻿using System.Windows.Automation;
 using NUnit.Framework;
+using Shouldly;
 using WhiteSharp.Tests.ScreenObjects;
 
 namespace WhiteSharp.Tests.UITests
@@ -41,12 +42,6 @@ namespace WhiteSharp.Tests.UITests
         public void FindControlByAutomaionIdString(string id)
         {
             MainWindow.Instance.Window.FindControl(id);
-        }
-
-        [Test]
-        public void FindControlByControlTypeType()
-        {
-            MainWindow.Instance.Window.FindControl(ControlType.Edit);
         }
 
         [TestCase("Input Controls")]
@@ -104,22 +99,30 @@ namespace WhiteSharp.Tests.UITests
         [TestCase(2, 0, "Simple item 1")]
         public void FindGridCell(int i, int j, string result)
         {
-            var c = MainWindowListControlsTab.Instance.OpenDataGrid().Window.FindControl(By.GridCell(i, j));
-            AssertThat.AreEqual(c, c.GetText(), result);
+            Control c = MainWindowListControlsTab.Instance.OpenDataGrid().Window.FindControl(By.GridCell(i, j));
+            c.GetText().ShouldBe(result);
         }
 
         [TestCase("ControlsTab", "ListControlsTab", "ListControls", "ListBoxWpf", "ListBoxItem")]
         public void FindControlMultiple(string id1, string id2, string id3, string id4, string id5)
         {
-            MainWindow.Instance.Window.FindControl(By.AutomationId(id1)).FindControl(By.AutomationId(id2)).FindControl(By.AutomationId(id3))
+            MainWindow.Instance.Window.FindControl(By.AutomationId(id1))
+                .FindControl(By.AutomationId(id2))
+                .FindControl(By.AutomationId(id3))
                 .FindControl(By.AutomationId(id4)).FindControl(By.ClassName(id5));
+        }
+
+        [Test]
+        public void FindControlByControlTypeType()
+        {
+            MainWindow.Instance.Window.FindControl(ControlType.Edit);
         }
     }
 
     [TestFixture]
     public class FinderNegativeTests : TestBaseNUnit
     {
-        [TestCase("лоукггкгаг"), ExpectedException(typeof(WindowNotFoundException))]
+        [TestCase("лоукггкгаг"), ExpectedException(typeof (WindowNotFoundException))]
         [TestCase("MAIN")]
         [TestCase("wIndow")]
         [TestCase("MainWindows")]
@@ -129,7 +132,7 @@ namespace WhiteSharp.Tests.UITests
             new Window(title);
         }
 
-        [TestCase("TextBlock", 1), ExpectedException(typeof(ControlNotFoundException))]
+        [TestCase("TextBlock", 1), ExpectedException(typeof (ControlNotFoundException))]
         [TestCase("ComboBox", 2)]
         [TestCase("TabItem", 1)]
         [TestCase("TabItem", 1)]
@@ -139,7 +142,7 @@ namespace WhiteSharp.Tests.UITests
             MainWindow.Instance.Window.FindControl(By.AutomationId(id));
         }
 
-        [TestCase("AComboBox"), ExpectedException(typeof(ControlNotFoundException))]
+        [TestCase("AComboBox"), ExpectedException(typeof (ControlNotFoundException))]
         [TestCase("EditableComboBox")]
         [TestCase("OpenHorizontalSplitterButton")]
         [TestCase("ListBoxWithVScrollBar")]
@@ -148,6 +151,5 @@ namespace WhiteSharp.Tests.UITests
         {
             MainWindow.Instance.Window.FindControl(By.Name(id));
         }
-
     }
 }
