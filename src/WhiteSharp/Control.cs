@@ -431,7 +431,7 @@ namespace WhiteSharp
 
         public Control DrawHighlight()
         {
-            AutomationElement.DrawHighlight();
+            new Thread(() => AutomationElement.DrawHighlight()).Start();
             return this;
         }
 
