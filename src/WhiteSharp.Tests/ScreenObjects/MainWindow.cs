@@ -1,16 +1,22 @@
-﻿namespace WhiteSharp.Tests.ScreenObjects
+﻿using WhiteSharp.Attributes;
+using WhiteSharp.Factories;
+
+namespace WhiteSharp.Tests.ScreenObjects
 {
     internal class MainWindow : ScreenObject
     {
         private static MainWindow _instance;
-        private readonly Control _listViewButton;
+        
         protected string Title = "MainWindow";
         private Window _window;
+
+        [FindsBy(Using = "OpenListView")]
+        private readonly Control _listViewButton;
 
         protected MainWindow()
         {
             _window = new Window(Title);
-            _listViewButton = _window.FindControl("OpenListView");
+            ScreenFactory.InitControls(this);
         }
 
         public Window Window

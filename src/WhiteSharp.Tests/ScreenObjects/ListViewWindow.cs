@@ -1,19 +1,24 @@
 ﻿using System.Windows.Automation;
+using WhiteSharp.Attributes;
+using WhiteSharp.Factories;
 
 namespace WhiteSharp.Tests.ScreenObjects
 {
     internal class ListViewWindow : ScreenObject
     {
         private static ListViewWindow _instance;
-        private readonly Control _hScrollList;
-        private readonly Control _vScrollList;
         private readonly Window _window;
+
+        [FindsBy(Using = "ListViewWithHorizontalScroll")]
+        private readonly Control _hScrollList;
+
+        [FindsBy(Using = "ListView")]
+        private readonly Control _vScrollList;
 
         private ListViewWindow()
         {
             _window = new Window("ListViewWindow");
-            _vScrollList = _window.FindControl("ListView");
-            _hScrollList = _window.FindControl("ListViewWithHorizontalScroll");
+            ScreenFactory.InitControls(this);
         }
 
         public static ListViewWindow Instance

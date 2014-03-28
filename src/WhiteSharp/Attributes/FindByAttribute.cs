@@ -13,7 +13,7 @@ namespace WhiteSharp.Attributes
 
         internal By Finder
         {
-            get { return _finder ?? (_finder = By.Create(How, Using)); }
+            get { return _finder = By.Create(How, Using); }
             set { _finder = value; }
         }
     }

@@ -8,7 +8,7 @@ namespace WhiteSharp.Factories
     public class ScreenFactory
     {
         private static Window _window;
-        private static By _by = new By();
+        private static By _by;
 
         public static void InitControls<T>(T screen) where T : ScreenObject
         {
@@ -21,6 +21,18 @@ namespace WhiteSharp.Factories
                 }
             });
 
+            if (_window == null && screen.GetType().BaseType != null)
+            {
+                fields = screen.GetType().BaseType.GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
+                fields.ForEach(field =>
+                {
+                    if (field.FieldType == typeof(Window))
+                    {
+                        _window = (Window)field.GetValue(screen);
+                    }
+                });
+            }
+
             if (_window == null)
             {
                 throw new Exception("Window was not found in the screen object.");
@@ -28,6 +40,7 @@ namespace WhiteSharp.Factories
 
             fields.ForEach(field =>
             {
+                _by = new By();
                 field.GetCustomAttributes().ForEach(attr =>
                 {
                     if (attr is FindsByAttribute)

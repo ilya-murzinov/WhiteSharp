@@ -71,11 +71,7 @@
     <Compile Include="UITests\FinderTests.cs" />
     <Compile Include="TestBaseNUnit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AttributesTest.cs" />
     <Compile Include="ScreenObjectsTest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="UITests\RunTests.bat" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WhiteSharp\WhiteSharp.csproj">
