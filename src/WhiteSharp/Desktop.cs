@@ -4,7 +4,7 @@ using System.Windows.Automation;
 
 namespace WhiteSharp
 {
-    internal class Desktop
+    public class Desktop
     {
         private static Desktop _instance;
 

@@ -2,21 +2,16 @@
 using System.Diagnostics;
 using NUnit.Framework;
 using TestStack.White;
-using WhiteSharp.Tests.ScreenObjects;
 
 namespace WhiteSharp.Tests
 {
     /// <summary>
-    /// This class sets up test enviroment.
-    /// It runs test application and takes screenshot after every failed test.
+    ///     This class sets up test enviroment.
+    ///     It runs test application and takes screenshot after every failed test.
     /// </summary>
     [TestFixture(Ignore = true)]
     public class TestBaseNUnit
     {
-        public static string Path = @"..\..\..\..\\TestApps\\WpfTestApplication.exe";
-        public static string ResultsPath = "\\Results";
-        private readonly Process _proc = Process.Start(Path);
-
         [SetUp]
         public void Start()
         {
@@ -26,20 +21,33 @@ namespace WhiteSharp.Tests
         [TearDown]
         public void Stop()
         {
-            if (TestContext.CurrentContext.Result.Status == TestStatus.Failed)
-            {
-                string name = TestContext.CurrentContext.Test.Name;
-                new ScreenCapture().CaptureScreenShot()
-                    .Save(ResultsPath + name.Substring(0, name.IndexOf("(", StringComparison.Ordinal)) + ".bmp");
-            }
+            //if (TestContext.CurrentContext.Result.Status == TestStatus.Failed)
+            //{
+            //    string name = TestContext.CurrentContext.Test.Name;
+            //    new ScreenCapture().CaptureScreenShot()
+            //        .Save(ResultsPath + name.Substring(0, name.IndexOf("(", StringComparison.Ordinal)) + ".bmp");
+            //}
             Logging.Info(TestContext.CurrentContext.Result.Status.ToString().ToUpper() + "!");
         }
+
+        public static string Path = @"..\..\..\..\\Tools\\TestApps\\WpfTestApplication.exe";
+        public static string Path2 = @"..\\Tools\\TestApps\\WpfTestApplication.exe";
+        public static string ResultsPath = "\\Results";
+        private Process _proc;
 
         public TestContext TestContext { get; set; }
 
         [TestFixtureSetUp]
         public void Init()
         {
+            try
+            {
+                _proc = Process.Start(Path);
+            }
+            catch (Exception)
+            {
+                _proc = Process.Start(Path2);
+            }
             Application app = Application.Attach(_proc);
             app.WaitWhileBusy();
             Settings.Default.Timeout = 1000;

@@ -6,12 +6,23 @@ using WhiteSharp.Extensions;
 
 namespace WhiteSharp
 {
+    public enum How
+    {
+        AutomationId,
+        AutomationIdContains,
+        Name,
+        NameContains,
+        ControlType,
+        ControlTypeContains,
+        ClassName
+    }
+
     public class By
     {
         #region Private Fields
 
-        private readonly List<string> _identifiers = new List<string>();
-        private readonly List<Predicate<AutomationElement>> _result = new List<Predicate<AutomationElement>>();
+        private List<string> _identifiers = new List<string>();
+        private List<Predicate<AutomationElement>> _result = new List<Predicate<AutomationElement>>();
 
         #endregion
 
@@ -20,18 +31,50 @@ namespace WhiteSharp
         internal string Identifiers
         {
             get { return _identifiers.Select(x => string.Format("\"{0}\"", x)).Aggregate((x, y) => x + ", " + y); }
+            set { _identifiers = new List<string>() {value}; }
         }
 
         internal double Duration { get; set; }
 
         internal Predicate<AutomationElement> Result
         {
-            get { return _result.Aggregate((x, y) => And(x, y)); }
+            get
+            {
+                if (_result.Any())
+                {
+                    return _result.Aggregate((x, y) => And(x, y));
+                }
+                return null;
+            }
+            private set { _result = new List<Predicate<AutomationElement>> {value}; }
         }
 
         #endregion
 
         #region Static Methods
+
+        public static By Create(How how, object with)
+        {
+            switch (how)
+            {
+                case How.AutomationId:
+                    return AutomationId((String) with);
+                case How.AutomationIdContains:
+                    return AutomationIdContains((String) with);
+                case How.ClassName:
+                    return ClassName((String) with);
+                case How.Name:
+                    return Name((String) with);
+                case How.NameContains:
+                    return NameContains((String) with);
+                case How.ControlType:
+                    return ControlType((ControlType) with);
+                case How.ControlTypeContains:
+                    return ControlType((ControlType)with);
+
+            }
+            return null;
+        }
 
         public static By AutomationId(string automationId)
         {
@@ -118,6 +161,20 @@ namespace WhiteSharp
         #endregion
 
         #region Non-static Methods
+
+        public void Add(By by)
+        {
+            if (Result == null)
+            {
+                Result = by.Result;
+                Identifiers = by.Identifiers;
+            }   
+            else
+            {
+                Result = And(Result, by.Result);
+                _identifiers.Add(by.Identifiers);
+            }
+        }
 
         public By AndAutomationId(string automationId)
         {
