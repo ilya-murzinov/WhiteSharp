@@ -10,7 +10,6 @@ using TestStack.White.UIItems.Actions;
 using WhiteSharp.Extensions;
 using WhiteSharp.Interfaces;
 using ComboBox = TestStack.White.UIItems.ListBoxItems.ComboBox;
-using Point = System.Windows.Point;
 
 namespace WhiteSharp
 {
@@ -18,7 +17,7 @@ namespace WhiteSharp
     {
         #region Private Fields
 
-        private AutomationElement _automationElement; 
+        private AutomationElement _automationElement;
 
         #endregion
 
@@ -36,6 +35,11 @@ namespace WhiteSharp
         public Rect BoundingRectangle
         {
             get { return AutomationElement.Current.BoundingRectangle; }
+        }
+
+        internal string Id
+        {
+            get { return AutomationElement.GetId(); }
         }
 
         public AutomationElement AutomationElement
@@ -59,14 +63,6 @@ namespace WhiteSharp
         public string Name
         {
             get { return AutomationElement.Current.Name; }
-        }
-
-        internal string Id
-        {
-            get
-            {
-                return AutomationElement.GetId();
-            }
         }
 
         #endregion
@@ -99,7 +95,7 @@ namespace WhiteSharp
             AutomationElement element = null;
 
             while ((!list.Any() || element == null) &&
-                    (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
+                   (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
             {
                 try
                 {
@@ -370,28 +366,6 @@ namespace WhiteSharp
             }
         }
 
-        public Control ScrollVertical(ScrollAmount scrollAmount)
-        {
-            object o;
-            if (AutomationElement.TryGetCurrentPattern(ScrollPattern.Pattern, out o))
-            {
-                var scrollPattern = (ScrollPattern) o;
-                scrollPattern.ScrollVertical(scrollAmount);
-            }
-            return this;
-        }
-
-        public Control ScrollHorizontal(ScrollAmount scrollAmount)
-        {
-            object o;
-            if (AutomationElement.TryGetCurrentPattern(ScrollPattern.Pattern, out o))
-            {
-                var scrollPattern = (ScrollPattern)o;
-                scrollPattern.ScrollHorizontal(scrollAmount);
-            }
-            return this;
-        }
-
         public Control WaitForEnabled()
         {
             DateTime start = DateTime.Now;
@@ -432,6 +406,28 @@ namespace WhiteSharp
         public Control DrawHighlight()
         {
             AutomationElement.DrawHighlight();
+            return this;
+        }
+
+        public Control ScrollVertical(ScrollAmount scrollAmount)
+        {
+            object o;
+            if (AutomationElement.TryGetCurrentPattern(ScrollPattern.Pattern, out o))
+            {
+                var scrollPattern = (ScrollPattern) o;
+                scrollPattern.ScrollVertical(scrollAmount);
+            }
+            return this;
+        }
+
+        public Control ScrollHorizontal(ScrollAmount scrollAmount)
+        {
+            object o;
+            if (AutomationElement.TryGetCurrentPattern(ScrollPattern.Pattern, out o))
+            {
+                var scrollPattern = (ScrollPattern) o;
+                scrollPattern.ScrollHorizontal(scrollAmount);
+            }
             return this;
         }
 

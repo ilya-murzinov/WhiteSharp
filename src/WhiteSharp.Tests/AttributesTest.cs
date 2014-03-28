@@ -5,13 +5,14 @@ using WhiteSharp.Factories;
 namespace WhiteSharp.Tests
 {
     [TestClass]
-    public class AttributesTest
+    public class AttributesTest : ScreenObject
     {
+        [FindsBy(Using = "navigationCommandButton_2130", How = How.AutomationId)] [FindsBy(How = How.ControlType, Using = "ControlType.Button")] [FindsBy(How = How.ControlType, Using = "Button")] private Control _control;
         private Window _window = new Window("Катарсис");
 
-        [FindsBy(Using = "navigationCommandButton_2130", How = How.AutomationId)]
-        [FindsBy(How = How.ClassName, Using = "Button")]
-        private Control _control;
+        private AttributesTest()
+        {
+        }
 
         [TestMethod]
         public void TestMethod1()

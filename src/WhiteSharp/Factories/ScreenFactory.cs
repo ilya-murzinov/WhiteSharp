@@ -10,7 +10,7 @@ namespace WhiteSharp.Factories
         private static Window _window;
         private static By _by = new By();
 
-        public static void InitControls(object screen)
+        public static void InitControls<T>(T screen) where T : ScreenObject
         {
             FieldInfo[] fields = screen.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
             fields.ForEach(field =>
@@ -32,7 +32,7 @@ namespace WhiteSharp.Factories
                 {
                     if (attr is FindsByAttribute)
                     {
-                        FindsByAttribute findsByAttribute = (FindsByAttribute) attr;
+                        var findsByAttribute = (FindsByAttribute) attr;
                         if (_by.Result == null)
                         {
                             _by = findsByAttribute.Finder;

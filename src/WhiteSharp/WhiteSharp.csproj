@@ -74,6 +74,7 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="Extensions\AutomationElementExtension.cs" />
     <Compile Include="By.cs" />
+    <Compile Include="Extensions\ControlTypeExtensions.cs" />
     <Compile Include="Extensions\ShouldlyExtensions.cs" />
     <Compile Include="Factories\ScreenFactory.cs" />
     <Compile Include="Interfaces\IControl.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Keyboard.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="NativeMethods.cs" />
+    <Compile Include="ScreenObject.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Settings.Designer.cs">
       <AutoGen>True</AutoGen>

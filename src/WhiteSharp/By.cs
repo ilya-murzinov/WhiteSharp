@@ -31,7 +31,7 @@ namespace WhiteSharp
         internal string Identifiers
         {
             get { return _identifiers.Select(x => string.Format("\"{0}\"", x)).Aggregate((x, y) => x + ", " + y); }
-            set { _identifiers = new List<string>() {value}; }
+            set { _identifiers = new List<string> {value}; }
         }
 
         internal double Duration { get; set; }
@@ -53,25 +53,22 @@ namespace WhiteSharp
 
         #region Static Methods
 
-        public static By Create(How how, object with)
+        public static By Create(How how, String with)
         {
             switch (how)
             {
                 case How.AutomationId:
-                    return AutomationId((String) with);
+                    return AutomationId(with);
                 case How.AutomationIdContains:
-                    return AutomationIdContains((String) with);
+                    return AutomationIdContains(with);
                 case How.ClassName:
-                    return ClassName((String) with);
+                    return ClassName(with);
                 case How.Name:
-                    return Name((String) with);
+                    return Name(with);
                 case How.NameContains:
-                    return NameContains((String) with);
+                    return NameContains(with);
                 case How.ControlType:
-                    return ControlType((ControlType) with);
-                case How.ControlTypeContains:
-                    return ControlType((ControlType)with);
-
+                    return ControlType(ControlTypeExtensions.FromString(with));
             }
             return null;
         }
@@ -168,7 +165,7 @@ namespace WhiteSharp
             {
                 Result = by.Result;
                 Identifiers = by.Identifiers;
-            }   
+            }
             else
             {
                 Result = And(Result, by.Result);

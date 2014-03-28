@@ -24,17 +24,6 @@ namespace WhiteSharp
 
         #region Properties
 
-        public AutomationElement AutomationElement
-        {
-            get
-            {
-                return (!_automationElement.IsOffScreen())
-                    ? _automationElement
-                    : new Window(Title).AutomationElement;
-            }
-            protected set { _automationElement = value; }
-        }
-
         internal WindowPattern WindowPattern
         {
             get
@@ -55,11 +44,22 @@ namespace WhiteSharp
         {
             get { return _automationElement.IsOffScreen(); }
         }
-        
+
+        public AutomationElement AutomationElement
+        {
+            get
+            {
+                return (!_automationElement.IsOffScreen())
+                    ? _automationElement
+                    : new Window(Title).AutomationElement;
+            }
+            protected set { _automationElement = value; }
+        }
+
         public List<AutomationElement> BaseAutomationElementList { get; protected set; }
-        
+
         public int ProcessId { get; private set; }
-        
+
         public string Title { get; private set; }
 
         public WindowVisualState DisplayState
@@ -277,8 +277,8 @@ namespace WhiteSharp
                 }
                 catch (Exception)
                 {
-                    RefreshBaseList(IsOffScreen 
-                        ? new Window(Title).AutomationElement 
+                    RefreshBaseList(IsOffScreen
+                        ? new Window(Title).AutomationElement
                         : AutomationElement);
                 }
             }

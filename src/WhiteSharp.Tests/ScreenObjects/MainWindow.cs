@@ -1,16 +1,22 @@
 ﻿namespace WhiteSharp.Tests.ScreenObjects
 {
-    internal class MainWindow
+    internal class MainWindow : ScreenObject
     {
         private static MainWindow _instance;
-        protected string Title = "MainWindow";
         private readonly Control _listViewButton;
-        public Window Window;
-        
+        protected string Title = "MainWindow";
+        private Window _window;
+
         protected MainWindow()
         {
-            Window = new Window(Title);
-            _listViewButton = Window.FindControl("OpenListView");
+            _window = new Window(Title);
+            _listViewButton = _window.FindControl("OpenListView");
+        }
+
+        public Window Window
+        {
+            get { return _window; }
+            set { _window = value; }
         }
 
         public static MainWindow Instance
@@ -18,22 +24,22 @@
             get { return (_instance = new MainWindow()); }
         }
 
-        
+
         public ListViewWindow OpenListViewWindow()
         {
             _listViewButton.Click();
             return ListViewWindow.Instance;
         }
-        
+
         public MainWindow OpenMessageBox()
         {
-            Window.FindControl("OpenMessageBox").Click();
+            _window.FindControl("OpenMessageBox").Click();
             return this;
         }
 
         public MainWindow CloseMessageBox()
         {
-            Window.FindModalWindow("Test message box").FindControl("2").Click();
+            _window.FindModalWindow("Test message box").FindControl("2").Click();
             return this;
         }
     }

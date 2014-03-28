@@ -40,6 +40,14 @@ namespace WhiteSharp.Tests.UITests
         }
 
         [Test]
+        public void MessageBoxTest()
+        {
+            MainWindow.Instance
+                .OpenMessageBox()
+                .CloseMessageBox();
+        }
+
+        [Test]
         public void ScrollTest()
         {
             MainWindow.Instance
@@ -53,14 +61,6 @@ namespace WhiteSharp.Tests.UITests
                 .ScrollVScrollList(ScrollAmount.SmallDecrement)
                 .ScrollHScrollList(ScrollAmount.SmallDecrement)
                 .Close();
-        }
-
-        [Test]
-        public void MessageBoxTest()
-        {
-            MainWindow.Instance
-                .OpenMessageBox()
-                .CloseMessageBox();
         }
     }
 }

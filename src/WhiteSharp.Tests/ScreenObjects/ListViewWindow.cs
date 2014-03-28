@@ -2,12 +2,12 @@
 
 namespace WhiteSharp.Tests.ScreenObjects
 {
-    class ListViewWindow
+    internal class ListViewWindow : ScreenObject
     {
-        private Window _window;
-
-        private readonly Control _vScrollList;
+        private static ListViewWindow _instance;
         private readonly Control _hScrollList;
+        private readonly Control _vScrollList;
+        private readonly Window _window;
 
         private ListViewWindow()
         {
@@ -15,8 +15,6 @@ namespace WhiteSharp.Tests.ScreenObjects
             _vScrollList = _window.FindControl("ListView");
             _hScrollList = _window.FindControl("ListViewWithHorizontalScroll");
         }
-
-        private static ListViewWindow _instance;
 
         public static ListViewWindow Instance
         {
