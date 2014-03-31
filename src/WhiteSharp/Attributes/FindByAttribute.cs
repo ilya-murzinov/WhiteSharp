@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace WhiteSharp.Attributes
 {
@@ -7,9 +8,22 @@ namespace WhiteSharp.Attributes
     {
         private By _finder;
 
+        [DefaultValue(How.AutomationId)]
         public How How { get; set; }
 
         public string Using { get; set; }
+
+        [DefaultValue(0)]
+        public int Index { get; set; }
+
+        public FindsByAttribute(string id)
+        {
+            Using = id;
+        }
+
+        public FindsByAttribute()
+        {
+        }
 
         internal By Finder
         {

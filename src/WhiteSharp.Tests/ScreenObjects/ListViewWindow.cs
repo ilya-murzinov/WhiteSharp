@@ -4,20 +4,21 @@ using WhiteSharp.Factories;
 
 namespace WhiteSharp.Tests.ScreenObjects
 {
-    internal class ListViewWindow : ScreenObject
+    public class ListViewWindow : ScreenObject
     {
         private static ListViewWindow _instance;
+
+        [Window("ListViewWindow")]
         private readonly Window _window;
 
-        [FindsBy(Using = "ListViewWithHorizontalScroll")]
+        [FindsBy("ListViewWithHorizontalScroll")]
         private readonly Control _hScrollList;
 
-        [FindsBy(Using = "ListView")]
+        [FindsBy("ListView")]
         private readonly Control _vScrollList;
 
         private ListViewWindow()
         {
-            _window = new Window("ListViewWindow");
             ScreenFactory.InitControls(this);
         }
 

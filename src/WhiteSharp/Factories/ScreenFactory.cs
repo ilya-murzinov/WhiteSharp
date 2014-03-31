@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Castle.Core.Internal;
 using WhiteSharp.Attributes;
@@ -7,8 +8,10 @@ namespace WhiteSharp.Factories
 {
     public class ScreenFactory
     {
+        private static String _title;
         private static Window _window;
         private static By _by;
+        private static int _index;
 
         public static void InitControls<T>(T screen) where T : ScreenObject
         {
@@ -17,7 +20,15 @@ namespace WhiteSharp.Factories
             {
                 if (field.FieldType == typeof (Window))
                 {
-                    _window = (Window) field.GetValue(screen);
+                    _title = ((WindowAttribute) field.GetCustomAttributes().First()).Title;
+                    _window = new Window(_title);
+                    try
+                    {
+                        field.SetValue(screen, _window);
+                    }
+                    catch (Exception)
+                    {
+                    }
                 }
             });
 
@@ -28,7 +39,15 @@ namespace WhiteSharp.Factories
                 {
                     if (field.FieldType == typeof(Window))
                     {
-                        _window = (Window)field.GetValue(screen);
+                        _title = ((WindowAttribute)field.GetCustomAttributes().First()).Title;
+                        _window = new Window(_title);
+                        try
+                        {
+                            field.SetValue(screen, _window);
+                        }
+                        catch (Exception)
+                        {
+                        }
                     }
                 });
             }
@@ -46,6 +65,11 @@ namespace WhiteSharp.Factories
                     if (attr is FindsByAttribute)
                     {
                         var findsByAttribute = (FindsByAttribute) attr;
+                        if (findsByAttribute.Index != 0)
+                        {
+                            _index = findsByAttribute.Index;
+                        }
+
                         if (_by.Result == null)
                         {
                             _by = findsByAttribute.Finder;
@@ -54,7 +78,8 @@ namespace WhiteSharp.Factories
                         {
                             _by.Add(findsByAttribute.Finder);
                         }
-                        field.SetValue(screen, _window.FindControl(_by));
+
+                        field.SetValue(screen, _window.FindControl(_by, _index));
                     }
                 });
             });

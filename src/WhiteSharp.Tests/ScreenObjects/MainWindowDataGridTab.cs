@@ -1,6 +1,6 @@
 ﻿namespace WhiteSharp.Tests.ScreenObjects
 {
-    internal class MainWindowDataGridTab : MainWindow
+    public class MainWindowDataGridTab : MainWindow
     {
         private static MainWindowDataGridTab _instance;
 

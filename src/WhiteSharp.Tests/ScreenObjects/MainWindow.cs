@@ -3,11 +3,13 @@ using WhiteSharp.Factories;
 
 namespace WhiteSharp.Tests.ScreenObjects
 {
-    internal class MainWindow : ScreenObject
+    public class MainWindow : ScreenObject
     {
         private static MainWindow _instance;
         
-        protected string Title = "MainWindow";
+        protected const string Title = "MainWindow";
+        
+        [Window(Title)]
         private Window _window;
 
         [FindsBy(Using = "OpenListView")]
@@ -15,7 +17,6 @@ namespace WhiteSharp.Tests.ScreenObjects
 
         protected MainWindow()
         {
-            _window = new Window(Title);
             ScreenFactory.InitControls(this);
         }
 

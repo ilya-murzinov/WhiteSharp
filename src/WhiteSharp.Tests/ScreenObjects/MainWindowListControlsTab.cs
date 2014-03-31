@@ -3,7 +3,7 @@ using WhiteSharp.Factories;
 
 namespace WhiteSharp.Tests.ScreenObjects
 {
-    internal class MainWindowListControlsTab : MainWindow
+    public class MainWindowListControlsTab : MainWindow
     {
         private static MainWindowListControlsTab _instance;
 
