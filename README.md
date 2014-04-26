@@ -5,11 +5,6 @@ This is a library based on [TestStack.White UI automation framework] (https://gi
 
 **This project is under development.**
 
-Docs
-----
-
-View docs [here](http://murz42.viewdocs.io/WhiteSharp)
-
 License
 -------
 
