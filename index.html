@@ -44,14 +44,63 @@
 		  <img src="images/mainwindowtab2.png"/>
 		  For example we will take a simple scenario:
 		  <ul>
-			<li>open the test application</li>
+			<li>Open the test application</li>
 		    <li>Select something from combobox</li>
 			<li>Select couple of checkboxes</li>
-			<li>Got to tab 2</li>
+			<li>Go to tab 2</li>
 			<li>Input some text in textbox</li>
 			<li>Select a radiobutton</li>
 		  </ul>
-        </p>
+		  To make the code reusable we will use <b>ScreenObjects</b> pattern.</br>
+		  We will wrap every window with controls into objects and use it's methods to interact with controls from the test.
+		  Screen object will look like this:
+		  <pre><code>
+public class MainWindowTab1
+{
+  private static MainWindowTab1 _instance;
+
+  private Window _window;
+  private Control _combobox;
+	
+  private MainWindowTab1()
+  {
+  	_window = new Window("MainWindow");
+	_combobox = _window.FindControl("AComboBox");
+  }
+
+  public static MainWindowTab1 Instance
+  {
+	get { return _instance ?? 
+	  (_instance = new MainWindowTab1()); }
+  }
+  
+  public MainWindowTab1 SelectItemFromCombobox(string item)
+  {
+    _combobox.SelectItem(item);
+	return this;
+  }
+}
+		  </code></pre>
+		And resulting test is pretty simple:
+		<pre><code>
+[Test]
+public void SampleTest()
+{
+  MainWindowTab1.Instance
+	//Tab 1
+	.SelectItemFromCombobox("Test4")
+	.SetItem1CheckboxState(ToggleState.On)
+	.SetItem2CheckboxState(ToggleState.On)
+	.SetItem1CheckboxState(ToggleState.Off)
+	.OpenSecondTab()
+	//Tab 2
+	.SetTextToMultilineTextbox("some text")
+	.SelectRadiobuttonState();
+}
+		</code></pre>
+		You can seen full code in <b>SampleTests</b> project inside the solution or
+		<a href="https://github.com/ilya-murzinov/WhiteSharp/tree/master/src/SampleTests">here</a>.
+		</p>
       </section>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
