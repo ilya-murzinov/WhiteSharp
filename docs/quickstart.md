@@ -12,7 +12,7 @@ Let's examine each step.
 -------------------
 The simpliest way is to find a window by it's title. To do this, simply type
 ```csharp
-string window = new Window("some title");
+Window window = new Window("some title");
 ```
 There are another ways to find a window, for example, by **ProcessId** or even **Predicate\<AutomationElement\>**.
 
