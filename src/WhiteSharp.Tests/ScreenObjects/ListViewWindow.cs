@@ -11,10 +11,10 @@ namespace WhiteSharp.Tests.ScreenObjects
         [Window("ListViewWindow")]
         private readonly Window _window;
 
-        [FindsBy("ListViewWithHorizontalScroll")]
+        [FindBy("ListViewWithHorizontalScroll")]
         private readonly Control _hScrollList;
 
-        [FindsBy("ListView")]
+        [FindBy("ListView")]
         private readonly Control _vScrollList;
 
         private ListViewWindow()

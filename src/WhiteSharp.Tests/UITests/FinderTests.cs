@@ -18,8 +18,8 @@ namespace WhiteSharp.Tests.UITests
             new Window(title);
         }
 
-        [TestCase("M", "a", "Win", "d", "in", "ndow")]
-        public void GetWindowMultiplePositiveTest(params string[] titles)
+        [TestCase(@"M(a|d)\w{1,}")]
+        public void GetWindowMultiplePositiveTest(string titles)
         {
             new Window(titles);
         }

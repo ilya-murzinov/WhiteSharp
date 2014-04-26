@@ -10,6 +10,7 @@ using TestStack.White.UIItems.Actions;
 using WhiteSharp.Extensions;
 using WhiteSharp.Interfaces;
 using ComboBox = TestStack.White.UIItems.ListBoxItems.ComboBox;
+using Point = System.Windows.Point;
 
 namespace WhiteSharp
 {
@@ -25,7 +26,13 @@ namespace WhiteSharp
 
         public List<AutomationElement> BaseAutomationElementList { get; protected set; }
 
-        public Window Window { get; internal set; }
+        internal Window Window { get; set; }
+
+        public String WindowTitle { get; internal set; }
+
+        internal By SearchCriteria { get; set; }
+
+        internal int Index { get; set; }
 
         public bool IsOffScreen
         {
@@ -47,13 +54,12 @@ namespace WhiteSharp
             get
             {
                 if (!IsOffScreen) return _automationElement;
-                //TODO: think of workaround for this
-                throw new GeneralException("Oops, AutomationElement is off screen, can't access is!");
+                Window = new Window(WindowTitle);
+                return _automationElement = 
+                    Window.FindControl(SearchCriteria, Index).AutomationElement;
             }
             set { _automationElement = value; }
         }
-
-        public string Identifiers { get; internal set; }
 
         public bool Enabled
         {
@@ -123,8 +129,9 @@ namespace WhiteSharp
 
             var returnControl = new Control(elements.ElementAt(index))
             {
-                Identifiers = searchCriteria.Identifiers,
-                Window = Window
+                SearchCriteria = searchCriteria,
+                Index = index,
+                WindowTitle = WindowTitle
             };
 
             Logging.ControlFound(searchCriteria);
@@ -222,7 +229,7 @@ namespace WhiteSharp
             {
                 do
                 {
-                    var point = new Point();
+                    Point? point = null;
                     try
                     {
                         point = AutomationElement.GetClickablePoint();
@@ -231,8 +238,10 @@ namespace WhiteSharp
                     {
                         Window.OnTop();
                     }
-                    if (point != new Point())
-                        Mouse.Instance.Click(point);
+                    if (point != null)
+                    {
+                        Mouse.Instance.Click(new Point(point.Value.X, point.Value.Y));
+                    }
 
                     Thread.Sleep(Settings.Default.Delay);
                 } while (!AutomationElement.Current.HasKeyboardFocus
@@ -240,7 +249,13 @@ namespace WhiteSharp
             }
             else
                 Mouse.Instance.Click(AutomationElement.GetClickablePoint());
-            Logging.Click(Identifiers);
+            Logging.Click(SearchCriteria.Identifiers);
+            return this;
+        }
+
+        public Control ClickAnyway(int x, int y)
+        {
+            Mouse.Instance.Click(new Point(x, y));
             return this;
         }
 
@@ -248,6 +263,20 @@ namespace WhiteSharp
         {
             WaitForEnabled();
             return ClickAnyway();
+        }
+
+        public Control ClickRightEdge()
+        {
+            WaitForEnabled();
+            Rect r = AutomationElement.Current.BoundingRectangle;
+            return ClickAnyway((int) (r.X + r.Width - 1), (int) (r.Y + r.Height/2));
+        }
+
+        public Control ClickLeftEdge()
+        {
+            WaitForEnabled();
+            Rect r = AutomationElement.Current.BoundingRectangle;
+            return ClickAnyway((int)(r.X + 1), (int)(r.Y + r.Height/2));
         }
 
         public Control DoubleClick()
@@ -268,7 +297,7 @@ namespace WhiteSharp
                 }
             }
             else
-                throw new GeneralException(string.Format(Logging.Strings["UnsupportedPattern"], Identifiers,
+                throw new GeneralException(string.Format(Logging.Strings["UnsupportedPattern"], SearchCriteria.Identifiers,
                     "Value Pattern"));
 
             return this;
@@ -276,6 +305,9 @@ namespace WhiteSharp
 
         public Control Send(string value)
         {
+            if (value == null)
+                return this;
+
             WaitForEnabled();
 
             try
@@ -291,11 +323,36 @@ namespace WhiteSharp
             return this;
         }
 
+        public Control SetValue(string value)
+        {
+            Object o;
+            AutomationElement.TryGetCurrentPattern(ValuePattern.Pattern, out o);
+            if (o != null)
+            {
+                ((ValuePattern) o).SetValue(value);
+            }
+            return this;
+        }
+
+        public string GetValue()
+        {
+            Object o;
+            AutomationElement.TryGetCurrentPattern(ValuePattern.Pattern, out o);
+            if (o != null)
+            {
+                return ((ValuePattern) o).Current.Value;
+            }
+            return null;
+        }
+
         public Control SelectItem(string name)
         {
+            if (name == null)
+                return this;
+
             WaitForEnabled();
             if (!AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
-                throw new GeneralException(string.Format(Logging.Strings["NotACombobox"], Identifiers));
+                throw new GeneralException(string.Format(Logging.Strings["NotACombobox"], SearchCriteria.Identifiers));
 
             object o;
 
@@ -311,7 +368,7 @@ namespace WhiteSharp
                 comboBox.Select(name);
             }
 
-            Logging.ItemSelected(name, Identifiers);
+            Logging.ItemSelected(name, SearchCriteria.Identifiers);
             return this;
         }
 
@@ -320,7 +377,7 @@ namespace WhiteSharp
             WaitForEnabled();
             if (!AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
             {
-                throw new GeneralException(string.Format(Logging.Strings["NotACombobox"], Identifiers));
+                throw new GeneralException(string.Format(Logging.Strings["NotACombobox"], SearchCriteria.Identifiers));
             }
             var combobox = new ComboBox(AutomationElement, null);
             try
@@ -331,8 +388,13 @@ namespace WhiteSharp
             {
                 Logging.Exception(e);
             }
-            Logging.ItemSelected(index.ToString(), Identifiers);
+            Logging.ItemSelected(index.ToString(), SearchCriteria.Identifiers);
             return this;
+        }
+
+        public void SetToggleState(bool toggled)
+        {
+            SetToggleState(toggled ? ToggleState.On : ToggleState.Off);
         }
 
         public void SetToggleState(ToggleState state)
@@ -340,7 +402,7 @@ namespace WhiteSharp
             object objPat;
             if (AutomationElement.TryGetCurrentPattern(TogglePattern.Pattern, out objPat))
             {
-                var togglePattern = (TogglePattern) objPat;
+                var togglePattern = (TogglePattern)objPat;
                 if (togglePattern.Current.ToggleState != state)
                 {
                     togglePattern.Toggle();
@@ -348,9 +410,20 @@ namespace WhiteSharp
             }
             else
             {
-                throw new GeneralException(string.Format(Logging.Strings["UnsupportedPattern"], Identifiers,
+                throw new GeneralException(string.Format(Logging.Strings["UnsupportedPattern"], SearchCriteria.Identifiers,
                     "TogglePattern"));
             }
+        }
+
+        public ToggleState GetToggleState()
+        {
+            object objPat;
+            if (AutomationElement.TryGetCurrentPattern(TogglePattern.Pattern, out objPat))
+            {
+                return ((TogglePattern) objPat).Current.ToggleState;
+            }
+            throw new GeneralException(string.Format(Logging.Strings["UnsupportedPattern"], SearchCriteria.Identifiers,
+                "TogglePattern"));
         }
 
         public void SelectRadioButton()
@@ -362,7 +435,27 @@ namespace WhiteSharp
             }
             else
             {
-                throw new GeneralException(string.Format(Logging.Strings["NotARadioButton"], Identifiers));
+                throw new GeneralException(string.Format(Logging.Strings["NotARadioButton"], SearchCriteria.Identifiers));
+            }
+        }
+
+        public void Select()
+        {
+            object objPat;
+            if (AutomationElement.TryGetCurrentPattern(SelectionItemPattern.Pattern, out objPat))
+            {
+                WaitForEnabled();
+                var selectionPattern = (SelectionItemPattern)objPat;
+                while (!selectionPattern.Current.IsSelected)
+                {
+                    selectionPattern.Select();
+                    Thread.Sleep(Settings.Default.Delay);
+                }
+            }
+            else
+            {
+                throw new GeneralException(string.Format(Logging.Strings["UnsupportedPattern"], SearchCriteria.Identifiers,
+                    "SelectionItemPattern"));
             }
         }
 
@@ -388,7 +481,7 @@ namespace WhiteSharp
 
             if (!AutomationElement.Current.IsEnabled &&
                 (DateTime.Now - start).TotalMilliseconds > Settings.Default.Timeout)
-                throw new ControlNotEnabledException(Logging.ControlNotEnabledException(Identifiers));
+                throw new ControlNotEnabledException(Logging.ControlNotEnabledException(SearchCriteria.Identifiers));
             return this;
         }
 
@@ -433,12 +526,14 @@ namespace WhiteSharp
 
         public Control Send(Keys key)
         {
+            WaitForEnabled();
             Keyboard.Instance.Send(key);
             return this;
         }
 
         public Control Send(int value)
         {
+            WaitForEnabled();
             AutomationElement.SetFocus();
             SendKeys.SendWait(value.ToString());
             return this;

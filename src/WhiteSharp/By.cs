@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Automation;
 using WhiteSharp.Extensions;
 
@@ -58,15 +59,10 @@ namespace WhiteSharp
             switch (how)
             {
                 case How.AutomationId:
-                    return AutomationId(with);
-                case How.AutomationIdContains:
-                    return AutomationIdContains(with);
                 case How.ClassName:
                     return ClassName(with);
                 case How.Name:
                     return Name(with);
-                case How.NameContains:
-                    return NameContains(with);
                 case How.ControlType:
                     return ControlType(ControlTypeExtensions.FromString(with));
             }
@@ -76,7 +72,8 @@ namespace WhiteSharp
         public static By AutomationId(string automationId)
         {
             var b = new By();
-            b._result.Add(x => x.Current.AutomationId.Equals(automationId));
+            Regex regex = new Regex(automationId);
+            b._result.Add(x => regex.IsMatch(x.Current.AutomationId));
             b._identifiers.Add(String.Format("AutomationId = {0}", automationId));
             return b;
         }
@@ -89,26 +86,11 @@ namespace WhiteSharp
             return b;
         }
 
-        public static By AutomationIdContains(string automationId)
-        {
-            var b = new By();
-            b._result.Add(x => x.Current.AutomationId.Contains(automationId));
-            b._identifiers.Add(String.Format("AutomationId {0} {1}", Logging.Strings["Contains"], automationId));
-            return b;
-        }
-
-        public static By TextContains(string text)
-        {
-            var b = new By();
-            b._result.Add(x => x.GetText().Contains(text));
-            b._identifiers.Add(String.Format("Text {0} \"{1}\"", Logging.Strings["Contains"], text));
-            return b;
-        }
-
         public static By ClassName(string className)
         {
             var b = new By();
-            b._result.Add(x => x.Current.ClassName.Equals(className));
+            Regex regex = new Regex(className);
+            b._result.Add(x => regex.IsMatch(x.Current.ClassName));
             b._identifiers.Add(String.Format("ClassName = {0}", className));
             return b;
         }
@@ -116,16 +98,9 @@ namespace WhiteSharp
         public static By Name(string name)
         {
             var b = new By();
-            b._result.Add(x => x.Current.Name.ToLower().Equals(name.ToLower()));
+            Regex regex = new Regex(name);
+            b._result.Add(x => regex.IsMatch(x.Current.Name));
             b._identifiers.Add(String.Format("Name = {0}", name));
-            return b;
-        }
-
-        public static By NameContains(string name)
-        {
-            var b = new By();
-            b._result.Add(x => x.Current.Name.ToLower().Contains(name.ToLower()));
-            b._identifiers.Add(String.Format("Name {0} {1}", Logging.Strings["Contains"], name));
             return b;
         }
 
@@ -155,6 +130,15 @@ namespace WhiteSharp
             return b;
         }
 
+        public static By Text(string text)
+        {
+            var b = new By();
+            Regex regex = new Regex(text);
+            b._result.Add(x => regex.IsMatch(x.GetText()));
+            b._identifiers.Add(String.Format("Text {0} \"{1}\"", Logging.Strings["Contains"], text));
+            return b;
+        }
+
         #endregion
 
         #region Non-static Methods
@@ -175,7 +159,8 @@ namespace WhiteSharp
 
         public By AndAutomationId(string automationId)
         {
-            _result.Add(x => x.Current.AutomationId.Equals(automationId));
+            Regex regex = new Regex(automationId);
+            _result.Add(x => regex.IsMatch(x.Current.AutomationId));
             _identifiers.Add(String.Format("AutomationId = {0}", automationId));
             return this;
         }
@@ -186,32 +171,20 @@ namespace WhiteSharp
             _identifiers.Add(String.Format("Predicate = {0}", predicate));
             return this;
         }
-
-        public By AndAutomationIdContains(string automationId)
-        {
-            _result.Add(x => x.Current.AutomationId.Contains(automationId));
-            _identifiers.Add(String.Format("AutomationId {0} {1}", Logging.Strings["Contains"], automationId));
-            return this;
-        }
-
+        
         public By AndClassName(string className)
         {
-            _result.Add(x => x.Current.ClassName.Equals(className));
+            Regex regex = new Regex(className);
+            _result.Add(x => regex.IsMatch(x.Current.ClassName));
             _identifiers.Add(String.Format("ClassName = {0}", className));
             return this;
         }
 
         public By AndName(string name)
         {
-            _result.Add(x => x.Current.Name.ToLower().Equals(name.ToLower()));
+            Regex regex = new Regex(name);
+            _result.Add(x => regex.IsMatch(x.Current.Name));
             _identifiers.Add(String.Format("Name = {0}", name));
-            return this;
-        }
-
-        public By AndNameContains(string name)
-        {
-            _result.Add(x => x.Current.Name.ToLower().Contains(name.ToLower()));
-            _identifiers.Add(String.Format("Name {0} {1}", Logging.Strings["Contains"], name));
             return this;
         }
 

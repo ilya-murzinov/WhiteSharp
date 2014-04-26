@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace WhiteSharp.Attributes
 {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
-    public sealed class FindsByAttribute : Attribute
+    public sealed class FindByAttribute : Attribute
     {
         private By _finder;
 
@@ -16,12 +16,12 @@ namespace WhiteSharp.Attributes
         [DefaultValue(0)]
         public int Index { get; set; }
 
-        public FindsByAttribute(string id)
+        public FindByAttribute(string id)
         {
             Using = id;
         }
 
-        public FindsByAttribute()
+        public FindByAttribute()
         {
         }
 

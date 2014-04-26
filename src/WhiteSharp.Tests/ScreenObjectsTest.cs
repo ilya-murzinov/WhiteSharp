@@ -37,12 +37,12 @@ namespace WhiteSharp.Tests
             }
 
             if (violations.Any())
-                throw new AssertException(string.Format("\n{0}\n" + "have public constructor or no constructor at all.",
-                    violations.Select(x => x.Name).Aggregate((x, y) => x + "\n" + y)));
+                throw new AssertException(string.Format("\n{0}\n" + "{1} public constructor or no constructor at all.",
+                    violations.Select(x => x.Name).Aggregate((x, y) => x + "\n" + y), violations.Count == 1 ? "has" : "have"));
         }
 
         [Test]
-        public void AllScreenObjectsShouldHaveInstance()
+        public void AllScreenObjectsShouldHaveInstanceProperty()
         {
             var violations = new List<Type>();
             foreach (Type subClass in GetSubClasses())
@@ -62,8 +62,8 @@ namespace WhiteSharp.Tests
             }
 
             if (violations.Any())
-                throw new AssertException(string.Format("\n{0}\n" + "don't have instance",
-                    violations.Select(x => x.Name).Aggregate((x, y) => x + "\n" + y)));
+                throw new AssertException(string.Format("\n{0}\n" + "{1} have instance property.",
+                    violations.Select(x => x.Name).Aggregate((x, y) => x + "\n" + y), violations.Count == 1 ? "doesn't" : "don't"));
         }
 
         [Test]
@@ -99,8 +99,8 @@ namespace WhiteSharp.Tests
             }
 
             if (violations.Any())
-                throw new Exception(string.Format("{0} have no window.",
-                    violations.Select(x => x.Name).Aggregate((x, y) => x + " " + y)));
+                throw new Exception(string.Format("{0} {1} no window.",
+                    violations.Select(x => x.Name).Aggregate((x, y) => x + " " + y), violations.Count == 1 ? "has" : "have"));
         }
     }
 }

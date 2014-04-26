@@ -20,7 +20,7 @@ namespace WhiteSharp.Factories
             {
                 if (field.FieldType == typeof (Window))
                 {
-                    _title = ((WindowAttribute) field.GetCustomAttributes().First()).Title;
+                    _title = ((WindowAttribute) field.GetCustomAttributes(true).First()).Title;
                     _window = new Window(_title);
                     try
                     {
@@ -39,7 +39,7 @@ namespace WhiteSharp.Factories
                 {
                     if (field.FieldType == typeof(Window))
                     {
-                        _title = ((WindowAttribute)field.GetCustomAttributes().First()).Title;
+                        _title = ((WindowAttribute)field.GetCustomAttributes(true).First()).Title;
                         _window = new Window(_title);
                         try
                         {
@@ -60,11 +60,11 @@ namespace WhiteSharp.Factories
             fields.ForEach(field =>
             {
                 _by = new By();
-                field.GetCustomAttributes().ForEach(attr =>
+                field.GetCustomAttributes(true).ForEach(attr =>
                 {
-                    if (attr is FindsByAttribute)
+                    if (attr is FindByAttribute)
                     {
-                        var findsByAttribute = (FindsByAttribute) attr;
+                        var findsByAttribute = (FindByAttribute) attr;
                         if (findsByAttribute.Index != 0)
                         {
                             _index = findsByAttribute.Index;

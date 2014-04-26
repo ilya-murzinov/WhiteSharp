@@ -12,7 +12,7 @@ namespace WhiteSharp.Tests.ScreenObjects
         [Window(Title)]
         private Window _window;
 
-        [FindsBy(Using = "OpenListView")]
+        [FindBy(Using = "OpenListView")]
         private readonly Control _listViewButton;
 
         protected MainWindow()

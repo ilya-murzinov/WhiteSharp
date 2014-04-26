@@ -8,11 +8,7 @@ namespace WhiteSharp.Interfaces
         AutomationElement AutomationElement { get; }
         bool Enabled { get; }
         string Name { get; }
-
-        //TODO: make this work. Problem in time leak if Control initializer
-        //Window Window { get; }
-        string Identifiers { get; }
-
+        
         /// <summary>
         /// </summary>
         /// <returns>this Control</returns>
@@ -64,7 +60,7 @@ namespace WhiteSharp.Interfaces
         /// <param name="index"></param>
         Control SelectItem(int index);
 
-        void SetToggleState(ToggleState state);
+        void SetToggleState(bool toggled);
         void SelectRadioButton();
         Control DrawHighlight();
 
