@@ -55,6 +55,7 @@
 		  We will wrap every window with controls into objects and use it's methods to interact with controls from the test.
 		  Screen object will look like this:
 		  <pre><code>
+{% highlight csharp %}		  
 public class MainWindowTab1
 {
   private static MainWindowTab1 _instance;
@@ -80,6 +81,7 @@ public class MainWindowTab1
 	return this;
   }
 }
+{% endhightlight %}
 		  </code></pre>
 		And resulting test is pretty simple:
 		<pre><code>
