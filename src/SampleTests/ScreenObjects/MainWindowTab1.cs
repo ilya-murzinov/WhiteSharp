@@ -1,5 +1,7 @@
 ﻿using System.Windows.Automation;
 using WhiteSharp;
+using WhiteSharp.Controls;
+
 namespace SampleTests.ScreenObjects
 {
     public class MainWindowTab1
@@ -7,16 +9,16 @@ namespace SampleTests.ScreenObjects
         private static MainWindowTab1 _instance;
 
         private Window _window;
-        private Control _combobox;
-        private Control _item1Checkbox;
-        private Control _item2Checkbox;
+        private Combobox _combobox;
+        private Checkbox _item1Checkbox;
+        private Checkbox _item2Checkbox;
 
         private MainWindowTab1()
         {
             _window = new Window("MainWindow");
-            _combobox = _window.FindControl("AComboBox");
-            _item1Checkbox = _window.FindControl(By.ClassName("CheckBox").AndName("Item1"));
-            _item2Checkbox = _window.FindControl(By.ClassName("CheckBox").AndName("Item2"));
+            _combobox = _window.FindControl<Combobox>("AComboBox");
+            _item1Checkbox = _window.FindControl<Checkbox>(By.ClassName("CheckBox").AndName("Item1"));
+            _item2Checkbox = _window.FindControl<Checkbox>(By.ClassName("CheckBox").AndName("Item2"));
         }
         
         public static MainWindowTab1 Instance

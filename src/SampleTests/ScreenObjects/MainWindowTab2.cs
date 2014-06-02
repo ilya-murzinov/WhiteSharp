@@ -1,5 +1,7 @@
 ﻿using System.Windows.Automation;
 using WhiteSharp;
+using WhiteSharp.Controls;
+
 namespace SampleTests.ScreenObjects
 {
     public class MainWindowTab2
@@ -7,14 +9,14 @@ namespace SampleTests.ScreenObjects
         private static MainWindowTab2 _instance;
 
         private Window _window;
-        private Control _textbox;
-        private Control _radiobutton;
+        private TextBox _textbox;
+        private RadioButton _radiobutton;
 
         private MainWindowTab2()
         {
             _window = new Window("MainWindow");
-            _textbox = _window.FindControl("MultiLineTextBox");
-            _radiobutton = _window.FindControl("RadioButton1");
+            _textbox = _window.FindControl<TextBox>("MultiLineTextBox");
+            _radiobutton = _window.FindControl<RadioButton>("RadioButton1");
 
         }
         
