@@ -5,15 +5,11 @@ namespace WhiteSharp.Tests.ScreenObjects
 {
     public class MainWindow : ScreenObject
     {
-        private static MainWindow _instance;
-        
         protected const string Title = "MainWindow";
-        
-        [Window(Title)]
-        private Window _window;
+        private static MainWindow _instance;
 
-        [FindBy(Using = "OpenListView")]
-        private readonly Control _listViewButton;
+        [FindBy(How = How.AutomationId, Using = "OpenListView")] private readonly Control _listViewButton;
+        [Window(Title)] private Window _window;
 
         protected MainWindow()
         {

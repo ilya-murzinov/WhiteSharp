@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
-using System.Windows.Forms;
 using TestStack.White.InputDevices;
-using TestStack.White.UIItems.Actions;
 using WhiteSharp.Extensions;
-using WhiteSharp.Interfaces;
-using ComboBox = TestStack.White.UIItems.ListBoxItems.ComboBox;
-using Point = System.Windows.Point;
+using WhiteSharp.Factories;
 
 namespace WhiteSharp
 {
@@ -19,6 +16,7 @@ namespace WhiteSharp
         #region Private Fields
 
         private AutomationElement _automationElement;
+        private bool _clicked = false;
 
         #endregion
 
@@ -53,10 +51,18 @@ namespace WhiteSharp
         {
             get
             {
-                if (!IsOffScreen) return _automationElement;
-                Window = new Window(WindowTitle);
-                return _automationElement = 
-                    Window.FindControl(SearchCriteria, Index).AutomationElement;
+                if (!IsOffScreen)
+                {
+                    return _automationElement;
+                }
+
+                if (WindowTitle != null)
+                {
+                    return _automationElement =
+                        new Window(Regex.Escape(WindowTitle)).FindControl(SearchCriteria, Index).AutomationElement;
+                }
+
+                return null;
             }
             set { _automationElement = value; }
         }
@@ -75,9 +81,17 @@ namespace WhiteSharp
 
         #region Constructors
 
-        internal Control(AutomationElement element)
+        public Control(AutomationElement automationElement, Window window, By searchCriteria, int index)
         {
-            AutomationElement = element;
+            AutomationElement = automationElement;
+            Window = window;
+            SearchCriteria = searchCriteria;
+            Index = index;
+            Automation.AddAutomationEventHandler(InvokePattern.InvokedEvent, AutomationElement, TreeScope.Element,
+                (sender, args) =>
+                {
+                    _clicked = true;
+                });
         }
 
         #endregion
@@ -123,16 +137,12 @@ namespace WhiteSharp
             return list;
         }
 
-        public Control FindControl(By searchCriteria, int index = 0)
+        public T FindControl<T>(By searchCriteria, int index = 0)
         {
             List<AutomationElement> elements = Find(AutomationElement, searchCriteria, index);
 
-            var returnControl = new Control(elements.ElementAt(index))
-            {
-                SearchCriteria = searchCriteria,
-                Index = index,
-                WindowTitle = WindowTitle
-            };
+            var returnControl =
+                ControlFactory.Create<T>(elements.ElementAt(index), Window, searchCriteria, index);
 
             Logging.ControlFound(searchCriteria);
 
@@ -142,14 +152,27 @@ namespace WhiteSharp
             return returnControl;
         }
 
-        public Control FindControl(string automationId, int index = 0)
+        public T FindControl<T>(string automationId, int index = 0)
         {
-            return FindControl(By.AutomationId(automationId), index);
+            return FindControl<T>(By.AutomationId(automationId), index);
         }
 
-        public Control FindControl(ControlType type)
+        public T FindControl<T>(ControlType type)
         {
-            return FindControl(By.ControlType(type));
+            return FindControl<T>(By.ControlType(type));
+        }
+
+        public IControl FindControl(By searchCriteria, int index = 0)
+        {
+            List<AutomationElement> elements = Find(AutomationElement, searchCriteria, index);
+            return ControlFactory.Create(elements.ElementAt(index), Window, searchCriteria, index);
+        }
+
+        public IControl FindControl(string automationId, int index = 0)
+        {
+            By searchCriteria = By.AutomationId(automationId);
+            List<AutomationElement> elements = Find(AutomationElement, searchCriteria, index);
+            return ControlFactory.Create(elements.ElementAt(index), Window, searchCriteria, index);
         }
 
         public List<AutomationElement> FindAll(By searchCriteria)
@@ -222,14 +245,14 @@ namespace WhiteSharp
 
         #region Actions
 
-        public Control ClickAnyway()
+        public IControl ClickAnyway()
         {
             DateTime start = DateTime.Now;
+            Point? point = null;
             if (AutomationElement.Current.ControlType.Equals(ControlType.Edit))
             {
                 do
                 {
-                    Point? point = null;
                     try
                     {
                         point = AutomationElement.GetClickablePoint();
@@ -247,219 +270,62 @@ namespace WhiteSharp
                 } while (!AutomationElement.Current.HasKeyboardFocus
                          && (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout);
             }
+            else if (AutomationElement.Current.ControlType.Equals(ControlType.Button))
+            {
+                while (!_clicked)
+                {
+                    try
+                    {
+                        point = AutomationElement.GetClickablePoint();
+                    }
+                    catch (NoClickablePointException)
+                    {
+                        Window.OnTop();
+                    }
+                    if (point != null)
+                    {
+                        Mouse.Instance.Click(new Point(point.Value.X, point.Value.Y));
+                    }
+                    //TODO: костыль
+                    Thread.Sleep(2000);
+                }
+            }
             else
-                Mouse.Instance.Click(AutomationElement.GetClickablePoint());
+            {
+                try
+                {
+                    point = AutomationElement.GetClickablePoint();
+                }
+                catch (NoClickablePointException)
+                {
+                    Window.OnTop();
+                }
+                if (point != null)
+                {
+                    Mouse.Instance.Click(new Point(point.Value.X, point.Value.Y));
+                }
+                else
+                {
+                    Mouse.Instance.Click(AutomationElement.GetClickablePoint());
+                }
+            }
             Logging.Click(SearchCriteria.Identifiers);
             return this;
         }
 
-        public Control ClickAnyway(int x, int y)
-        {
-            Mouse.Instance.Click(new Point(x, y));
-            return this;
-        }
-
-        public Control Click()
+        public IControl Click()
         {
             WaitForEnabled();
             return ClickAnyway();
         }
 
-        public Control ClickRightEdge()
-        {
-            WaitForEnabled();
-            Rect r = AutomationElement.Current.BoundingRectangle;
-            return ClickAnyway((int) (r.X + r.Width - 1), (int) (r.Y + r.Height/2));
-        }
-
-        public Control ClickLeftEdge()
-        {
-            WaitForEnabled();
-            Rect r = AutomationElement.Current.BoundingRectangle;
-            return ClickAnyway((int)(r.X + 1), (int)(r.Y + r.Height/2));
-        }
-
-        public Control DoubleClick()
+        public IControl DoubleClick()
         {
             Mouse.Instance.DoubleClick(AutomationElement.GetClickablePoint());
             return this;
         }
 
-        public Control ClearValue()
-        {
-            object o;
-            if (AutomationElement.TryGetCurrentPattern(ValuePattern.Pattern, out o))
-            {
-                var pattern = (ValuePattern) o;
-                if (!pattern.Current.IsReadOnly)
-                {
-                    pattern.SetValue("");
-                }
-            }
-            else
-                throw new GeneralException(string.Format(Logging.Strings["UnsupportedPattern"], SearchCriteria.Identifiers,
-                    "Value Pattern"));
-
-            return this;
-        }
-
-        public Control Send(string value)
-        {
-            if (value == null)
-                return this;
-
-            WaitForEnabled();
-
-            try
-            {
-                AutomationElement.SetFocus();
-            }
-            catch (InvalidOperationException)
-            {
-            }
-
-            ClearValue();
-            Keyboard.Instance.Send(value);
-            return this;
-        }
-
-        public Control SetValue(string value)
-        {
-            Object o;
-            AutomationElement.TryGetCurrentPattern(ValuePattern.Pattern, out o);
-            if (o != null)
-            {
-                ((ValuePattern) o).SetValue(value);
-            }
-            return this;
-        }
-
-        public string GetValue()
-        {
-            Object o;
-            AutomationElement.TryGetCurrentPattern(ValuePattern.Pattern, out o);
-            if (o != null)
-            {
-                return ((ValuePattern) o).Current.Value;
-            }
-            return null;
-        }
-
-        public Control SelectItem(string name)
-        {
-            if (name == null)
-                return this;
-
-            WaitForEnabled();
-            if (!AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
-                throw new GeneralException(string.Format(Logging.Strings["NotACombobox"], SearchCriteria.Identifiers));
-
-            object o;
-
-            if (AutomationElement.TryGetCurrentPattern(ValuePattern.Pattern, out o))
-            {
-                var valuePattern = (ValuePattern) o;
-                valuePattern.SetValue(name);
-            }
-            else
-            {
-                //TODO: replace this ro remove link to TestStack.White
-                var comboBox = new ComboBox(AutomationElement, new NullActionListener());
-                comboBox.Select(name);
-            }
-
-            Logging.ItemSelected(name, SearchCriteria.Identifiers);
-            return this;
-        }
-
-        public Control SelectItem(int index)
-        {
-            WaitForEnabled();
-            if (!AutomationElement.Current.ControlType.Equals(ControlType.ComboBox))
-            {
-                throw new GeneralException(string.Format(Logging.Strings["NotACombobox"], SearchCriteria.Identifiers));
-            }
-            var combobox = new ComboBox(AutomationElement, null);
-            try
-            {
-                combobox.Select(index);
-            }
-            catch (Exception e)
-            {
-                Logging.Exception(e);
-            }
-            Logging.ItemSelected(index.ToString(), SearchCriteria.Identifiers);
-            return this;
-        }
-
-        public void SetToggleState(bool toggled)
-        {
-            SetToggleState(toggled ? ToggleState.On : ToggleState.Off);
-        }
-
-        public void SetToggleState(ToggleState state)
-        {
-            object objPat;
-            if (AutomationElement.TryGetCurrentPattern(TogglePattern.Pattern, out objPat))
-            {
-                var togglePattern = (TogglePattern)objPat;
-                if (togglePattern.Current.ToggleState != state)
-                {
-                    togglePattern.Toggle();
-                }
-            }
-            else
-            {
-                throw new GeneralException(string.Format(Logging.Strings["UnsupportedPattern"], SearchCriteria.Identifiers,
-                    "TogglePattern"));
-            }
-        }
-
-        public ToggleState GetToggleState()
-        {
-            object objPat;
-            if (AutomationElement.TryGetCurrentPattern(TogglePattern.Pattern, out objPat))
-            {
-                return ((TogglePattern) objPat).Current.ToggleState;
-            }
-            throw new GeneralException(string.Format(Logging.Strings["UnsupportedPattern"], SearchCriteria.Identifiers,
-                "TogglePattern"));
-        }
-
-        public void SelectRadioButton()
-        {
-            if (AutomationElement.Current.ControlType.Equals(ControlType.RadioButton))
-            {
-                var p = (SelectionItemPattern) AutomationElement.GetCurrentPattern(SelectionItemPattern.Pattern);
-                p.Select();
-            }
-            else
-            {
-                throw new GeneralException(string.Format(Logging.Strings["NotARadioButton"], SearchCriteria.Identifiers));
-            }
-        }
-
-        public void Select()
-        {
-            object objPat;
-            if (AutomationElement.TryGetCurrentPattern(SelectionItemPattern.Pattern, out objPat))
-            {
-                WaitForEnabled();
-                var selectionPattern = (SelectionItemPattern)objPat;
-                while (!selectionPattern.Current.IsSelected)
-                {
-                    selectionPattern.Select();
-                    Thread.Sleep(Settings.Default.Delay);
-                }
-            }
-            else
-            {
-                throw new GeneralException(string.Format(Logging.Strings["UnsupportedPattern"], SearchCriteria.Identifiers,
-                    "SelectionItemPattern"));
-            }
-        }
-
-        public Control WaitForEnabled()
+        public IControl WaitForEnabled()
         {
             DateTime start = DateTime.Now;
             int count = 0;
@@ -485,7 +351,7 @@ namespace WhiteSharp
             return this;
         }
 
-        public Control Wait(int milliseconds)
+        public IControl Wait(int milliseconds)
         {
             Thread.Sleep(milliseconds);
             return this;
@@ -496,10 +362,41 @@ namespace WhiteSharp
             return AutomationElement.GetText();
         }
 
-        public Control DrawHighlight()
+        public IControl DrawHighlight()
         {
             AutomationElement.DrawHighlight();
             return this;
+        }
+
+        private Control ClickAnyway(int x, int y)
+        {
+            Mouse.Instance.Click(new Point(x, y));
+            return this;
+        }
+
+        public IControl ClickRightEdge()
+        {
+            WaitForEnabled();
+            Rect r = AutomationElement.Current.BoundingRectangle;
+            return ClickAnyway((int) (r.X + r.Width - 1), (int) (r.Y + r.Height/2));
+        }
+
+        public IControl ClickLeftEdge()
+        {
+            WaitForEnabled();
+            Rect r = AutomationElement.Current.BoundingRectangle;
+            return ClickAnyway((int) (r.X + 1), (int) (r.Y + r.Height/2));
+        }
+
+        public ToggleState GetToggleState()
+        {
+            object objPat;
+            if (AutomationElement.TryGetCurrentPattern(TogglePattern.Pattern, out objPat))
+            {
+                return ((TogglePattern) objPat).Current.ToggleState;
+            }
+            throw new GeneralException(string.Format(Logging.Strings["UnsupportedPattern"], SearchCriteria.Identifiers,
+                "TogglePattern"));
         }
 
         public Control ScrollVertical(ScrollAmount scrollAmount)
@@ -524,41 +421,28 @@ namespace WhiteSharp
             return this;
         }
 
-        public Control Send(Keys key)
+        public IControl Send(Keys key)
         {
-            WaitForEnabled();
             Keyboard.Instance.Send(key);
+            Logging.Sent(key.ToString("G"));
             return this;
         }
 
-        public Control Send(int value)
+        public IControl ClickIfExists(By searchCriteria)
         {
-            WaitForEnabled();
-            AutomationElement.SetFocus();
-            SendKeys.SendWait(value.ToString());
-            return this;
-        }
-
-        public Control SelectFirstItem()
-        {
-            return SelectItem("");
-        }
-
-        public Control ClickIfExists(By searchCriteria)
-        {
-            Control control = null;
+            IControl control = null;
             object o;
 
             if (Exists(searchCriteria, out o))
             {
-                control = new Control((AutomationElement) o);
+                control = ControlFactory.Create((AutomationElement) o, Window, searchCriteria, 0);
                 control.Click();
             }
 
             return control;
         }
 
-        public Control ClickIfExists(string automationId)
+        public IControl ClickIfExists(string automationId)
         {
             return ClickIfExists(By.AutomationId(automationId));
         }

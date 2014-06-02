@@ -1,6 +1,7 @@
 ﻿using System.Windows.Automation;
 using NUnit.Framework;
 using Shouldly;
+using WhiteSharp.Controls;
 using WhiteSharp.Tests.ScreenObjects;
 
 namespace WhiteSharp.Tests.UITests
@@ -13,7 +14,7 @@ namespace WhiteSharp.Tests.UITests
         [TestCase("DataBoundComboBox", "Test5")]
         public void SelectItemTest(string id, string item)
         {
-            Control control = MainWindow.Instance.Window.FindControl(id);
+            Combobox control = MainWindow.Instance.Window.FindControl<Combobox>(id);
             control.SelectItem(item);
             control.GetText().ShouldBe(item);
         }
@@ -23,7 +24,7 @@ namespace WhiteSharp.Tests.UITests
         [TestCase("DataBoundComboBox", 2, "Test3")]
         public void SelectItemTest(string id, int item, string result)
         {
-            Control control = MainWindow.Instance.Window.FindControl(id);
+            Combobox control = MainWindow.Instance.Window.FindControl<Combobox>(id);
             control.SelectItem(item);
             control.GetText().ShouldBe(result);
         }
@@ -32,9 +33,9 @@ namespace WhiteSharp.Tests.UITests
         public void ClickChangeItemsButtonTest()
         {
             Window window = MainWindow.Instance.Window;
-            Control listItems = window.FindControl("ListBoxWpf");
+            IControl listItems = window.FindControl("ListBoxWpf");
             listItems.FindControl(By.Name("Spielberg"));
-            Control button = window.FindControl("ChangeListItems");
+            Button button = window.FindControl<Button>("ChangeListItems");
             button.Click();
             listItems.FindControl(By.Name("Jackson"));
         }

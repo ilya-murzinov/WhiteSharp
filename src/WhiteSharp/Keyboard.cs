@@ -62,15 +62,11 @@ namespace WhiteSharp
         public void Send(Keys key)
         {
             _keysDistionary[key].Invoke();
-
-            Logging.Sent(key.ToString("G"));
         }
 
         public void Send(string value)
         {
             SendKeys.SendWait(value);
-
-            Logging.Sent(value);
         }
     }
 }

@@ -8,14 +8,10 @@ namespace WhiteSharp.Tests.ScreenObjects
     {
         private static ListViewWindow _instance;
 
-        [Window("ListViewWindow")]
-        private readonly Window _window;
+        [FindBy("ListViewWithHorizontalScroll")] private readonly Control _hScrollList;
 
-        [FindBy("ListViewWithHorizontalScroll")]
-        private readonly Control _hScrollList;
-
-        [FindBy("ListView")]
-        private readonly Control _vScrollList;
+        [FindBy("ListView")] private readonly Control _vScrollList;
+        [Window("ListViewWindow")] private readonly Window _window;
 
         private ListViewWindow()
         {

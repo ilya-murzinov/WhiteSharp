@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Automation;
 using WhiteSharp.Extensions;
-using WhiteSharp.Interfaces;
+using WhiteSharp.Factories;
 
 namespace WhiteSharp
 {
-    public class Window : IWindow
+    public class Window : IControlContainer
     {
         #region Private Fields
 
@@ -41,7 +42,7 @@ namespace WhiteSharp
             {
                 return (!_automationElement.IsOffScreen())
                     ? _automationElement
-                    : new Window(Title).AutomationElement;
+                    : new Window(Regex.Escape(Title)).AutomationElement;
             }
             protected set { _automationElement = value; }
         }
@@ -86,18 +87,8 @@ namespace WhiteSharp
         {
         }
 
-        public Window(Predicate<AutomationElement> p)
-            : this(Desktop.Instance.FindWindow(p).AutomationElement)
-        {
-        }
-
-        public Window(int processId)
-            : this(Desktop.Instance.FindWindow(processId).AutomationElement)
-        {
-        }
-
-        public Window(int processId, Predicate<AutomationElement> p)
-            : this(Desktop.Instance.FindWindow(processId, p).AutomationElement)
+        public Window(int processId, string title)
+            : this(Desktop.Instance.FindWindow(processId, title).AutomationElement)
         {
         }
 
@@ -107,24 +98,19 @@ namespace WhiteSharp
 
         public Window FindModalWindow(string title)
         {
-            return new Window(FindControl(By.ControlType(ControlType.Window).AndName(title)).AutomationElement);
+            return new Window(FindAll(By.ControlType(ControlType.Window).AndName(title)).First());
         }
 
         #endregion
 
         #region Control Finders
 
-        public Control FindControl(By searchCriteria, int index = 0)
+        public T FindControl<T>(By searchCriteria, int index = 0)
         {
             List<AutomationElement> elements = Find(AutomationElement, searchCriteria, index);
 
-            var returnControl = new Control(elements.ElementAt(index))
-            {
-                Window = this,
-                WindowTitle = Title,
-                SearchCriteria = searchCriteria,
-                Index = index
-            };
+            var returnControl =
+                ControlFactory.Create<T>(elements.ElementAt(index), this, searchCriteria, index);
 
             Logging.ControlFound(searchCriteria);
 
@@ -134,14 +120,27 @@ namespace WhiteSharp
             return returnControl;
         }
 
-        public Control FindControl(string automationId, int index = 0)
+        public T FindControl<T>(string automationId, int index = 0)
         {
-            return FindControl(By.AutomationId(automationId), index);
+            return FindControl<T>(By.AutomationId(automationId), index);
         }
 
-        public Control FindControl(ControlType type)
+        public T FindControl<T>(ControlType type)
         {
-            return FindControl(By.ControlType(type));
+            return FindControl<T>(By.ControlType(type));
+        }
+
+        public IControl FindControl(By searchCriteria, int index = 0)
+        {
+            List<AutomationElement> elements = Find(AutomationElement, searchCriteria, index);
+            return ControlFactory.Create(elements.ElementAt(index), this, searchCriteria, index);
+        }
+
+        public IControl FindControl(string automationId, int index = 0)
+        {
+            By searchCriteria = By.AutomationId(automationId);
+            List<AutomationElement> elements = Find(AutomationElement, searchCriteria, index);
+            return ControlFactory.Create(elements.ElementAt(index), this, searchCriteria, index);
         }
 
         public List<AutomationElement> FindAll(By searchCriteria)
@@ -174,7 +173,7 @@ namespace WhiteSharp
                 catch (Exception)
                 {
                     RefreshBaseList(IsOffScreen
-                        ? new Window(Title).AutomationElement
+                        ? new Window(Regex.Escape(Title)).AutomationElement
                         : AutomationElement);
                 }
             }
@@ -226,7 +225,7 @@ namespace WhiteSharp
             DateTime start = DateTime.Now;
             o = null;
 
-            while ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
+            while ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout/10)
             {
                 try
                 {
@@ -260,21 +259,21 @@ namespace WhiteSharp
             Keyboard.Instance.Send(key);
         }
 
-        public Control ClickIfExists(By searchCriteria)
+        public IControl ClickIfExists(By searchCriteria)
         {
-            Control control = null;
+            IControl control = null;
             object o;
 
             if (Exists(searchCriteria, out o))
             {
-                control = new Control((AutomationElement) o);
+                control = ControlFactory.Create((AutomationElement) o, this, searchCriteria, 0);
                 control.Click();
             }
 
             return control;
         }
 
-        public Control ClickIfExists(string automationId)
+        public IControl ClickIfExists(string automationId)
         {
             return ClickIfExists(By.AutomationId(automationId));
         }

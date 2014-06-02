@@ -91,7 +91,7 @@ namespace WhiteSharp.Extensions
 
         public static string Title(this AutomationElement element)
         {
-            string returnName = null;
+            string returnName;
             try
             {
                 returnName = element.FindFirst(TreeScope.Children,
@@ -99,8 +99,9 @@ namespace WhiteSharp.Extensions
             }
             catch (Exception)
             {
+                return "";
             }
-            return returnName ?? "";
+            return returnName;
         }
 
         public static void DrawHighlight(this AutomationElement element)

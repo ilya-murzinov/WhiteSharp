@@ -118,7 +118,7 @@ namespace WhiteSharp
             if (writeToStdOut)
             {
                 Console.WriteLine(msg);
-                //Trace.WriteLine(msg);
+                Trace.WriteLine(msg);
             }
             else
                 Trace.WriteLine(msg);

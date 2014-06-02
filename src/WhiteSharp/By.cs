@@ -59,6 +59,7 @@ namespace WhiteSharp
             switch (how)
             {
                 case How.AutomationId:
+                    return AutomationId(with);
                 case How.ClassName:
                     return ClassName(with);
                 case How.Name:
@@ -72,7 +73,7 @@ namespace WhiteSharp
         public static By AutomationId(string automationId)
         {
             var b = new By();
-            Regex regex = new Regex(automationId);
+            var regex = new Regex(automationId);
             b._result.Add(x => regex.IsMatch(x.Current.AutomationId));
             b._identifiers.Add(String.Format("AutomationId = {0}", automationId));
             return b;
@@ -89,7 +90,7 @@ namespace WhiteSharp
         public static By ClassName(string className)
         {
             var b = new By();
-            Regex regex = new Regex(className);
+            var regex = new Regex(className);
             b._result.Add(x => regex.IsMatch(x.Current.ClassName));
             b._identifiers.Add(String.Format("ClassName = {0}", className));
             return b;
@@ -98,7 +99,7 @@ namespace WhiteSharp
         public static By Name(string name)
         {
             var b = new By();
-            Regex regex = new Regex(name);
+            var regex = new Regex(name);
             b._result.Add(x => regex.IsMatch(x.Current.Name));
             b._identifiers.Add(String.Format("Name = {0}", name));
             return b;
@@ -133,7 +134,7 @@ namespace WhiteSharp
         public static By Text(string text)
         {
             var b = new By();
-            Regex regex = new Regex(text);
+            var regex = new Regex(text);
             b._result.Add(x => regex.IsMatch(x.GetText()));
             b._identifiers.Add(String.Format("Text {0} \"{1}\"", Logging.Strings["Contains"], text));
             return b;
@@ -159,7 +160,7 @@ namespace WhiteSharp
 
         public By AndAutomationId(string automationId)
         {
-            Regex regex = new Regex(automationId);
+            var regex = new Regex(automationId);
             _result.Add(x => regex.IsMatch(x.Current.AutomationId));
             _identifiers.Add(String.Format("AutomationId = {0}", automationId));
             return this;
@@ -171,10 +172,10 @@ namespace WhiteSharp
             _identifiers.Add(String.Format("Predicate = {0}", predicate));
             return this;
         }
-        
+
         public By AndClassName(string className)
         {
-            Regex regex = new Regex(className);
+            var regex = new Regex(className);
             _result.Add(x => regex.IsMatch(x.Current.ClassName));
             _identifiers.Add(String.Format("ClassName = {0}", className));
             return this;
@@ -182,7 +183,7 @@ namespace WhiteSharp
 
         public By AndName(string name)
         {
-            Regex regex = new Regex(name);
+            var regex = new Regex(name);
             _result.Add(x => regex.IsMatch(x.Current.Name));
             _identifiers.Add(String.Format("Name = {0}", name));
             return this;

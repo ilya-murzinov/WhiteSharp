@@ -7,9 +7,8 @@ namespace WhiteSharp.Tests.ScreenObjects
     {
         private static MainWindowListControlsTab _instance;
 
-        [FindBy(How = How.ClassName, Using = "TabItem")]
-        [FindBy(How = How.Name, Using = "Data Grid")]
-        private Control _dataGridTab;
+        [FindBy(How = How.ClassName, Using = "TabItem")] [FindBy(How = How.Name, Using = "Data Grid")] private Control
+            _dataGridTab;
 
         protected MainWindowListControlsTab()
         {

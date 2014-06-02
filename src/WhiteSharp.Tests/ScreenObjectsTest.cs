@@ -25,23 +25,6 @@ namespace WhiteSharp.Tests
         }
 
         [Test]
-        public void AllScreenObjectsShouldHavePrivateConstructor()
-        {
-            var violations = new List<Type>();
-            foreach (Type subClass in GetSubClasses())
-            {
-                if (!subClass.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic).Any())
-                {
-                    violations.Add(subClass);
-                }
-            }
-
-            if (violations.Any())
-                throw new AssertException(string.Format("\n{0}\n" + "{1} public constructor or no constructor at all.",
-                    violations.Select(x => x.Name).Aggregate((x, y) => x + "\n" + y), violations.Count == 1 ? "has" : "have"));
-        }
-
-        [Test]
         public void AllScreenObjectsShouldHaveInstanceProperty()
         {
             var violations = new List<Type>();
@@ -63,7 +46,26 @@ namespace WhiteSharp.Tests
 
             if (violations.Any())
                 throw new AssertException(string.Format("\n{0}\n" + "{1} have instance property.",
-                    violations.Select(x => x.Name).Aggregate((x, y) => x + "\n" + y), violations.Count == 1 ? "doesn't" : "don't"));
+                    violations.Select(x => x.Name).Aggregate((x, y) => x + "\n" + y),
+                    violations.Count == 1 ? "doesn't" : "don't"));
+        }
+
+        [Test]
+        public void AllScreenObjectsShouldHavePrivateConstructor()
+        {
+            var violations = new List<Type>();
+            foreach (Type subClass in GetSubClasses())
+            {
+                if (!subClass.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic).Any())
+                {
+                    violations.Add(subClass);
+                }
+            }
+
+            if (violations.Any())
+                throw new AssertException(string.Format("\n{0}\n" + "{1} public constructor or no constructor at all.",
+                    violations.Select(x => x.Name).Aggregate((x, y) => x + "\n" + y),
+                    violations.Count == 1 ? "has" : "have"));
         }
 
         [Test]
@@ -100,7 +102,8 @@ namespace WhiteSharp.Tests
 
             if (violations.Any())
                 throw new Exception(string.Format("{0} {1} no window.",
-                    violations.Select(x => x.Name).Aggregate((x, y) => x + " " + y), violations.Count == 1 ? "has" : "have"));
+                    violations.Select(x => x.Name).Aggregate((x, y) => x + " " + y),
+                    violations.Count == 1 ? "has" : "have"));
         }
     }
 }

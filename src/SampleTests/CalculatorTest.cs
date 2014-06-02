@@ -2,41 +2,42 @@
 using NUnit.Framework;
 using WhiteSharp;
 using Shouldly;
+using WhiteSharp.Controls;
 
 namespace SampleTests
 {
     public class CalculatorScreenObject
     {
         private Window window;
-        private Control help;
-        private Control about;
+        private Button help;
+        private Button about;
 
-        private Control display;
-        private Control clearEverything;
+        private TextBox display;
+        private Button clearEverything;
 
-        private Control[] numbers = new Control[10];
+        private Button[] numbers = new Button[10];
 
-        private Control equals;
-        private Control add;
-        private Control substract;
-        private Control multiply;
-        private Control divide;
+        private Button equals;
+        private Button add;
+        private Button substract;
+        private Button multiply;
+        private Button divide;
 
         protected CalculatorScreenObject()
         {
             window = new Window("Calculator");
-            help = window.FindControl("Item 3");
-            display = window.FindControl("150");
+            help = window.FindControl<Button>("Item 3");
+            display = window.FindControl<TextBox>("150");
             for (int i = 0; i < 10; i++)
             {
-                numbers[i] = window.FindControl((130 + i).ToString());
+                numbers[i] = window.FindControl<Button>((130 + i).ToString());
             }
-            clearEverything = window.FindControl("82");
-            equals = window.FindControl("121");
-            add = window.FindControl("93");
-            substract = window.FindControl("94");
-            multiply = window.FindControl("92");
-            divide = window.FindControl("91");            
+            clearEverything = window.FindControl<Button>("82");
+            equals = window.FindControl<Button>("121");
+            add = window.FindControl<Button>("93");
+            substract = window.FindControl<Button>("94");
+            multiply = window.FindControl<Button>("92");
+            divide = window.FindControl<Button>("91");            
         }
 
         private static CalculatorScreenObject instance;
@@ -91,7 +92,7 @@ namespace SampleTests
         public AboutDialog OpenAboutCalculator()
         {
             help.Click();
-            about = help.FindControl("Item 302");
+            about = help.FindControl<Button>("Item 302");
             about.Click();
             return AboutDialog.Instance;
         }
@@ -112,7 +113,7 @@ namespace SampleTests
         private AboutDialog()
         {
             window = new Window("Calculator");
-            btnOk = window.FindControl("1");
+            btnOk = window.FindControl<Button>("1");
         }
 
         public CalculatorScreenObject Close()

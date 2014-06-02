@@ -1,6 +1,7 @@
 ﻿using System.Windows.Automation;
 using NUnit.Framework;
 using Shouldly;
+using WhiteSharp.Controls;
 using WhiteSharp.Tests.ScreenObjects;
 
 namespace WhiteSharp.Tests.UITests
@@ -99,7 +100,7 @@ namespace WhiteSharp.Tests.UITests
         [TestCase(2, 0, "Simple item 1")]
         public void FindGridCell(int i, int j, string result)
         {
-            Control c = MainWindowListControlsTab.Instance.OpenDataGrid().Window.FindControl(By.GridCell(i, j));
+            IControl c = MainWindowListControlsTab.Instance.OpenDataGrid().Window.FindControl(By.GridCell(i, j));
             c.GetText().ShouldBe(result);
         }
 
@@ -115,7 +116,7 @@ namespace WhiteSharp.Tests.UITests
         [Test]
         public void FindControlByControlTypeType()
         {
-            MainWindow.Instance.Window.FindControl(ControlType.Edit);
+            MainWindow.Instance.Window.FindControl<TextBox>(ControlType.Edit);
         }
     }
 

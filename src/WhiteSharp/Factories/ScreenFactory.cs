@@ -37,9 +37,9 @@ namespace WhiteSharp.Factories
                 fields = screen.GetType().BaseType.GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
                 fields.ForEach(field =>
                 {
-                    if (field.FieldType == typeof(Window))
+                    if (field.FieldType == typeof (Window))
                     {
-                        _title = ((WindowAttribute)field.GetCustomAttributes(true).First()).Title;
+                        _title = ((WindowAttribute) field.GetCustomAttributes(true).First()).Title;
                         _window = new Window(_title);
                         try
                         {
