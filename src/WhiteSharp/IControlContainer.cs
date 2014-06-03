@@ -5,9 +5,9 @@ namespace WhiteSharp
 {
     public interface IControlContainer
     {
-        T FindControl<T>(By searchCriteria, int index = 0);
-        T FindControl<T>(string automationId, int index = 0);
-        T FindControl<T>(ControlType type);
+        T FindControl<T>(By searchCriteria, int index = 0) where T : class, IControl;
+        T FindControl<T>(string automationId, int index = 0) where T : class, IControl;
+        T FindControl<T>(ControlType type) where T : class, IControl;
         IControl FindControl(By searchCriteria, int index = 0);
         IControl FindControl(string automationId, int index = 0);
         List<AutomationElement> FindAll(By searchCriteria);

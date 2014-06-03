@@ -105,7 +105,7 @@ namespace WhiteSharp
 
         #region Control Finders
 
-        public T FindControl<T>(By searchCriteria, int index = 0)
+        public T FindControl<T>(By searchCriteria, int index = 0) where T : class, IControl
         {
             List<AutomationElement> elements = Find(AutomationElement, searchCriteria, index);
 
@@ -120,12 +120,12 @@ namespace WhiteSharp
             return returnControl;
         }
 
-        public T FindControl<T>(string automationId, int index = 0)
+        public T FindControl<T>(string automationId, int index = 0) where T : class, IControl
         {
             return FindControl<T>(By.AutomationId(automationId), index);
         }
 
-        public T FindControl<T>(ControlType type)
+        public T FindControl<T>(ControlType type) where T : class, IControl
         {
             return FindControl<T>(By.ControlType(type));
         }

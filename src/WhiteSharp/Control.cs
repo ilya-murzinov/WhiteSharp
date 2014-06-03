@@ -16,7 +16,7 @@ namespace WhiteSharp
         #region Private Fields
 
         private AutomationElement _automationElement;
-        private bool _clicked = false;
+        protected bool Clicked = false;
 
         #endregion
 
@@ -90,7 +90,7 @@ namespace WhiteSharp
             Automation.AddAutomationEventHandler(InvokePattern.InvokedEvent, AutomationElement, TreeScope.Element,
                 (sender, args) =>
                 {
-                    _clicked = true;
+                    Clicked = true;
                 });
         }
 
@@ -137,7 +137,7 @@ namespace WhiteSharp
             return list;
         }
 
-        public T FindControl<T>(By searchCriteria, int index = 0)
+        public T FindControl<T>(By searchCriteria, int index = 0) where T : class, IControl
         {
             List<AutomationElement> elements = Find(AutomationElement, searchCriteria, index);
 
@@ -152,12 +152,12 @@ namespace WhiteSharp
             return returnControl;
         }
 
-        public T FindControl<T>(string automationId, int index = 0)
+        public T FindControl<T>(string automationId, int index = 0) where T : class, IControl
         {
             return FindControl<T>(By.AutomationId(automationId), index);
         }
 
-        public T FindControl<T>(ControlType type)
+        public T FindControl<T>(ControlType type) where T : class, IControl
         {
             return FindControl<T>(By.ControlType(type));
         }
@@ -245,69 +245,24 @@ namespace WhiteSharp
 
         #region Actions
 
-        public IControl ClickAnyway()
+        public virtual IControl ClickAnyway()
         {
-            DateTime start = DateTime.Now;
             Point? point = null;
-            if (AutomationElement.Current.ControlType.Equals(ControlType.Edit))
+            try
             {
-                do
-                {
-                    try
-                    {
-                        point = AutomationElement.GetClickablePoint();
-                    }
-                    catch (NoClickablePointException)
-                    {
-                        Window.OnTop();
-                    }
-                    if (point != null)
-                    {
-                        Mouse.Instance.Click(new Point(point.Value.X, point.Value.Y));
-                    }
-
-                    Thread.Sleep(Settings.Default.Delay);
-                } while (!AutomationElement.Current.HasKeyboardFocus
-                         && (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout);
+                point = AutomationElement.GetClickablePoint();
             }
-            else if (AutomationElement.Current.ControlType.Equals(ControlType.Button))
+            catch (NoClickablePointException)
             {
-                while (!_clicked)
-                {
-                    try
-                    {
-                        point = AutomationElement.GetClickablePoint();
-                    }
-                    catch (NoClickablePointException)
-                    {
-                        Window.OnTop();
-                    }
-                    if (point != null)
-                    {
-                        Mouse.Instance.Click(new Point(point.Value.X, point.Value.Y));
-                    }
-                    //TODO: костыль
-                    Thread.Sleep(2000);
-                }
+                Window.OnTop();
+            }
+            if (point != null)
+            {
+                Mouse.Instance.Click(new Point(point.Value.X, point.Value.Y));
             }
             else
             {
-                try
-                {
-                    point = AutomationElement.GetClickablePoint();
-                }
-                catch (NoClickablePointException)
-                {
-                    Window.OnTop();
-                }
-                if (point != null)
-                {
-                    Mouse.Instance.Click(new Point(point.Value.X, point.Value.Y));
-                }
-                else
-                {
-                    Mouse.Instance.Click(AutomationElement.GetClickablePoint());
-                }
+                Mouse.Instance.Click(AutomationElement.GetClickablePoint());
             }
             Logging.Click(SearchCriteria.Identifiers);
             return this;

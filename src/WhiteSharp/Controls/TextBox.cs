@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Threading;
+using System.Windows;
 using System.Windows.Automation;
+using TestStack.White.InputDevices;
 
 namespace WhiteSharp.Controls
 {
@@ -8,6 +11,31 @@ namespace WhiteSharp.Controls
         public TextBox(AutomationElement automationElement, Window window, By searchCriteria, int index) 
             : base(automationElement, window, searchCriteria, index)
         {
+        }
+
+        override public IControl ClickAnyway()
+        {
+            DateTime start = DateTime.Now;
+            Point? point = null;
+            do
+            {
+                try
+                {
+                    point = AutomationElement.GetClickablePoint();
+                }
+                catch (NoClickablePointException)
+                {
+                    Window.OnTop();
+                }
+                if (point != null)
+                {
+                    Mouse.Instance.Click(new Point(point.Value.X, point.Value.Y));
+                }
+                Thread.Sleep(Settings.Default.Delay);
+            } while (!AutomationElement.Current.HasKeyboardFocus
+                        && (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout);
+            Logging.Click(SearchCriteria.Identifiers);
+            return this;
         }
 
         public TextBox SetValue(string value)

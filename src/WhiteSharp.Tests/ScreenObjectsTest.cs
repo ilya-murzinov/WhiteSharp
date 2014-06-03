@@ -38,6 +38,18 @@ namespace WhiteSharp.Tests
                         hasInstance = true;
                     }
                 }
+
+                if (!hasInstance && subClass.BaseType != null)
+                {
+                    foreach (PropertyInfo property in subClass.BaseType.GetProperties(BindingFlags.Public | BindingFlags.Static))
+                    {
+                        if (property.PropertyType == subClass.BaseType && property.Name == "Instance")
+                        {
+                            hasInstance = true;
+                        }
+                    }
+                }
+
                 if (!hasInstance)
                 {
                     violations.Add(subClass);
