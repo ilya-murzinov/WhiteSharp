@@ -23,7 +23,7 @@ namespace WhiteSharp.Tests
             Logging.Info(TestContext.CurrentContext.Result.Status.ToString().ToUpper() + "!");
         }
 
-        public static string Path = @"..\..\..\..\\Tools\\TestApps\\WpfTestApplication.exe";
+        public static string Path = @"..\..\..\..\\apps\\WpfTestApplication.exe";
         public static string ResultsPath = "\\Results";
         private Process _proc;
 

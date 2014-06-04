@@ -9,16 +9,16 @@ namespace SampleTests.ScreenObjects
         private static MainWindowTab1 _instance;
 
         private Window _window;
-        private Combobox _combobox;
-        private Checkbox _item1Checkbox;
-        private Checkbox _item2Checkbox;
+        private ComboBox _combobox;
+        private CheckBox _item1Checkbox;
+        private CheckBox _item2Checkbox;
 
         private MainWindowTab1()
         {
             _window = new Window("MainWindow");
-            _combobox = _window.FindControl<Combobox>("AComboBox");
-            _item1Checkbox = _window.FindControl<Checkbox>(By.ClassName("CheckBox").AndName("Item1"));
-            _item2Checkbox = _window.FindControl<Checkbox>(By.ClassName("CheckBox").AndName("Item2"));
+            _combobox = _window.FindControl<ComboBox>("AComboBox");
+            _item1Checkbox = _window.FindControl<CheckBox>(By.ClassName("CheckBox").AndName("Item1"));
+            _item2Checkbox = _window.FindControl<CheckBox>(By.ClassName("CheckBox").AndName("Item2"));
         }
         
         public static MainWindowTab1 Instance
