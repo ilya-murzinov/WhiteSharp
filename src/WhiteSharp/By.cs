@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Automation;
+using WhiteSharp.Controls;
 using WhiteSharp.Extensions;
 
 namespace WhiteSharp
@@ -68,6 +69,31 @@ namespace WhiteSharp
                     return ControlType(ControlTypeExtensions.FromString(with));
             }
             return null;
+        }
+
+        public static By FromControlType(Type t)
+        {
+            if (t == typeof(TextBox))
+            {
+                return ControlType(System.Windows.Automation.ControlType.Edit);
+            }
+            if (t == typeof(Button))
+            {
+                return ControlType(System.Windows.Automation.ControlType.Button);
+            }
+            if (t == typeof(ComboBox))
+            {
+                return ControlType(System.Windows.Automation.ControlType.ComboBox);
+            }
+            if (t == typeof(CheckBox))
+            {
+                return ControlType(System.Windows.Automation.ControlType.CheckBox);
+            }
+            if (t == typeof(RadioButton))
+            {
+                return ControlType(System.Windows.Automation.ControlType.RadioButton);
+            }
+            return new By();
         }
 
         public static By AutomationId(string automationId)
@@ -140,12 +166,24 @@ namespace WhiteSharp
             return b;
         }
 
+        public static By Enabled(bool enabled)
+        {
+            By b = new By();
+            b._result.Add(x => enabled ? x.Current.IsEnabled : !x.Current.IsEnabled);
+            b._identifiers.Add(string.Format("Enabled = {0}", enabled));
+            return b;
+        }
+
         #endregion
 
         #region Non-static Methods
 
         public void Add(By by)
         {
+            if (by._result == null || by._result.Count == 0)
+            {
+                return;
+            }
             if (Result == null)
             {
                 Result = by.Result;
@@ -196,10 +234,10 @@ namespace WhiteSharp
             return this;
         }
 
-        public By AndEnabled(bool b)
+        public By AndEnabled(bool enabled)
         {
-            _result.Add(x => x.Current.IsEnabled);
-            _identifiers.Add(string.Format("Enabled = {0}", b));
+            _result.Add(x => enabled ? x.Current.IsEnabled : !x.Current.IsEnabled);
+            _identifiers.Add(string.Format("Enabled = {0}", enabled));
             return this;
         }
 

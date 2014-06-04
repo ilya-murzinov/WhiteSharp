@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Windows.Automation;
 using TestStack.White.UIItems.Actions;
-using TestStack.White.UIItems.ListBoxItems;
 
 namespace WhiteSharp.Controls
 {
-    public class Combobox : Control
+    public class ComboBox : Control
     {
-        public Combobox(AutomationElement automationElement, Window window, By searchCriteria, int index) 
+        public ComboBox(AutomationElement automationElement, Window window, By searchCriteria, int index) 
             : base(automationElement, window, searchCriteria, index)
         {
         }
@@ -31,7 +30,7 @@ namespace WhiteSharp.Controls
             else
             {
                 //TODO: replace this ro remove link to TestStack.White
-                var comboBox = new ComboBox(AutomationElement, new NullActionListener());
+                var comboBox = new TestStack.White.UIItems.ListBoxItems.ComboBox(AutomationElement, new NullActionListener());
                 comboBox.Select(name);
             }
 
@@ -46,7 +45,7 @@ namespace WhiteSharp.Controls
             {
                 throw new GeneralException(string.Format(Logging.Strings["NotACombobox"], SearchCriteria.Identifiers));
             }
-            var combobox = new ComboBox(AutomationElement, null);
+            var combobox = new TestStack.White.UIItems.ListBoxItems.ComboBox(AutomationElement, null);
             try
             {
                 combobox.Select(index);

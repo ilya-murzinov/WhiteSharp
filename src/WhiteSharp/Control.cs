@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
 using TestStack.White.InputDevices;
+using WhiteSharp.Controls;
 using WhiteSharp.Extensions;
 using WhiteSharp.Factories;
 
@@ -160,6 +161,31 @@ namespace WhiteSharp
         public T FindControl<T>(ControlType type) where T : class, IControl
         {
             return FindControl<T>(By.ControlType(type));
+        }
+
+        public T FindControl<T>(int index = 0) where T : class, IControl
+        {
+            if (typeof(T) == typeof(TextBox))
+            {
+                return FindControl<T>(ControlType.Edit);
+            }
+            if (typeof(T) == typeof(Button))
+            {
+                return FindControl<T>(ControlType.Button);
+            }
+            if (typeof(T) == typeof(ComboBox))
+            {
+                return FindControl<T>(ControlType.ComboBox);
+            }
+            if (typeof(T) == typeof(CheckBox))
+            {
+                return FindControl<T>(ControlType.CheckBox);
+            }
+            if (typeof(T) == typeof(RadioButton))
+            {
+                return FindControl<T>(ControlType.RadioButton);
+            }
+            throw new GeneralException("Could not create control based on type parameter.");
         }
 
         public IControl FindControl(By searchCriteria, int index = 0)

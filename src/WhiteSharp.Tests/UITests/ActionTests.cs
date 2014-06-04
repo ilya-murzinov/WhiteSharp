@@ -14,7 +14,7 @@ namespace WhiteSharp.Tests.UITests
         [TestCase("DataBoundComboBox", "Test5")]
         public void SelectItemTest(string id, string item)
         {
-            Combobox control = MainWindow.Instance.Window.FindControl<Combobox>(id);
+            ComboBox control = MainWindow.Instance.Window.FindControl<ComboBox>(id);
             control.SelectItem(item);
             control.GetText().ShouldBe(item);
         }
@@ -24,7 +24,7 @@ namespace WhiteSharp.Tests.UITests
         [TestCase("DataBoundComboBox", 2, "Test3")]
         public void SelectItemTest(string id, int item, string result)
         {
-            Combobox control = MainWindow.Instance.Window.FindControl<Combobox>(id);
+            ComboBox control = MainWindow.Instance.Window.FindControl<ComboBox>(id);
             control.SelectItem(item);
             control.GetText().ShouldBe(result);
         }

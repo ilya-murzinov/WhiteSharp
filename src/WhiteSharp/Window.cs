@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Automation;
+using WhiteSharp.Controls;
 using WhiteSharp.Extensions;
 using WhiteSharp.Factories;
 
@@ -107,6 +108,7 @@ namespace WhiteSharp
 
         public T FindControl<T>(By searchCriteria, int index = 0) where T : class, IControl
         {
+            searchCriteria.Add(By.FromControlType(typeof(T)));
             List<AutomationElement> elements = Find(AutomationElement, searchCriteria, index);
 
             var returnControl =
@@ -128,6 +130,11 @@ namespace WhiteSharp
         public T FindControl<T>(ControlType type) where T : class, IControl
         {
             return FindControl<T>(By.ControlType(type));
+        }
+
+        public T FindControl<T>(int index = 0) where T : class, IControl
+        {
+            return FindControl<T>(By.FromControlType(typeof(T)));
         }
 
         public IControl FindControl(By searchCriteria, int index = 0)

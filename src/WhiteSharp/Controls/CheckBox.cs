@@ -2,9 +2,9 @@
 
 namespace WhiteSharp.Controls
 {
-    public class Checkbox : Control
+    public class CheckBox : Control
     {
-        public Checkbox(AutomationElement automationElement, Window window, By searchCriteria, int index) 
+        public CheckBox(AutomationElement automationElement, Window window, By searchCriteria, int index) 
             : base(automationElement, window, searchCriteria, index)
         {
         }
