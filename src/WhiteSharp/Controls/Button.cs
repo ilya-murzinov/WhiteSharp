@@ -8,7 +8,7 @@ namespace WhiteSharp.Controls
 {
     public class Button : Control
     {
-        public Button(AutomationElement automationElement, Window window, By searchCriteria, int index) 
+        public Button(AutomationElement automationElement, IControlContainer window, By searchCriteria, int index) 
             : base(automationElement, window, searchCriteria, index)
         {
         }
@@ -17,7 +17,7 @@ namespace WhiteSharp.Controls
         {
             DateTime start = DateTime.Now;
             Point? point = null;
-            while (!Clicked)
+            while (!Clicked && (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
             {
                 try
                 {
@@ -25,7 +25,7 @@ namespace WhiteSharp.Controls
                 }
                 catch (NoClickablePointException)
                 {
-                    Window.OnTop();
+                    ((Window) Window).OnTop();
                 }
                 if (point != null)
                 {

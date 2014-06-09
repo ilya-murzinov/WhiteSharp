@@ -8,7 +8,7 @@ namespace WhiteSharp.Controls
 {
     public class TextBox : Control
     {
-        public TextBox(AutomationElement automationElement, Window window, By searchCriteria, int index) 
+        public TextBox(AutomationElement automationElement, IControlContainer window, By searchCriteria, int index) 
             : base(automationElement, window, searchCriteria, index)
         {
         }
@@ -25,7 +25,7 @@ namespace WhiteSharp.Controls
                 }
                 catch (NoClickablePointException)
                 {
-                    Window.OnTop();
+                    ((Window) Window).OnTop();
                 }
                 if (point != null)
                 {

@@ -61,9 +61,8 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="TestStack.White, Version=0.12.0.0, Culture=neutral, PublicKeyToken=2672efbf3e161801, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\TestStack.White.0.12.0\lib\net40\TestStack.White.dll</HintPath>
+    <Reference Include="TestStack.White">
+      <HintPath>..\packages\TestStack.White.0.13.0\lib\net40\TestStack.White.dll</HintPath>
     </Reference>
     <Reference Include="UIAutomationClient" />
     <Reference Include="UIAutomationTypes" />
@@ -80,6 +79,7 @@
   <ItemGroup>
     <Compile Include="Attributes\FindByAttribute.cs" />
     <Compile Include="Attributes\WindowAttribute.cs" />
+    <Compile Include="Container.cs" />
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\CheckBox.cs" />
     <Compile Include="Controls\ComboBox.cs" />

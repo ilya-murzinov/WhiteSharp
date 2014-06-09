@@ -6,6 +6,7 @@ namespace WhiteSharp
     {
         AutomationElement AutomationElement { get; }
         bool Enabled { get; }
+        string Name { get; }
         IControl ClickAnyway();
         IControl Click();
         IControl DoubleClick();

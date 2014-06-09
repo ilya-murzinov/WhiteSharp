@@ -1,42 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
 using TestStack.White.InputDevices;
-using WhiteSharp.Controls;
 using WhiteSharp.Extensions;
-using WhiteSharp.Factories;
 
 namespace WhiteSharp
 {
-    public class Control : IControl
+    public class Control : Container, IControl
     {
         #region Private Fields
 
-        private AutomationElement _automationElement;
         protected bool Clicked = false;
 
         #endregion
 
         #region Properties
-
-        public List<AutomationElement> BaseAutomationElementList { get; protected set; }
-
-        internal Window Window { get; set; }
-
-        public String WindowTitle { get; internal set; }
-
+        
+        internal IControlContainer Window { get; set; }
+        
         internal By SearchCriteria { get; set; }
 
         internal int Index { get; set; }
-
-        public bool IsOffScreen
-        {
-            get { return _automationElement.IsOffScreen(); }
-        }
 
         public Rect BoundingRectangle
         {
@@ -46,26 +33,6 @@ namespace WhiteSharp
         internal string Id
         {
             get { return AutomationElement.GetId(); }
-        }
-
-        public AutomationElement AutomationElement
-        {
-            get
-            {
-                if (!IsOffScreen)
-                {
-                    return _automationElement;
-                }
-
-                if (WindowTitle != null)
-                {
-                    return _automationElement =
-                        new Window(Regex.Escape(WindowTitle)).FindControl(SearchCriteria, Index).AutomationElement;
-                }
-
-                return null;
-            }
-            set { _automationElement = value; }
         }
 
         public bool Enabled
@@ -82,7 +49,7 @@ namespace WhiteSharp
 
         #region Constructors
 
-        public Control(AutomationElement automationElement, Window window, By searchCriteria, int index)
+        public Control(AutomationElement automationElement, IControlContainer window, By searchCriteria, int index)
         {
             AutomationElement = automationElement;
             Window = window;
@@ -97,16 +64,7 @@ namespace WhiteSharp
 
         #endregion
 
-        #region Control Finders
-
-        private void RefreshBaseList(AutomationElement automationElement)
-        {
-            BaseAutomationElementList = automationElement
-                .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
-                .OfType<AutomationElement>().ToList();
-        }
-
-        internal List<AutomationElement> Find(AutomationElement automationElement, By searchCriteria, int index)
+        public override List<AutomationElement> Find(AutomationElement automationElement, By searchCriteria, int index)
         {
             DateTime start = DateTime.Now;
 
@@ -137,138 +95,7 @@ namespace WhiteSharp
 
             return list;
         }
-
-        public T FindControl<T>(By searchCriteria, int index = 0) where T : class, IControl
-        {
-            List<AutomationElement> elements = Find(AutomationElement, searchCriteria, index);
-
-            var returnControl =
-                ControlFactory.Create<T>(elements.ElementAt(index), Window, searchCriteria, index);
-
-            Logging.ControlFound(searchCriteria);
-
-            if (elements.Count() > 1)
-                Logging.MutlipleControlsWarning(elements);
-
-            return returnControl;
-        }
-
-        public T FindControl<T>(string automationId, int index = 0) where T : class, IControl
-        {
-            return FindControl<T>(By.AutomationId(automationId), index);
-        }
-
-        public T FindControl<T>(ControlType type) where T : class, IControl
-        {
-            return FindControl<T>(By.ControlType(type));
-        }
-
-        public T FindControl<T>(int index = 0) where T : class, IControl
-        {
-            if (typeof(T) == typeof(TextBox))
-            {
-                return FindControl<T>(ControlType.Edit);
-            }
-            if (typeof(T) == typeof(Button))
-            {
-                return FindControl<T>(ControlType.Button);
-            }
-            if (typeof(T) == typeof(ComboBox))
-            {
-                return FindControl<T>(ControlType.ComboBox);
-            }
-            if (typeof(T) == typeof(CheckBox))
-            {
-                return FindControl<T>(ControlType.CheckBox);
-            }
-            if (typeof(T) == typeof(RadioButton))
-            {
-                return FindControl<T>(ControlType.RadioButton);
-            }
-            throw new GeneralException("Could not create control based on type parameter.");
-        }
-
-        public IControl FindControl(By searchCriteria, int index = 0)
-        {
-            List<AutomationElement> elements = Find(AutomationElement, searchCriteria, index);
-            return ControlFactory.Create(elements.ElementAt(index), Window, searchCriteria, index);
-        }
-
-        public IControl FindControl(string automationId, int index = 0)
-        {
-            By searchCriteria = By.AutomationId(automationId);
-            List<AutomationElement> elements = Find(AutomationElement, searchCriteria, index);
-            return ControlFactory.Create(elements.ElementAt(index), Window, searchCriteria, index);
-        }
-
-        public List<AutomationElement> FindAll(By searchCriteria)
-        {
-            return Find(AutomationElement, searchCriteria, 0);
-        }
-
-        #endregion
-
-        #region Exists
-
-        public bool Exists(By searchCriteria)
-        {
-            DateTime start = DateTime.Now;
-
-            while ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
-            {
-                try
-                {
-                    RefreshBaseList(AutomationElement);
-                    List<AutomationElement> elements = BaseAutomationElementList.FindAll(searchCriteria.Result);
-                    if (elements.Count > 0)
-                    {
-                        return true;
-                    }
-                    return false;
-                }
-                catch (Exception)
-                {
-                }
-            }
-            return false;
-        }
-
-        public bool Exists(string automationId)
-        {
-            return Exists(By.AutomationId(automationId));
-        }
-
-        public bool Exists(By searchCriteria, out object o)
-        {
-            DateTime start = DateTime.Now;
-            o = null;
-
-            while ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
-            {
-                try
-                {
-                    RefreshBaseList(AutomationElement);
-                    List<AutomationElement> elements = BaseAutomationElementList.FindAll(searchCriteria.Result);
-                    if (elements.Count > 0)
-                    {
-                        o = elements.ElementAt(0);
-                        return true;
-                    }
-                }
-                catch (Exception)
-                {
-                }
-            }
-            return false;
-        }
-
-        public bool Exists(string automationId, out object o)
-        {
-            return Exists(By.AutomationId(automationId), out o);
-        }
-
-        #endregion
-
+       
         #region Actions
 
         public virtual IControl ClickAnyway()
@@ -280,16 +107,11 @@ namespace WhiteSharp
             }
             catch (NoClickablePointException)
             {
-                Window.OnTop();
+                ((Window) Window).OnTop();
             }
-            if (point != null)
-            {
-                Mouse.Instance.Click(new Point(point.Value.X, point.Value.Y));
-            }
-            else
-            {
-                Mouse.Instance.Click(AutomationElement.GetClickablePoint());
-            }
+            Mouse.Instance.Click(point != null
+                ? new Point(point.Value.X, point.Value.Y)
+                : AutomationElement.GetClickablePoint());
             Logging.Click(SearchCriteria.Identifiers);
             return this;
         }
@@ -407,25 +229,6 @@ namespace WhiteSharp
             Keyboard.Instance.Send(key);
             Logging.Sent(key.ToString("G"));
             return this;
-        }
-
-        public IControl ClickIfExists(By searchCriteria)
-        {
-            IControl control = null;
-            object o;
-
-            if (Exists(searchCriteria, out o))
-            {
-                control = ControlFactory.Create((AutomationElement) o, Window, searchCriteria, 0);
-                control.Click();
-            }
-
-            return control;
-        }
-
-        public IControl ClickIfExists(string automationId)
-        {
-            return ClickIfExists(By.AutomationId(automationId));
         }
 
         #endregion

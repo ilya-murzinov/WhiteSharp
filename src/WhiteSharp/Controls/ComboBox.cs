@@ -6,7 +6,7 @@ namespace WhiteSharp.Controls
 {
     public class ComboBox : Control
     {
-        public ComboBox(AutomationElement automationElement, Window window, By searchCriteria, int index) 
+        public ComboBox(AutomationElement automationElement, IControlContainer window, By searchCriteria, int index) 
             : base(automationElement, window, searchCriteria, index)
         {
         }

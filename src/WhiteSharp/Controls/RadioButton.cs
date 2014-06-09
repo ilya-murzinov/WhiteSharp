@@ -3,9 +3,9 @@ using System.Windows.Automation;
 
 namespace WhiteSharp.Controls
 {
-    public class RadioButton : Control
+    class RadioButton : Control
     {
-        public RadioButton(AutomationElement automationElement, Window window, By searchCriteria, int index) 
+        public RadioButton(AutomationElement automationElement, IControlContainer window, By searchCriteria, int index) 
             : base(automationElement, window, searchCriteria, index)
         {
         }
