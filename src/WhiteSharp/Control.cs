@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
@@ -11,14 +12,21 @@ namespace WhiteSharp
 {
     public class Control : Container, IControl
     {
-        #region Private Fields
-
-        protected bool Clicked = false;
-
-        #endregion
-
         #region Properties
         
+        public override sealed AutomationElement AutomationElement
+        {
+            get
+            {
+                return (!AutomationElementField.IsOffScreen())
+                    ? AutomationElementField
+                    : (AutomationElementField =
+                    new Window(Regex.Escape(WindowTitle))
+                        .FindControl(SearchCriteria, Index).AutomationElement);
+            }
+            protected set { AutomationElementField = value; }
+        }
+
         internal IControlContainer Window { get; set; }
         
         internal By SearchCriteria { get; set; }
@@ -53,13 +61,9 @@ namespace WhiteSharp
         {
             AutomationElement = automationElement;
             Window = window;
+            WindowTitle = window.AutomationElement.Title();
             SearchCriteria = searchCriteria;
             Index = index;
-            Automation.AddAutomationEventHandler(InvokePattern.InvokedEvent, AutomationElement, TreeScope.Element,
-                (sender, args) =>
-                {
-                    Clicked = true;
-                });
         }
 
         #endregion
@@ -76,12 +80,10 @@ namespace WhiteSharp
             while ((!list.Any() || element == null) &&
                    (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
             {
-                try
-                {
-                    list = BaseAutomationElementList.FindAll(searchCriteria.Result);
-                    element = list.ElementAt(index);
-                }
-                catch (Exception)
+                list = BaseAutomationElementList.FindAll(searchCriteria.Result);
+                element = list.ElementAtOrDefault(index);
+                
+                if (element == null)
                 {
                     RefreshBaseList(AutomationElement);
                 }
@@ -189,17 +191,6 @@ namespace WhiteSharp
             WaitForEnabled();
             Rect r = AutomationElement.Current.BoundingRectangle;
             return ClickAnyway((int) (r.X + 1), (int) (r.Y + r.Height/2));
-        }
-
-        public ToggleState GetToggleState()
-        {
-            object objPat;
-            if (AutomationElement.TryGetCurrentPattern(TogglePattern.Pattern, out objPat))
-            {
-                return ((TogglePattern) objPat).Current.ToggleState;
-            }
-            throw new GeneralException(string.Format(Logging.Strings["UnsupportedPattern"], SearchCriteria.Identifiers,
-                "TogglePattern"));
         }
 
         public Control ScrollVertical(ScrollAmount scrollAmount)

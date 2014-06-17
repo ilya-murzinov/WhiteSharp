@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Automation;
 using WhiteSharp.Extensions;
 using WhiteSharp.Factories;
@@ -10,25 +9,16 @@ namespace WhiteSharp
 {
     public abstract class Container : IControlContainer
     {
-        private AutomationElement _automationElement;
+        protected AutomationElement AutomationElementField;
 
         public string WindowTitle { get; protected set; }
 
         public bool IsOffScreen
         {
-            get { return _automationElement.IsOffScreen(); }
+            get { return AutomationElementField.IsOffScreen(); }
         }
 
-        public AutomationElement AutomationElement
-        {
-            get
-            {
-                return (!_automationElement.IsOffScreen())
-                    ? _automationElement
-                    : new Window(Regex.Escape(WindowTitle)).AutomationElement;
-            }
-            protected set { _automationElement = value; }
-        }
+        public abstract AutomationElement AutomationElement { get; protected set; }
 
         public List<AutomationElement> BaseAutomationElementList { get; protected set; }
 
@@ -133,7 +123,7 @@ namespace WhiteSharp
                     List<AutomationElement> elements = BaseAutomationElementList.FindAll(searchCriteria.Result);
                     if (elements.Count > 0)
                     {
-                        o = elements.ElementAt(0);
+                        o = elements.ElementAtOrDefault(0);
                         return true;
                     }
                 }

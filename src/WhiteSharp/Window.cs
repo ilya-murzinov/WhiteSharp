@@ -7,7 +7,7 @@ using WhiteSharp.Extensions;
 
 namespace WhiteSharp
 {
-    public class Window : Container
+    public sealed class Window : Container
     {
         #region Private Fields
 
@@ -18,6 +18,18 @@ namespace WhiteSharp
         #endregion
 
         #region Properties
+
+        public override AutomationElement AutomationElement
+        {
+            get
+            {
+                return (!AutomationElementField.IsOffScreen())
+                    ? AutomationElementField
+                    : (AutomationElementField =
+                    new Window(Regex.Escape(WindowTitle)).AutomationElement);
+            }
+            protected set { AutomationElementField = value; }
+        }
 
         internal WindowPattern WindowPattern
         {
@@ -95,9 +107,12 @@ namespace WhiteSharp
                 try
                 {
                     list = BaseAutomationElementList.FindAll(searchCriteria.Result);
-                    element = list.ElementAt(index);
+                    element = list.ElementAtOrDefault(index);
                 }
-                catch (Exception)
+                catch (Exception ex)
+                {
+                }
+                if (element == null)
                 {
                     RefreshBaseList(IsOffScreen
                         ? new Window(Regex.Escape(WindowTitle)).AutomationElement

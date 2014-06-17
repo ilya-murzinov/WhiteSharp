@@ -8,16 +8,23 @@ namespace WhiteSharp.Controls
 {
     public class Button : Control
     {
+        private bool _clicked = false;
+
         public Button(AutomationElement automationElement, IControlContainer window, By searchCriteria, int index) 
             : base(automationElement, window, searchCriteria, index)
         {
+            Automation.AddAutomationEventHandler(InvokePattern.InvokedEvent, AutomationElement, TreeScope.Element,
+                (sender, args) =>
+                {
+                    _clicked = true;
+                });
         }
 
         public override IControl ClickAnyway()
         {
             DateTime start = DateTime.Now;
             Point? point = null;
-            while (!Clicked && (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
+            while (!_clicked && (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
             {
                 try
                 {
@@ -27,13 +34,14 @@ namespace WhiteSharp.Controls
                 {
                     ((Window) Window).OnTop();
                 }
-                if (point != null)
-                {
-                    Mouse.Instance.Click(new Point(point.Value.X, point.Value.Y));
-                }
+                Mouse.Instance.Click(point != null
+                    ? new Point(point.Value.X, point.Value.Y)
+                    : AutomationElement.GetClickablePoint());
+                Logging.Click(SearchCriteria.Identifiers);
                 //TODO: костыль
                 Thread.Sleep(2000);
             }
+            _clicked = false;
             Logging.Click(SearchCriteria.Identifiers);
             return this;
         }

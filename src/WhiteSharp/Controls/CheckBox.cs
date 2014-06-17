@@ -32,5 +32,16 @@ namespace WhiteSharp.Controls
         {
             SetToggleState(toggled ? ToggleState.On : ToggleState.Off);
         }
+
+        public ToggleState GetToggleState()
+        {
+            object objPat;
+            if (AutomationElement.TryGetCurrentPattern(TogglePattern.Pattern, out objPat))
+            {
+                return ((TogglePattern)objPat).Current.ToggleState;
+            }
+            throw new GeneralException(string.Format(Logging.Strings["UnsupportedPattern"], SearchCriteria.Identifiers,
+                "TogglePattern"));
+        }
     }
 }
