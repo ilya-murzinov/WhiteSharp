@@ -1,0 +1,2 @@
+  - mozroots --import --sync
+install:
