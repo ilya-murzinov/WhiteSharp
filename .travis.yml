@@ -8,5 +8,5 @@ install:
 script:
   - mozroots --import --sync
   - wget http://nuget.org/nuget.exe
-  - cd src && mono --runtime=v4.0 ./nuget.exe restore
-  - xbuild WhiteSharp/WhiteSharp.csproj
+  - mono --runtime=v4.0 ./nuget.exe restore src
+  - xbuild src/WhiteSharp/WhiteSharp.csproj
