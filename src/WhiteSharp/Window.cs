@@ -174,6 +174,111 @@ namespace WhiteSharp
             Logging.WindowClosed(WindowTitle);
         }
 
+        public void ClickByNameAndEnabled(string name)
+        {
+            FindControl<Button>(By.Name(name).AndEnabled()).Click();
+        }
+
+        public void TryClickByName(string name)
+        {
+            try
+            {
+                FindControl<Button>(By.Name(name).AndEnabled()).Click();
+            }
+            catch (Exception)
+            {
+                Thread.Sleep(100);
+            }
+        }
+
+        public bool SendManual(By criteria, string value)
+        {
+            if (value == null) throw new Exception("Параметр value не может быть пустой строкой!");
+            var textBox = FindControl<TextBox>(criteria);
+            var start = DateTime.Now;
+            while ((DateTime.Now - start).TotalSeconds < 10)
+            {
+                textBox.Click();
+                foreach (var letter in value.ToCharArray())
+                {
+                    switch (letter)
+                    {
+                        case '0':
+                            Send(Keys.Zero);
+                            break;
+                        case '1':
+                            Send(Keys.One);
+                            break;
+                        case '2':
+                            Send(Keys.Two);
+                            break;
+                        case '3':
+                            Send(Keys.Three);
+                            break;
+                        case '4':
+                            Send(Keys.Four);
+                            break;
+                        case '5':
+                            Send(Keys.Five);
+                            break;
+                        case '6':
+                            Send(Keys.Six);
+                            break;
+                        case '7':
+                            Send(Keys.Seven);
+                            break;
+                        case '8':
+                            Send(Keys.Eight);
+                            break;
+                        case '9':
+                            Send(Keys.Nine);
+                            break;
+                    }
+                }
+                Send(Keys.Tab);
+                if (textBox.GetValue() == null || !textBox.GetValue().Equals(value)) continue;
+                Logging.Info(String.Format("Ввели число: {0}, текст в поле после ввода: {1}", value, textBox.GetValue()));
+                Send(Keys.Tab);
+                Keyboard.Instance.LeaveAllKeys();
+                return true;
+            }
+
+            Keyboard.Instance.LeaveAllKeys();
+            Logging.Info(String.Format("Ввели число: {0}, текст в поле после ввода: {1}", value, textBox.GetValue()));
+            return false;
+        }
+
+        public new string SetKeys(TextBox tb, string keys)
+        {
+            tb.Click();
+            try
+            {
+                tb.ClearValue();
+            }
+            catch
+            {
+                SendKeys.SendWait("{END}{BS}{BS}{BS}{BS}{BS}{BS}{BS}{BS}{HOME}{DEL}{DEL}{DEL}{DEL}{DEL}{DEL}{DEL}{DEL}{HOME}");
+            }
+            SendKeys.SendWait(keys);
+            Keyboard.Instance.LeaveAllKeys();
+            return tb.GetValue();
+        }
+
+        public bool Prompt(string winName, string btnName)
+        {
+            try
+            {
+                var dlg = FindModalWindow(winName);
+                var btn = dlg.FindControl<Button>(By.AutomationId(btnName).AndEnabled());
+                btn.Click();
+                return true;
+            }
+            catch
+            {
+                Thread.Sleep(100);
+            }
+            return false;
+        }
         #endregion
 
     }
