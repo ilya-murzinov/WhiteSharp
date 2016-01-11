@@ -1,5 +1,6 @@
 init:
-  - ps: iex ((new-object net.webclient).DownloadString('https://gist.githubusercontent.com/ilya-murzinov/4b782e7d5df80eebb4ae/raw/52d843db32b8980376b19846f5bc869bdf723f07/Appveyor%2520RDP'))
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://gist.githubusercontent.com/ilya-murzinov/4b782e7d5df80eebb4ae/raw/52d843db32b8980376b19846f5bc869bdf723f07/Appveyor%2520RDP'))
+  
 before_build:
   - nuget restore src/WhiteSharp.sln
 
