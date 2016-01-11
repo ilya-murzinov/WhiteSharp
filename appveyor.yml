@@ -5,5 +5,6 @@ build_script:
   - msbuild src/WhiteSharp.sln /p:Configuration=Debug /t:Rebuild
   
 test_script:
-  - "apps/WpfTestApplication.exe"
+  - cd apps
+  - WpfTestApplication.exe
   - nunit-console src/WhiteSharp.Tests/bin/Debug/WhiteSharp.Tests.dll
