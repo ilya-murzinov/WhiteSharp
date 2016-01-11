@@ -35,7 +35,7 @@ namespace WhiteSharp
             get { return (_instance = new Desktop()); }
         }
 
-        private List<AutomationElement> FindWindows(Predicate<AutomationElement> predicate, int timeout)
+        private static List<AutomationElement> FindWindows(Predicate<AutomationElement> predicate, int timeout)
         {
             var windows = new List<AutomationElement>();
 
@@ -47,7 +47,7 @@ namespace WhiteSharp
                 {
                     windows = Instance.Windows.FindAll(predicate);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Thread.Sleep(Settings.Default.Delay);
                 }
@@ -61,17 +61,16 @@ namespace WhiteSharp
             return windows;
         }
 
-        private List<AutomationElement> FindWindows(string title, int timeout)
+        public List<AutomationElement> FindWindows(string title, int timeout = 20000)
         {
-            _identifiers = new List<string> {title};
-            var windows = new List<AutomationElement>();
+            _identifiers = new List<string> { title };
             _start = DateTime.Now;
             var regex = new Regex(title);
-            windows = FindWindows(window => regex.IsMatch(window.Title()), timeout);
+            List<AutomationElement> windows = FindWindows(window => regex.IsMatch(window.Title()), timeout);
             return windows;
         }
 
-        private List<AutomationElement> FindWindows(int processId, string title, int timeout)
+        private static List<AutomationElement> FindWindows(int processId, string title, int timeout = 0)
         {
             _identifiers = new List<string>();
             _start = DateTime.Now;
@@ -83,21 +82,20 @@ namespace WhiteSharp
             {
                 throw new GeneralException(Logging.Strings["ProcessNotFound"]);
             }
-            _identifiers.Add(processId.ToString());
+            _identifiers.Add(processId.ToString("D"));
             _identifiers.Add(title);
             var regex = new Regex(title);
             return FindWindows(window => window.Current.ProcessId.Equals(processId), timeout)
                 .FindAll(window => regex.IsMatch(window.Title()));
         }
 
-        private AutomationElement SelectWindow(List<AutomationElement> windows)
+        public AutomationElement SelectWindow(List<AutomationElement> windows)
         {
             if (windows == null || !windows.Any())
                 throw new WindowNotFoundException(
                     Logging.WindowException(_identifiers.Aggregate((x, y) => x + ", " + y)));
 
-
-            AutomationElement returnWindow = windows.First();
+            var returnWindow = windows.First();
 
             Logging.WindowFound(returnWindow.Title(), DateTime.Now - _start);
 
@@ -107,7 +105,7 @@ namespace WhiteSharp
             return returnWindow;
         }
 
-        internal Window FindWindow(string title)
+        public Window FindWindow(string title)
         {
             return new Window(SelectWindow(FindWindows(title, Settings.Default.Timeout)));
         }
@@ -122,17 +120,60 @@ namespace WhiteSharp
             return Windows.FindAll(x => x.Title().Contains(title));
         }
 
+        public List<AutomationElement> FindAll(int processId)
+        {
+            return Windows.FindAll(x => x.Current.ProcessId == processId);
+        }
+
+        public bool TryFindWindow(string title, out Window window, bool doThrowExeption)
+        {
+            Window outWindow = null;
+
+            var start = DateTime.Now;
+            while ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
+            {
+                try
+                {
+                    outWindow = new Window(SelectWindow(FindWindows(title, Settings.Default.Timeout)));
+                    window = outWindow;
+                    return true;
+                }
+                catch (WindowNotFoundException)
+                {
+                }
+            }
+
+            if (outWindow == null && doThrowExeption)
+                throw new Exception("Окно не найдено! Название = " + title);
+            window = outWindow;
+            return window != null;
+        }
+
         public void TryFindWindow(string title, out Window window)
         {
+
             Window outWindow = null;
             try
             {
-                outWindow = new Window(SelectWindow(FindWindows(title, Settings.Default.Timeout/10)));
+                outWindow = new Window(SelectWindow(FindWindows(title, Settings.Default.Timeout / 5)));
             }
             catch (WindowNotFoundException)
             {
             }
             window = outWindow;
+        }
+
+        public bool TryFindWindow(string title)
+        {
+            Window outWindow = null;
+            try
+            {
+                outWindow = new Window(SelectWindow(FindWindows(title, Settings.Default.Timeout / 4)));
+            }
+            catch (WindowNotFoundException)
+            {
+            }
+            return outWindow == null;
         }
     }
 }

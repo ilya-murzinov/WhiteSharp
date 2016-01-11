@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Automation;
+using Shouldly;
 using WhiteSharp.Extensions;
 using WhiteSharp.Factories;
+using ComboBox = WhiteSharp.Controls.ComboBox;
+using TextBox = WhiteSharp.Controls.TextBox;
 
 namespace WhiteSharp
 {
@@ -18,24 +21,12 @@ namespace WhiteSharp
             get { return AutomationElementField.IsOffScreen(); }
         }
 
-        public abstract AutomationElement AutomationElement { get; protected set; }
-
         public List<AutomationElement> BaseAutomationElementList { get; protected set; }
-
-        public abstract List<AutomationElement> Find(AutomationElement automationElement, By searchCriteria, int index);
-
-        protected void RefreshBaseList(AutomationElement automationElement)
-        {
-            BaseAutomationElementList = automationElement
-                .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
-                .OfType<AutomationElement>().ToList();
-        }
+        public abstract AutomationElement AutomationElement { get; protected set; }
 
         public T FindControl<T>(By searchCriteria, int index = 0) where T : class, IControl
         {
-            searchCriteria.Add(By.FromControlType(typeof(T)));
-            List<AutomationElement> elements = Find(AutomationElement, searchCriteria, index);
-
+            var elements = Find(AutomationElement, searchCriteria, index);
             var returnControl =
                 ControlFactory.Create<T>(elements.ElementAt(index), this, searchCriteria, index);
 
@@ -45,6 +36,50 @@ namespace WhiteSharp
                 Logging.MutlipleControlsWarning(elements);
 
             return returnControl;
+        }
+
+        public List<T> FindControls<T>(By searchCriteria, int index = 0) where T : class, IControl
+        {
+            var elements = Find(AutomationElement, searchCriteria, index);
+            var res = elements.Select((t, i) => ControlFactory.Create<T>(elements.ElementAt(i), this, searchCriteria, i)).ToList();
+
+            Logging.ControlFound(searchCriteria);
+
+            if (elements.Count() > 1)
+                Logging.MutlipleControlsWarning(elements);
+
+            return res;
+        }
+
+        public T FindLastControl<T>(By searchCriteria, int index = 0) where T : class, IControl
+        {
+            var elements = Find(AutomationElement, searchCriteria, index);
+            var count = elements.Count;
+            if (count > 1)
+                Logging.MutlipleControlsWarning(elements);
+
+            var returnControl =
+                ControlFactory.Create<T>(elements.ElementAt(count - 1), this, searchCriteria, count - 1);
+
+            Logging.ControlFound(searchCriteria);
+
+            return returnControl;
+        }
+        
+        public bool TryTextBoxSend(By searchCriteria, string value, int index = 0)
+        {
+            if (!Exists(searchCriteria)) return false;
+            var control = FindControl<TextBox>(searchCriteria, index);
+            control.Send(value);
+            return true;
+        }
+
+        public bool TryComboboxSelect(By searchCriteria, string value, int index = 0)
+        {
+            if (!Exists(searchCriteria)) return false;
+            var control = FindControl<ComboBox>(searchCriteria, index);
+            control.SelectItem(value);
+            return true;
         }
 
         public T FindControl<T>(string automationId, int index = 0) where T : class, IControl
@@ -64,17 +99,17 @@ namespace WhiteSharp
 
         public IControl FindControl(By searchCriteria, int index = 0)
         {
-            List<AutomationElement> elements = Find(AutomationElement, searchCriteria, index);
+            var elements = Find(AutomationElement, searchCriteria, index);
             return ControlFactory.Create(elements.ElementAt(index), this, searchCriteria, index);
         }
 
         public IControl FindControl(string automationId, int index = 0)
         {
-            By searchCriteria = By.AutomationId(automationId);
-            List<AutomationElement> elements = Find(AutomationElement, searchCriteria, index);
+            var searchCriteria = By.AutomationId(automationId);
+            var elements = Find(AutomationElement, searchCriteria, index);
             return ControlFactory.Create(elements.ElementAt(index), this, searchCriteria, index);
         }
-
+        
         public List<AutomationElement> FindAll(By searchCriteria)
         {
             return Find(AutomationElement, searchCriteria, 0);
@@ -82,26 +117,31 @@ namespace WhiteSharp
 
         public bool Exists(By searchCriteria)
         {
-            DateTime start = DateTime.Now;
+            var start = DateTime.Now;
 
-            while ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
+            while ((DateTime.Now - start).TotalMilliseconds * 5 < Settings.Default.Timeout)
             {
                 try
                 {
                     RefreshBaseList(AutomationElement);
-
-                    List<AutomationElement> elements = BaseAutomationElementList.FindAll(searchCriteria.Result);
-                    if (elements.Count > 0)
-                    {
-                        return true;
-                    }
-                    return false;
+                    var elements = BaseAutomationElementList.FindAll(searchCriteria.Result);
+                    return elements.Count > 0;
                 }
                 catch (Exception)
                 {
                 }
             }
             return false;
+        }
+
+        public void ShouldExist(By searchCriteria)
+        {
+            Exists(searchCriteria).ShouldBe(true);
+        }
+
+        public void ShouldNotExist(By searchCriteria)
+        {
+            Exists(searchCriteria).ShouldBe(false);
         }
 
         public bool Exists(string automationId)
@@ -111,21 +151,19 @@ namespace WhiteSharp
 
         public bool Exists(By searchCriteria, out object o)
         {
-            DateTime start = DateTime.Now;
+            var start = DateTime.Now;
             o = null;
 
-            while ((DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout / 10)
+            while ((DateTime.Now - start).TotalMilliseconds * 10 < Settings.Default.Timeout)
             {
                 try
                 {
                     RefreshBaseList(AutomationElement);
 
-                    List<AutomationElement> elements = BaseAutomationElementList.FindAll(searchCriteria.Result);
-                    if (elements.Count > 0)
-                    {
-                        o = elements.ElementAtOrDefault(0);
-                        return true;
-                    }
+                    var elements = BaseAutomationElementList.FindAll(searchCriteria.Result);
+                    if (elements.Count <= 0) continue;
+                    o = elements.ElementAtOrDefault(0);
+                    return true;
                 }
                 catch (Exception)
                 {
@@ -147,7 +185,7 @@ namespace WhiteSharp
             if (Exists(searchCriteria, out o))
             {
                 control = ControlFactory.Create((AutomationElement)o, this, searchCriteria, 0);
-                control.Click();
+                control.Click().Wait(300);
             }
 
             return control;
@@ -156,6 +194,15 @@ namespace WhiteSharp
         public IControl ClickIfExists(string automationId)
         {
             return ClickIfExists(By.AutomationId(automationId));
+        }
+
+        public abstract List<AutomationElement> Find(AutomationElement automationElement, By searchCriteria, int index);
+
+        protected void RefreshBaseList(AutomationElement automationElement)
+        {
+            BaseAutomationElementList = automationElement
+                .FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.IsOffscreenProperty, false))
+                .OfType<AutomationElement>().ToList();
         }
     }
 }

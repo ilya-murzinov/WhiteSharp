@@ -33,7 +33,7 @@ namespace WhiteSharp
         internal string Identifiers
         {
             get { return _identifiers.Select(x => string.Format("\"{0}\"", x)).Aggregate((x, y) => x + ", " + y); }
-            set { _identifiers = new List<string> {value}; }
+            set { _identifiers = new List<string> { value }; }
         }
 
         internal double Duration { get; set; }
@@ -48,7 +48,7 @@ namespace WhiteSharp
                 }
                 return null;
             }
-            private set { _result = new List<Predicate<AutomationElement>> {value}; }
+            private set { _result = new List<Predicate<AutomationElement>> { value }; }
         }
 
         #endregion
@@ -105,6 +105,30 @@ namespace WhiteSharp
             return b;
         }
 
+        public static By ExactAutomationId(string automationId)
+        {
+            var b = new By();
+            b._result.Add(x => (x.Current.AutomationId.Equals(automationId)));
+            b._identifiers.Add(String.Format("ExactAutomationId = {0}", automationId));
+            return b;
+        }
+
+        public static By EmptyAutomationId()
+        {
+            var b = new By();
+            b._result.Add(x => (x.Current.AutomationId.Equals("")));
+            b._identifiers.Add("AutomationId = Empty string");
+            return b;
+        }
+
+        public static By EmptyName()
+        {
+            var b = new By();
+            b._result.Add(x => (x.Current.Name.Equals("")));
+            b._identifiers.Add("Name = Empty string");
+            return b;
+        }
+
         public static By Predicate(Predicate<AutomationElement> predicate)
         {
             var b = new By();
@@ -131,6 +155,23 @@ namespace WhiteSharp
             return b;
         }
 
+        public static By HelpText(string helpText)
+        {
+            var b = new By();
+            var regex = new Regex(helpText);
+            b._result.Add(x => regex.IsMatch(x.Current.HelpText));
+            b._identifiers.Add(String.Format("HelpText = {0}", helpText));
+            return b;
+        }
+
+        public static By ExactName(string name)
+        {
+            var b = new By();
+            b._result.Add(x => (x.Current.Name.Equals(name)));
+            b._identifiers.Add(String.Format("Exact Name = {0}", name));
+            return b;
+        }
+
         public static By GridCell(int i, int j)
         {
             var b = new By();
@@ -139,7 +180,7 @@ namespace WhiteSharp
                 object o;
                 if (x.TryGetCurrentPattern(TableItemPattern.Pattern, out o))
                 {
-                    var pattern = (TableItemPattern) o;
+                    var pattern = (TableItemPattern)o;
                     if (pattern.Current.Column.Equals(i) && pattern.Current.Row.Equals(j))
                         return true;
                 }
@@ -168,7 +209,7 @@ namespace WhiteSharp
 
         public static By Enabled(bool enabled)
         {
-            By b = new By();
+            var b = new By();
             b._result.Add(x => enabled ? x.Current.IsEnabled : !x.Current.IsEnabled);
             b._identifiers.Add(string.Format("Enabled = {0}", enabled));
             return b;
@@ -204,6 +245,20 @@ namespace WhiteSharp
             return this;
         }
 
+        public By AndEmptyAutomationId()
+        {
+            _result.Add(x => (x.Current.AutomationId.Equals("")));
+            _identifiers.Add("AutomationId = Empty string");
+            return this;
+        }
+
+        public By AndEmptyName()
+        {
+            _result.Add(x => (x.Current.Name.Equals("")));
+            _identifiers.Add("Name = Empty string");
+            return this;
+        }
+
         public By AndPredicate(Predicate<AutomationElement> predicate)
         {
             _result.Add(predicate);
@@ -227,6 +282,14 @@ namespace WhiteSharp
             return this;
         }
 
+        public By AndHelpText(string helpText)
+        {
+            var regex = new Regex(helpText);
+            _result.Add(x => regex.IsMatch(x.Current.HelpText));
+            _identifiers.Add(String.Format("Name = {0}", helpText));
+            return this;
+        }
+
         public By AndControlType(ControlType type)
         {
             _result.Add(x => x.Current.ControlType.Equals(type));
@@ -234,7 +297,7 @@ namespace WhiteSharp
             return this;
         }
 
-        public By AndEnabled(bool enabled)
+        public By AndEnabled(bool enabled = true)
         {
             _result.Add(x => enabled ? x.Current.IsEnabled : !x.Current.IsEnabled);
             _identifiers.Add(string.Format("Enabled = {0}", enabled));

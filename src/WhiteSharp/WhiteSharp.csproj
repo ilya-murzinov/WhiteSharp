@@ -82,6 +82,7 @@
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\CheckBox.cs" />
     <Compile Include="Controls\ComboBox.cs" />
+    <Compile Include="Controls\Document.cs" />
     <Compile Include="Controls\RadioButton.cs" />
     <Compile Include="Drawing\DrawRectangle.cs" />
     <Compile Include="Exceptions.cs" />

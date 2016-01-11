@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
 using TestStack.White.InputDevices;
+using WhiteSharp.Controls;
 using WhiteSharp.Extensions;
 
 namespace WhiteSharp
@@ -13,22 +14,9 @@ namespace WhiteSharp
     public class Control : Container, IControl
     {
         #region Properties
-        
-        public override sealed AutomationElement AutomationElement
-        {
-            get
-            {
-                return (!AutomationElementField.IsOffScreen())
-                    ? AutomationElementField
-                    : (AutomationElementField =
-                    new Window(Regex.Escape(WindowTitle))
-                        .FindControl(SearchCriteria, Index).AutomationElement);
-            }
-            protected set { AutomationElementField = value; }
-        }
 
         internal IControlContainer Window { get; set; }
-        
+
         internal By SearchCriteria { get; set; }
 
         internal int Index { get; set; }
@@ -43,14 +31,41 @@ namespace WhiteSharp
             get { return AutomationElement.GetId(); }
         }
 
+        public override sealed AutomationElement AutomationElement
+        {
+            get
+            {
+                return (!AutomationElementField.IsOffScreen())
+                    ? AutomationElementField
+                    : (AutomationElementField =
+                        new Window(Regex.Escape(WindowTitle))
+                            .FindControl(SearchCriteria, Index).AutomationElement);
+            }
+            protected set { AutomationElementField = value; }
+        }
+
         public bool Enabled
         {
             get { return AutomationElement.Current.IsEnabled; }
         }
 
+        public string HelpText
+        {
+            get { return AutomationElement.Current.HelpText; }
+        }
+
         public string Name
         {
             get { return AutomationElement.Current.Name; }
+        }
+
+        public bool IsValuePatternReadOnly
+        {
+            get
+            {
+                object o;
+                return AutomationElement.TryGetCurrentPattern(ValuePattern.Pattern, out o) && ((ValuePattern)o).Current.IsReadOnly;
+            }
         }
 
         #endregion
@@ -70,7 +85,7 @@ namespace WhiteSharp
 
         public override List<AutomationElement> Find(AutomationElement automationElement, By searchCriteria, int index)
         {
-            DateTime start = DateTime.Now;
+            var start = DateTime.Now;
 
             RefreshBaseList(AutomationElement);
 
@@ -82,7 +97,7 @@ namespace WhiteSharp
             {
                 list = BaseAutomationElementList.FindAll(searchCriteria.Result);
                 element = list.ElementAtOrDefault(index);
-                
+
                 if (element == null)
                 {
                     RefreshBaseList(AutomationElement);
@@ -97,10 +112,37 @@ namespace WhiteSharp
 
             return list;
         }
-       
+
         #region Actions
 
-        public virtual IControl ClickAnyway()
+        public IControl ClickOnce()
+        {
+            ((Window)Window).OnTop();
+            Point? point = AutomationElement.GetClickablePoint();
+            Thread.Sleep(1000);
+            Mouse.Instance.Click(new Point(point.Value.X, point.Value.Y));
+            Thread.Sleep(Settings.Default.Delay);
+            Logging.Click(SearchCriteria.Identifiers);
+            return this;
+        }
+
+        public void TryFindErrorWindow()
+        {
+            try
+            {
+                var errorWindow = new Window("Сообщение об ошибке");
+                var errorName = errorWindow.FindControl("lblHeader").GetText();
+                errorWindow.FindControl<Button>(By.Name("Показать подробности")).Click();
+                var errorMessage = errorWindow.FindControl<Document>("txtDetails").GetAllText();
+                Logging.Info(String.Format("Найдено окно 'Сообщение об ошибке': {0}", errorName));
+                Logging.Info(String.Format("Найдено окно 'Сообщение об ошибке': {0}", errorMessage));
+                throw new Exception(String.Format("Поймали окно с ошибкой! Текст: {0}", errorName + " " + Environment.NewLine
+                    + errorMessage));
+            }
+            catch { }
+        }
+
+        public virtual IControl ClickAnyway(bool doCheckErrorWindow = false)
         {
             Point? point = null;
             try
@@ -109,19 +151,22 @@ namespace WhiteSharp
             }
             catch (NoClickablePointException)
             {
-                ((Window) Window).OnTop();
+                ((Window)Window).OnTop();
             }
             Mouse.Instance.Click(point != null
                 ? new Point(point.Value.X, point.Value.Y)
                 : AutomationElement.GetClickablePoint());
             Logging.Click(SearchCriteria.Identifiers);
+
+            if (doCheckErrorWindow) TryFindErrorWindow();
+
             return this;
         }
 
         public IControl Click()
         {
-            WaitForEnabled();
-            return ClickAnyway();
+            WaitForEnabled().Wait(100);
+            return ClickAnyway().Wait(200);
         }
 
         public IControl DoubleClick()
@@ -132,8 +177,8 @@ namespace WhiteSharp
 
         public IControl WaitForEnabled()
         {
-            DateTime start = DateTime.Now;
-            int count = 0;
+            var start = DateTime.Now;
+            var count = 0;
 
             while (count < 100 &&
                    (DateTime.Now - start).TotalMilliseconds < Settings.Default.Timeout)
@@ -167,9 +212,56 @@ namespace WhiteSharp
             return AutomationElement.GetText();
         }
 
+        public string GetHelpText()
+        {
+            return AutomationElement.GetHelpText();
+        }
+
+        public string GetName()
+        {
+            return AutomationElement.GetName();
+        }
+
+        public string GetId()
+        {
+            return AutomationElement.GetId();
+        }
+
+        public void Send(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SelectItem(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public IControl DrawHighlight()
         {
             AutomationElement.DrawHighlight();
+            return this;
+        }
+
+        public IControl ClickRightEdge()
+        {
+            WaitForEnabled();
+            var r = AutomationElement.Current.BoundingRectangle;
+            return ClickAnyway((int)(r.X + r.Width - 1), (int)(r.Y + r.Height / 2));
+        }
+
+        public IControl ClickLeftEdge()
+        {
+            WaitForEnabled();
+            var r = AutomationElement.Current.BoundingRectangle;
+            return ClickAnyway((int)(r.X + 1), (int)(r.Y + r.Height / 2));
+        }
+
+        public IControl Send(Keys key)
+        {
+            Keyboard.Instance.Send(key);
+            Logging.Sent(key.ToString("G"));
+            Keyboard.Instance.LeaveAllKeys();
             return this;
         }
 
@@ -179,26 +271,12 @@ namespace WhiteSharp
             return this;
         }
 
-        public IControl ClickRightEdge()
-        {
-            WaitForEnabled();
-            Rect r = AutomationElement.Current.BoundingRectangle;
-            return ClickAnyway((int) (r.X + r.Width - 1), (int) (r.Y + r.Height/2));
-        }
-
-        public IControl ClickLeftEdge()
-        {
-            WaitForEnabled();
-            Rect r = AutomationElement.Current.BoundingRectangle;
-            return ClickAnyway((int) (r.X + 1), (int) (r.Y + r.Height/2));
-        }
-
         public Control ScrollVertical(ScrollAmount scrollAmount)
         {
             object o;
             if (AutomationElement.TryGetCurrentPattern(ScrollPattern.Pattern, out o))
             {
-                var scrollPattern = (ScrollPattern) o;
+                var scrollPattern = (ScrollPattern)o;
                 scrollPattern.ScrollVertical(scrollAmount);
             }
             return this;
@@ -209,16 +287,9 @@ namespace WhiteSharp
             object o;
             if (AutomationElement.TryGetCurrentPattern(ScrollPattern.Pattern, out o))
             {
-                var scrollPattern = (ScrollPattern) o;
+                var scrollPattern = (ScrollPattern)o;
                 scrollPattern.ScrollHorizontal(scrollAmount);
             }
-            return this;
-        }
-
-        public IControl Send(Keys key)
-        {
-            Keyboard.Instance.Send(key);
-            Logging.Sent(key.ToString("G"));
             return this;
         }
 
