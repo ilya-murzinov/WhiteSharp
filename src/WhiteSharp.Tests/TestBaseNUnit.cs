@@ -34,7 +34,7 @@ namespace WhiteSharp.Tests
         {
             _proc = Process.Start(Path);
 
-            Application app = Application.Attach(_proc);
+            var app = Application.Attach(_proc);
             app.WaitWhileBusy();
             Settings.Default.Timeout = 1000;
         }

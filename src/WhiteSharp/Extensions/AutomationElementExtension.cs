@@ -47,6 +47,16 @@ namespace WhiteSharp.Extensions
                    propertyList.First(x => !String.IsNullOrEmpty(x));
         }
 
+        public static string GetName(this AutomationElement automationElement)
+        {
+            return automationElement.Current.Name;
+        }
+
+        public static string GetHelpText(this AutomationElement automationElement)
+        {
+            return automationElement.Current.HelpText;
+        }
+
         public static string GetText(this AutomationElement automationElement)
         {
             SelectionPattern selectionPattern;
@@ -59,7 +69,7 @@ namespace WhiteSharp.Extensions
 
             if (automationElement.Current.ControlType.Equals(ControlType.Edit))
             {
-                valuePattern = (ValuePattern) automationElement.GetCurrentPattern(ValuePattern.Pattern);
+                valuePattern = (ValuePattern)automationElement.GetCurrentPattern(ValuePattern.Pattern);
                 value = valuePattern.Current.Value;
             }
 
@@ -68,17 +78,17 @@ namespace WhiteSharp.Extensions
                 object p;
                 if (automationElement.TryGetCurrentPattern(SelectionPattern.Pattern, out p))
                 {
-                    selectionPattern = (SelectionPattern) p;
+                    selectionPattern = (SelectionPattern)p;
                     selectedItemName = selectionPattern.Current.GetSelection().First().Current.Name;
                 }
                 if (automationElement.TryGetCurrentPattern(ValuePattern.Pattern, out p))
                 {
-                    valuePattern = (ValuePattern) p;
+                    valuePattern = (ValuePattern)p;
                     value = valuePattern.Current.Value;
                 }
             }
 
-            string text = new[]
+            var text = new[]
             {
                 value,
                 selectedItemName,
@@ -106,7 +116,7 @@ namespace WhiteSharp.Extensions
 
         public static void DrawHighlight(this AutomationElement element)
         {
-            Rect rectangle = element.Current.BoundingRectangle;
+            var rectangle = element.Current.BoundingRectangle;
 
             if (rectangle != Rect.Empty)
             {

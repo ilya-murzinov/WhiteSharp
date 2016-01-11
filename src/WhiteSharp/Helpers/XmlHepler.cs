@@ -27,15 +27,19 @@ namespace WhiteSharp.Helpers
             {
                 if (_node == null)
                 {
+                    Logging.Info("Node is null");
                     return _testData.Descendants(nodeName).First().FirstAttribute.Value;
                 }
 
-                string returnValue = _node.Descendants(nodeName).First().FirstAttribute.Value;
+                var returnValue = _node.Descendants(nodeName).First().FirstAttribute.Value;
                 _node = null;
                 return returnValue;
             }
             catch (NullReferenceException)
             {
+                Logging.Info("Null reference exception!");
+                _node = null;
+                return "";
             }
             catch (Exception)
             {

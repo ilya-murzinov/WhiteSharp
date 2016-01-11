@@ -17,13 +17,14 @@ namespace WhiteSharp
             {"TestStarted", "Запущен тест: {0}"},
             {"And", "и"},
             {"ControlFound", "Контрол по условию {0} найден за {1} секунд"},
+            {"ControlNotFound", "Контрол по условию {0} НЕ найден за {1} секунд"},
             {"ControlNotFoundException", "Контрол по условию {0} не найден"},
             {"ControlNotEnabledException", "Контрол {0} недоступен"},
             {"WindowFound", "Окно \"{0}\" найдено за {1} секунд"},
             {"WindowException", "Окно \"{0}\" не найдено"},
             {"Click", "Выполнен клик по контролу {0}"},
             {"ItemSelected", "Выбран элемент \"{0}\" из комбобокса {1}"},
-            {"Sent", "Нажато \"{0}\""},
+            {"Sent", "Отправлено/введено \"{0}\""},
             {"AssertSucceeded", "Контрол \"{0}\" успешно прошел проверку"},
             {
                 "AssertFailed",
@@ -44,6 +45,7 @@ namespace WhiteSharp
             {"TestStarted", "Test started: {0}"},
             {"And", "and"},
             {"ControlFound", "Control by {0} was found in {1} seconds"},
+            {"ControlNotFound", "Control by {0} was NOT found in {1} seconds"},
             {"ControlNotFoundException", "Control by {0} was not found"},
             {"ControlNotEnabledException", "Control {0} is not enabled"},
             {"WindowFound", "Window \"{0}\" was found in {1} seconds"},
@@ -82,17 +84,19 @@ namespace WhiteSharp
         #region Tags
 
         private const string StartOpenTag =
-            "\r\n\r\n------------------------------------------------------------------------------------------";
+            "\r\n\r\n----------------------------------------------------------------------------";
 
         private const string StartCloseTag =
-            "------------------------------------------------------------------------------------------";
+            "---------------------------------------------------------------------------";
 
         private const string FoungTag = "Found";
+        private const string NotFoungTag = "Not found";
         private const string ActionTag = "Action";
         private const string AssertTag = "Assert";
         private const string WarningTag = "Warning";
         private const string ExceptionTag = "Exception";
         private const string InfoTag = "Info";
+        private const string TestCaseStep = "Test case step";
 
         private class Tag
         {
@@ -137,12 +141,20 @@ namespace WhiteSharp
 
         public static void Description(string description)
         {
-            Write("\r\n" + description.ToUpper() + "\r\n");
+            Write("\r\n        ----------- Описание теста: -----------");
+            Write(description + "\r\n");
         }
 
         public static string Info(string msg)
         {
             string s = new Tag(InfoTag) + msg;
+            Write(s);
+            return s;
+        }
+
+        public static string TestStep(string msg)
+        {
+            string s = new Tag(TestCaseStep) + msg;
             Write(s);
             return s;
         }
@@ -154,12 +166,21 @@ namespace WhiteSharp
             return s;
         }
 
+        public static string ControlNotFound(By b)
+        {
+            var s = string.Format(Strings["ControlNotFound"], b.Identifiers, b.Duration);
+            Write(new Tag(NotFoungTag) + s, false);
+            return s;
+        }
+
         public static string WindowFound(string windowTitle, TimeSpan duration)
         {
             string s = string.Format(Strings["WindowFound"], windowTitle, duration.TotalSeconds);
             Write(new Tag(FoungTag) + s, false);
             return s;
         }
+
+        //Записи с тегом Action:
 
         public static string Click(string identifiers)
         {
@@ -189,6 +210,15 @@ namespace WhiteSharp
             return s;
         }
 
+        public static string WindowClosed(string title)
+        {
+            string s = string.Format(Strings["WindowClosed"], title);
+            Write(new Tag(ActionTag) + s);
+            return s;
+        }
+
+        //Записи с тегом Warning:
+
         public static string MutlipleControlsWarning(List<AutomationElement> list)
         {
             string s = string.Format(Strings["MultipleControlsWarning"], list.Count);
@@ -203,12 +233,7 @@ namespace WhiteSharp
             return s;
         }
 
-        public static string WindowClosed(string title)
-        {
-            string s = string.Format(Strings["WindowClosed"], title);
-            Write(new Tag(ActionTag) + s);
-            return s;
-        }
+        //Записи с тегом Exeption:
 
         public static string ControlNotFoundException(string id)
         {

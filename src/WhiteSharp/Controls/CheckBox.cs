@@ -4,7 +4,7 @@ namespace WhiteSharp.Controls
 {
     public class CheckBox : Control
     {
-        public CheckBox(AutomationElement automationElement, IControlContainer window, By searchCriteria, int index) 
+        public CheckBox(AutomationElement automationElement, IControlContainer window, By searchCriteria, int index)
             : base(automationElement, window, searchCriteria, index)
         {
         }

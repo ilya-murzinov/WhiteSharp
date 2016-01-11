@@ -1,13 +1,10 @@
-﻿using System.Windows.Automation;
-
-namespace WhiteSharp
+﻿namespace WhiteSharp
 {
     public interface IControl : IControlContainer
     {
-        AutomationElement AutomationElement { get; }
         bool Enabled { get; }
         string Name { get; }
-        IControl ClickAnyway();
+        IControl ClickAnyway(bool doCheckErrorWindow = false);
         IControl Click();
         IControl DoubleClick();
         IControl WaitForEnabled();
@@ -17,5 +14,9 @@ namespace WhiteSharp
         IControl ClickLeftEdge();
         IControl Send(Keys key);
         string GetText();
+        string GetHelpText();
+        string GetName();
+
+        void Send(string name);
     }
 }

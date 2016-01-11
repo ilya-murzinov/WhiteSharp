@@ -123,34 +123,36 @@ namespace WhiteSharp.Tests.UITests
     [TestFixture]
     public class FinderNegativeTests : TestBaseNUnit
     {
-        [TestCase("лоукггкгаг"), ExpectedException(typeof (WindowNotFoundException))]
+        [TestCase("лоукггкгаг")]
         [TestCase("MAIN")]
         [TestCase("wIndow")]
         [TestCase("MainWindows")]
-        [TestCase("^%$iofkjndsf9)&*")]
+        [TestCase("^%$iofkjndsf9&*")]
+        [ExpectedException(typeof(WindowNotFoundException))]
         public void GetWindowNegativeTest(string title)
         {
             new Window(title);
         }
 
-        [TestCase("TextBlock", 1), ExpectedException(typeof (ControlNotFoundException))]
-        [TestCase("ComboBox", 2)]
-        [TestCase("TabItem", 1)]
-        [TestCase("TabItem", 1)]
-        [TestCase("Button", 1)]
+        [TestCase("TextBlock", 3)]
+        [TestCase("ComboBox", 4)]
+        [TestCase("TabItem", 5)]
+        [TestCase("Button", 7)]
+        [ExpectedException(typeof(ControlNotFoundException))]
         public void FindControlByAutomationIdNegative(string id, int index)
         {
-            MainWindow.Instance.Window.FindControl(By.AutomationId(id));
+            MainWindow.Instance.Window.FindControl(By.AutomationId(id), index);
         }
 
-        [TestCase("AComboBox"), ExpectedException(typeof (ControlNotFoundException))]
-        [TestCase("EditableComboBox")]
-        [TestCase("OpenHorizontalSplitterButton")]
-        [TestCase("ListBoxWithVScrollBar")]
-        [TestCase("CheckedListBox")]
-        public void FindControlByNameNegative(string id)
+        [TestCase("AComboBox", 2)]
+        [TestCase("EditableComboBox", 3)]
+        [TestCase("OpenHorizontalSplitterButton", 4)]
+        [TestCase("ListBoxWithVScrollBar", 5)]
+        [TestCase("CheckedListBox", 6)]
+        [ExpectedException(typeof(ControlNotFoundException))]
+        public void FindControlByNameNegative(string name, int id)
         {
-            MainWindow.Instance.Window.FindControl(By.Name(id));
+            MainWindow.Instance.Window.FindControl(By.Name(name), id);
         }
     }
 }

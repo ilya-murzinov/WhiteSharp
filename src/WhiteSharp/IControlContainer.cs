@@ -7,6 +7,7 @@ namespace WhiteSharp
     {
         AutomationElement AutomationElement { get; }
         T FindControl<T>(By searchCriteria, int index = 0) where T : class, IControl;
+        List<T> FindControls<T>(By searchCriteria, int index = 0) where T : class, IControl;
         T FindControl<T>(string automationId, int index = 0) where T : class, IControl;
         T FindControl<T>(ControlType type) where T : class, IControl;
         T FindControl<T>(int index = 0) where T : class, IControl;
