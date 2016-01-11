@@ -1,4 +1,5 @@
-﻿using System.Windows.Automation;
+﻿using System.Threading;
+using System.Windows.Automation;
 using NUnit.Framework;
 using Shouldly;
 using WhiteSharp.Controls;
@@ -14,7 +15,7 @@ namespace WhiteSharp.Tests.UITests
         [TestCase("DataBoundComboBox", "Test5")]
         public void SelectItemTest(string id, string item)
         {
-            ComboBox control = MainWindow.Instance.Window.FindControl<ComboBox>(id);
+            var control = MainWindow.Instance.Window.FindControl<ComboBox>(id);
             control.SelectItem(item);
             control.GetText().ShouldBe(item);
         }
@@ -22,20 +23,21 @@ namespace WhiteSharp.Tests.UITests
         [TestCase("AComboBox", 2, "Test3")]
         [TestCase("EditableComboBox", 3, "Test4")]
         [TestCase("DataBoundComboBox", 2, "Test3")]
-        public void SelectItemTest(string id, int item, string result)
+        public void SelectItemTest_SelectByIndex(string id, int item, string result)
         {
-            ComboBox control = MainWindow.Instance.Window.FindControl<ComboBox>(id);
+            var control = MainWindow.Instance.Window.FindControl<ComboBox>(id);
             control.SelectItem(item);
             control.GetText().ShouldBe(result);
+            Thread.Sleep(500);
         }
 
         [TestCase]
         public void ClickChangeItemsButtonTest()
         {
-            Window window = MainWindow.Instance.Window;
-            IControl listItems = window.FindControl("ListBoxWpf");
+            var window = MainWindow.Instance.Window;
+            var listItems = window.FindControl("ListBoxWpf");
             listItems.FindControl(By.Name("Spielberg"));
-            Button button = window.FindControl<Button>("ChangeListItems");
+            var button = window.FindControl<Button>("ChangeListItems");
             button.Click();
             listItems.FindControl(By.Name("Jackson"));
         }

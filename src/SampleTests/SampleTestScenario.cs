@@ -10,7 +10,7 @@ namespace SampleTests
     [TestFixture]
     public class SampleTestScenario
     {
-        public static string Path = @"..\..\..\..\\TestApps\\WpfTestApplication.exe";
+        public static string Path = @"..\..\..\..\\apps\\WpfTestApplication.exe";
         private Process _proc;
 
         [TestInitialize]
