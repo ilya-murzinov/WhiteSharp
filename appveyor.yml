@@ -1,6 +1,6 @@
 init:
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-  - mstsc /v:localhost:3389
+  - START /B mstsc /v:localhost:3389
 before_build:
   - nuget restore src/WhiteSharp.sln
 
