@@ -7,4 +7,4 @@ build_script:
   - msbuild src/WhiteSharp.sln /p:Configuration=Debug /t:Rebuild
   
 test_script:
-  - nunit-console src/WhiteSharp.Tests/bin/Debug/WhiteSharp.Tests.dll
+  - nunit-console /noresult src/WhiteSharp.Tests/bin/Debug/WhiteSharp.Tests.dll
