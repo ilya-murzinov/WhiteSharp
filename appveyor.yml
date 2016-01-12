@@ -1,6 +1,6 @@
-init:
-  - ps: iex ((new-object net.webclient).DownloadString('https://gist.githubusercontent.com/ilya-murzinov/4b782e7d5df80eebb4ae/raw/0c3a5743384624d6e4300d3fc393a461301b840f/Appveyor%2520RDP'))
-  
+install:
+- ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-desktop.ps1'))
+
 before_build:
   - nuget restore src/WhiteSharp.sln
 
