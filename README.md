@@ -1,6 +1,9 @@
 [![Stories in Ready](https://badge.waffle.io/ilya-murzinov/whitesharp.png?label=ready&title=Ready)](https://waffle.io/ilya-murzinov/whitesharp)
 
 [![Build Status](https://travis-ci.org/ilya-murzinov/WhiteSharp.svg?branch=master)](https://travis-ci.org/ilya-murzinov/WhiteSharp)
+
+[![Windows Build status](https://ci.appveyor.com/api/projects/status/github/ilya-murzinov/whitesharp?branch=master&svg=true)](https://ci.appveyor.com/project/ilya-murzinov/whitesharp/branch/master)
+
 WhiteSharp
 ==========
 
