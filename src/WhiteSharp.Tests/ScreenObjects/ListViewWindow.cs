@@ -1,5 +1,4 @@
 ﻿using System.Windows.Automation;
-using WhiteSharp.Attributes;
 using WhiteSharp.Factories;
 
 namespace WhiteSharp.Tests.ScreenObjects
@@ -8,14 +7,12 @@ namespace WhiteSharp.Tests.ScreenObjects
     {
         private static ListViewWindow _instance;
 
-        [FindBy("ListViewWithHorizontalScroll")] private readonly Control _hScrollList;
-
-        [FindBy("ListView")] private readonly Control _vScrollList;
-        [Window("ListViewWindow")] private readonly Window _window;
+        private readonly Window _window;
 
         private ListViewWindow()
         {
-            ScreenFactory.InitControls(this);
+            _window = new Window("ListViewWindow");
+            ScreenFactory.InitControls(this, _window.WindowTitle);
         }
 
         public static ListViewWindow Instance
@@ -25,13 +22,15 @@ namespace WhiteSharp.Tests.ScreenObjects
 
         public ListViewWindow ScrollVScrollList(ScrollAmount scrollAmount)
         {
-            _vScrollList.ScrollVertical(scrollAmount);
+            var vScrollList = _window.FindControl("ListView");
+            vScrollList.ScrollVertical(scrollAmount);
             return this;
         }
 
         public ListViewWindow ScrollHScrollList(ScrollAmount scrollAmount)
         {
-            _hScrollList.ScrollHorizontal(scrollAmount);
+            var hScrollList = _window.FindControl("ListViewWithHorizontalScroll");
+            hScrollList.ScrollHorizontal(scrollAmount);
             return this;
         }
 

@@ -38,11 +38,8 @@ namespace WhiteSharp.Controls
             var number = new Random().Next(0, allItemsNumber);
             if (!allItems.Contains(name))
             {
-                Logging.Info(String.Format("Вариант по имени '{0}' не найден", name));
-                var sb = new StringBuilder();
                 name = allItems[number];
                 name = name.Substring(Math.Max(name.IndexOf(':') + 2, 0));
-                Logging.Info(String.Format("Вместо него берем вариант '{0}', выбранный произвольно", name));
             }
 
             if (AutomationElement.TryGetCurrentPattern(ValuePattern.Pattern, out o))
@@ -88,6 +85,33 @@ namespace WhiteSharp.Controls
             return this;
         }
 
+        public Control SelectItemSafe(int index, bool doLog = true)
+        {
+            WaitForEnabled();
+            Thread.Sleep(500);
+
+            var combobox = new TestStack.White.UIItems.ListBoxItems.ComboBox(AutomationElement, new NullActionListener());
+            var item = combobox.Item(index);
+            
+            object o;
+
+            if (AutomationElement.TryGetCurrentPattern(ValuePattern.Pattern, out o))
+            {
+                var valuePattern = (ValuePattern)o;
+                valuePattern.SetValue(item.Text);
+            }
+            else
+            {
+                var comboBox = new TestStack.White.UIItems.ListBoxItems.ComboBox(AutomationElement,
+                    new NullActionListener());
+                comboBox.Select(index);
+            }
+
+            if (doLog)
+                Logging.ItemSelected(index.ToString(CultureInfo.InvariantCulture), SearchCriteria.Identifiers);
+            return this;
+        }
+
         public Control SelectExactItem(string name)
         {
             var start = DateTime.Now;
@@ -100,6 +124,24 @@ namespace WhiteSharp.Controls
                     var control = FindControl<Button>(By.Name(name).AndEnabled());
                     text = control.GetName();
                     control.Click();
+                }
+                catch { Thread.Sleep(100); }
+            }
+            return this;
+        }
+
+        public Control SelectExactItem(int index)
+        {
+            var start = DateTime.Now;
+            var done = false;
+            while ((DateTime.Now - start).TotalSeconds < 20 && (!done))
+            {
+                try
+                {
+                    Click().Wait(500);
+                    var control = FindControl<Button>(By.EmptyAutomationId().AndEnabled(), index);
+                    control.Click();
+                    done = true;
                 }
                 catch { Thread.Sleep(100); }
             }
@@ -134,11 +176,14 @@ namespace WhiteSharp.Controls
         public Control SelectItem(int index)
         {
             WaitForEnabled();
-
-            var combobox = new TestStack.White.UIItems.ListBoxItems.ComboBox(AutomationElement, null);
+            var combobox = new TestStack.White.UIItems.ListBoxItems.ComboBox(AutomationElement, new NullActionListener());
+            
+            //var item = combobox.Item(index);
+            //Logging.Info(item.Text + " " + item.Name);
             try
             {
                 combobox.Select(index);
+                //combobox.Select(item.Text);
             }
             catch (Exception e)
             {
@@ -164,14 +209,9 @@ namespace WhiteSharp.Controls
             Click();
             var allItems = GetAllItems();
             var allItemsNumber = allItems.Count;
-            Logging.Info("Выбираем произвольный варинат из комбобокса, всего вариантов: " + allItemsNumber);
-            if (allItemsNumber == 0) throw new Exception("В комбобоксе не найдены варианты.");
+            if (allItemsNumber == 0) throw new Exception("Combobox without values!");
             var number = new Random().Next(0, allItemsNumber);
-            Logging.Info("Выбираем номер: " + number + ", текст выбираемого варианта = " + allItems[number]
-                             + ", текущий текст = " + GetSelectedItemText());
             SelectItemByClick(allItems[number]);
-            Logging.Info("Был выбиран вариант: " + allItems[number]
-                                + ", текущий текст в комбобоксе = " + GetSelectedItemText());
             return this;
         }
 

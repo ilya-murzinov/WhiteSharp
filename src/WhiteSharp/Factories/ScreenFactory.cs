@@ -13,14 +13,14 @@ namespace WhiteSharp.Factories
         private static By _by;
         private static int _index;
 
-        public static void InitControls<T>(T screen) where T : ScreenObject
+        public static void InitControls<T>(T screen, string title = "") where T : ScreenObject
         {
-            FieldInfo[] fields = screen.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
+            var fields = screen.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance); 
             fields.ForEach(field =>
             {
                 if (field.FieldType == typeof (Window))
                 {
-                    _title = ((WindowAttribute) field.GetCustomAttributes(true).First()).Title;
+                    _title = title.Equals("") ? ((WindowAttribute) field.GetCustomAttributes(true).First()).Title : title;
                     _window = new Window(_title);
                     try
                     {
@@ -39,7 +39,7 @@ namespace WhiteSharp.Factories
                 {
                     if (field.FieldType == typeof (Window))
                     {
-                        _title = ((WindowAttribute) field.GetCustomAttributes(true).First()).Title;
+                        _title = title.Equals("") ? ((WindowAttribute)field.GetCustomAttributes(true).First()).Title : title;
                         _window = new Window(_title);
                         try
                         {

@@ -128,18 +128,6 @@ namespace WhiteSharp
 
         public void TryFindErrorWindow()
         {
-            try
-            {
-                var errorWindow = new Window("Сообщение об ошибке");
-                var errorName = errorWindow.FindControl("lblHeader").GetText();
-                errorWindow.FindControl<Button>(By.Name("Показать подробности")).Click();
-                var errorMessage = errorWindow.FindControl<Document>("txtDetails").GetAllText();
-                Logging.Info(String.Format("Найдено окно 'Сообщение об ошибке': {0}", errorName));
-                Logging.Info(String.Format("Найдено окно 'Сообщение об ошибке': {0}", errorMessage));
-                throw new Exception(String.Format("Поймали окно с ошибкой! Текст: {0}", errorName + " " + Environment.NewLine
-                    + errorMessage));
-            }
-            catch { }
         }
 
         public virtual IControl ClickAnyway(bool doCheckErrorWindow = false)
@@ -271,7 +259,7 @@ namespace WhiteSharp
             return this;
         }
 
-        public Control ScrollVertical(ScrollAmount scrollAmount)
+        public IControl ScrollVertical(ScrollAmount scrollAmount)
         {
             object o;
             if (AutomationElement.TryGetCurrentPattern(ScrollPattern.Pattern, out o))
@@ -282,7 +270,7 @@ namespace WhiteSharp
             return this;
         }
 
-        public Control ScrollHorizontal(ScrollAmount scrollAmount)
+        public IControl ScrollHorizontal(ScrollAmount scrollAmount)
         {
             object o;
             if (AutomationElement.TryGetCurrentPattern(ScrollPattern.Pattern, out o))

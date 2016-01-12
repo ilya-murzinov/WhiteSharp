@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using System.Windows.Automation;
+﻿using System.Windows.Automation;
 using NUnit.Framework;
 using Shouldly;
 using WhiteSharp.Controls;
@@ -8,29 +7,32 @@ using WhiteSharp.Tests.ScreenObjects;
 namespace WhiteSharp.Tests.UITests
 {
     [TestFixture]
-    public class ActionTests : TestBaseNUnit
+    public class ActionTestsCombobox : TestBaseNUnit
     {
-        [TestCase("AComboBox", "Test5")]
-        [TestCase("EditableComboBox", "Test3")]
-        [TestCase("DataBoundComboBox", "Test5")]
-        public void SelectItemTest(string id, string item)
-        {
-            var control = MainWindow.Instance.Window.FindControl<ComboBox>(id);
-            control.SelectItem(item);
-            control.GetText().ShouldBe(item);
-        }
-
         [TestCase("AComboBox", 2, "Test3")]
         [TestCase("EditableComboBox", 3, "Test4")]
         [TestCase("DataBoundComboBox", 2, "Test3")]
         public void SelectItemTest_SelectByIndex(string id, int item, string result)
         {
             var control = MainWindow.Instance.Window.FindControl<ComboBox>(id);
-            control.SelectItem(item);
+            control.SelectItem(item).Wait(500);
             control.GetText().ShouldBe(result);
-            Thread.Sleep(500);
         }
 
+        [TestCase("AComboBox", "Test5")]
+        [TestCase("EditableComboBox", "Test3")]
+        [TestCase("DataBoundComboBox", "Test5")]
+        public void SelectItemTest_SelectByName(string id, string item)
+        {
+            var control = MainWindow.Instance.Window.FindControl<ComboBox>(id);
+            control.SelectItem(item);
+            control.GetText().ShouldBe(item);
+        }
+    }
+
+    [TestFixture]
+    public class ActionTests : TestBaseNUnit
+    {
         [TestCase]
         public void ClickChangeItemsButtonTest()
         {

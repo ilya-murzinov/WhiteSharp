@@ -1,4 +1,6 @@
-﻿namespace WhiteSharp
+﻿using System.Windows.Automation;
+
+namespace WhiteSharp
 {
     public interface IControl : IControlContainer
     {
@@ -17,6 +19,10 @@
         string GetHelpText();
         string GetName();
 
+        IControl ScrollVertical(ScrollAmount scrollAmount);
+        IControl ScrollHorizontal(ScrollAmount scrollAmount);
+
+        void TryFindErrorWindow();
         void Send(string name);
     }
 }

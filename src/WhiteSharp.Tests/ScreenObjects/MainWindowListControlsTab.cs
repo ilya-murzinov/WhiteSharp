@@ -1,14 +1,10 @@
-﻿using WhiteSharp.Attributes;
-using WhiteSharp.Factories;
+﻿using WhiteSharp.Factories;
 
 namespace WhiteSharp.Tests.ScreenObjects
 {
     public class MainWindowListControlsTab : MainWindow
     {
         private static MainWindowListControlsTab _instance;
-
-        [FindBy(How = How.ClassName, Using = "TabItem")] [FindBy(How = How.Name, Using = "Data Grid")] private Control
-            _dataGridTab;
 
         protected MainWindowListControlsTab()
         {
@@ -23,7 +19,8 @@ namespace WhiteSharp.Tests.ScreenObjects
 
         public MainWindowDataGridTab OpenDataGrid()
         {
-            _dataGridTab.Click();
+            var dataGridTab = Window.FindControl(By.Name("Data Grid").AndClassName("TabItem"));
+            dataGridTab.Click();
             return MainWindowDataGridTab.Instance;
         }
     }
