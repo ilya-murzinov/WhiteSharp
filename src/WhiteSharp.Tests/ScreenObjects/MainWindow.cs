@@ -8,7 +8,6 @@ namespace WhiteSharp.Tests.ScreenObjects
         protected const string Title = "MainWindow";
         private static MainWindow _instance;
 
-        [FindBy(How = How.AutomationId, Using = "OpenListView")] private readonly Control _listViewButton;
         [Window(Title)] private Window _window;
 
         protected MainWindow()
@@ -27,10 +26,10 @@ namespace WhiteSharp.Tests.ScreenObjects
             get { return (_instance = new MainWindow()); }
         }
 
-
         public ListViewWindow OpenListViewWindow()
         {
-            _listViewButton.Click();
+            var listViewButton = Window.FindControl(By.AutomationId("OpenListView"));
+            listViewButton.Click();
             return ListViewWindow.Instance;
         }
 

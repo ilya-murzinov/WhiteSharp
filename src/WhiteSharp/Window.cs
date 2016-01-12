@@ -133,17 +133,7 @@ namespace WhiteSharp
         }
 
         #region Actions
-
-        public bool CheckViewName(string подсторокаНазванияФормы)
-        {
-            Thread.Sleep(1000);
-            Send(Keys.CtrlG);
-            Thread.Sleep(1000);
-            var fullName = Clipboard.GetText();
-            Logging.Info(String.Format("Проверяем, что '{0}' содержит '{1}'...", fullName, подсторокаНазванияФормы));
-            return fullName.Contains(подсторокаНазванияФормы);
-        }
-
+        
         public void Send(Keys key)
         {
             Keyboard.Instance.Send(key);
@@ -237,31 +227,13 @@ namespace WhiteSharp
                 }
                 Send(Keys.Tab);
                 if (textBox.GetValue() == null || !textBox.GetValue().Equals(value)) continue;
-                Logging.Info(String.Format("Ввели число: {0}, текст в поле после ввода: {1}", value, textBox.GetValue()));
                 Send(Keys.Tab);
                 Keyboard.Instance.LeaveAllKeys();
                 return true;
             }
-
+            
             Keyboard.Instance.LeaveAllKeys();
-            Logging.Info(String.Format("Ввели число: {0}, текст в поле после ввода: {1}", value, textBox.GetValue()));
             return false;
-        }
-
-        public new string SetKeys(TextBox tb, string keys)
-        {
-            tb.Click();
-            try
-            {
-                tb.ClearValue();
-            }
-            catch
-            {
-                SendKeys.SendWait("{END}{BS}{BS}{BS}{BS}{BS}{BS}{BS}{BS}{HOME}{DEL}{DEL}{DEL}{DEL}{DEL}{DEL}{DEL}{DEL}{HOME}");
-            }
-            SendKeys.SendWait(keys);
-            Keyboard.Instance.LeaveAllKeys();
-            return tb.GetValue();
         }
 
         public bool Prompt(string winName, string btnName)
