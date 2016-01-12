@@ -7,11 +7,11 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("WhiteSharp")]
-[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyProduct("WhiteSharp")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2013")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyCompany("Ilya Murzinov")]
+[assembly: AssemblyCopyright("Ilya Murzinov, murz42@gmail.com")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -36,7 +36,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("0.1.0.*")]
+[assembly: AssemblyFileVersion("0.1.0.*")]
 [assembly: InternalsVisibleTo("mscorlib")]
 [assembly: InternalsVisibleTo("WhiteSharp.Tests")]

@@ -1,11 +1,48 @@
-install:
-- ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-desktop.ps1'))
-
-before_build:
-  - nuget restore src/WhiteSharp.sln
-
-build_script: 
-  - msbuild src/WhiteSharp.sln /p:Configuration=Debug /t:Rebuild
+-
+  branches:
+    only:
+    - master
   
-test_script:
-  - nunit3-console src/WhiteSharp.Tests/bin/Debug/WhiteSharp.Tests.dll --noresult
+  install:
+    - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-desktop.ps1'))
+
+  before_build:
+    - nuget restore src/WhiteSharp.sln
+
+  build_script: 
+    - msbuild src/WhiteSharp.sln /p:Configuration=Release /t:Rebuild
+  
+  test_script:
+    - nunit3-console src/WhiteSharp.Tests/bin/Release/WhiteSharp.Tests.dll --noresult
+
+  after_build:
+    - nuget pack "src/WhiteSharp/WhiteSharp.csproj" -Prop Configuration=Release
+
+  artifacts:
+    - path: '*.nupkg'
+      name: nupkg
+
+  deploy:
+    provider: NuGet
+    server:
+    api_key:
+      secure: 3b6KUYj6PomFOHVvJdG0/i9eYvBCvtwgR+WFOCwl9VM4CrpSa3U9iuT4zWzvDCfw
+    skip_symbols: false
+    artifact: nupkg
+-
+  branches:
+    except:
+    - master
+
+  install:
+    - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-desktop.ps1'))
+
+  before_build:
+    - nuget restore src/WhiteSharp.sln
+
+  build_script: 
+    - msbuild src/WhiteSharp.sln /p:Configuration=Debug /t:Rebuild
+  
+  test_script:
+    - nunit3-console src/WhiteSharp.Tests/bin/Debug/WhiteSharp.Tests.dll --noresult
+ 

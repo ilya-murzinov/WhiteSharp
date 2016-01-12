@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/ilya-murzinov/WhiteSharp/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/ilya-murzinov/WhiteSharp</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>UI testing automation library</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright Ilya Murzinov [murz42@gmail.com] 2016</copyright>
+    <tags></tags>
+  </metadata>
+</package>
