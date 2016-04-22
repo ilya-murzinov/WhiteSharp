@@ -1,7 +1,10 @@
-[![Build Status](https://travis-ci.org/ilya-murzinov/WhiteSharp.svg?branch=master)](https://travis-ci.org/ilya-murzinov/WhiteSharp)
-[![Windows Build status](https://ci.appveyor.com/api/projects/status/github/ilya-murzinov/whitesharp?branch=master&svg=true)](https://ci.appveyor.com/project/ilya-murzinov/whitesharp/branch/master)
-[![NuGet Downloads](https://img.shields.io/nuget/dt/WhiteSharp.svg)](https://www.nuget.org/packages/WhiteSharp) 
-[![NuGet Version](https://img.shields.io/nuget/v/WhiteSharp.svg)](https://www.nuget.org/packages/WhiteSharp)
+
+|||
+|---|---|
+|Appveyor CI|[![Windows Build status](https://ci.appveyor.com/api/projects/status/github/ilya-murzinov/whitesharp?branch=master&svg=true)](https://ci.appveyor.com/project/ilya-murzinov/whitesharp/branch/master)|
+|Travis CI|[![Build Status](https://travis-ci.org/ilya-murzinov/WhiteSharp.svg?branch=master)](https://travis-ci.org/ilya-murzinov/WhiteSharp)|
+|Nuget|[![NuGet Version and Downloads count](https://buildstats.info/nuget/WhiteSharp)](https://www.nuget.org/packages/WhiteSharp)|
+
 
 To install WhiteSharp use Package Manager Console:
 ```
